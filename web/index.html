@@ -468,7 +468,7 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .tp b{font-weight:500}.tp i{font:500 10px "JetBrains Mono",monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#5C8F2C}
 .tp::after{content:"";position:absolute;left:50%;top:-3px;width:8px;height:8px;margin-left:-4px;background:#fff;transform:rotate(45deg);border-radius:1.5px}
 /* 04 · captions get a heading */
-.how-cap{min-height:190px;margin-top:32px}
+.how-cap{min-height:160px;margin-top:32px}
 .how-cap h3{font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
 .how-cap p{margin-top:10px;font-size:18px;line-height:1.55;color:#737378}
 /* 04 · how-cta in the final CTA's language: dark, lime glow behind the spinning icon, dot field; no testimonial */
@@ -560,6 +560,11 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .bt.ai .k.try{color:#C9F08F}.bt.ai .k.try::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
 .bt.ai .say{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(156,222,69,.1);border-left:2px solid #9CDE45;font-size:16px;line-height:1.45;color:#fff}
 .bt.ai .src{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:rgba(255,255,255,.4)}.bt.ai .src span{color:#C9F08F}
+/* 04 · the CTA never shrinks inside the 100vh pin, and stays compact so short screens keep the scene */
+.how-cta.dk{flex:none}
+.how-cta.dk .txt{padding:32px 40px;gap:20px}
+.how-cta.dk h3{font-size:26px}
+.how-cta.dk.lime .spin{width:170px;height:170px}
 </style></head><body>
 <nav class="topbar"><span class="tb-pill" aria-hidden="true"></span>
   <span class="navlinks tb-l"><span>Product</span><span>Industries</span><span>Cases</span><span>Pricing</span><span>Company</span></span>
@@ -863,9 +868,16 @@ function setTab(i){document.querySelectorAll('.tab').forEach((t,k)=>t.classList.
 // scroll drives the steps: the floor pins, each step gets an equal share of the run; the active tab's underline fills as you go
 const STEP_VH=.6, CLOSE_VH=.4; let howIdx=-1;
 // run = the four steps, then a short stretch where the CTA rises to sit right under the content before the floor leaves
+// step illustrations keep their design size and scale down when the scene gets shorter than they are
+function fitPanes(){document.querySelectorAll('.scene .pane .dg, .scene .pane .rvb').forEach(el=>{el.style.transform='';
+  const pane=el.closest('.pane'), room=pane.clientHeight*.9, need=el.classList.contains('rvb')?el.scrollHeight:el.offsetHeight;
+  const k=Math.min(1,room/need, pane.clientWidth*.94/el.offsetWidth); if(k<1) el.style.transform=`scale(${k.toFixed(3)})`;});}
 function howLayout(){const pin=$('howPin');
   // square scene (height = width), capped so the floor still fits the screen
-  const sc=document.querySelector('.scene'), tall=innerHeight>=1000; sc.style.height=Math.round(Math.max(tall?290:380,Math.min(sc.offsetWidth,innerHeight-(tall?710:500))))+'px'; pin.style.top=Math.min(0,innerHeight-pin.offsetHeight)+'px'; $('howRun').style.height=(pin.offsetHeight+(4*STEP_VH+CLOSE_VH)*innerHeight)+'px';}
+  const sc=document.querySelector('.scene'), tall=innerHeight>=1000; sc.style.height=Math.round(Math.max(tall?290:380,Math.min(sc.offsetWidth,innerHeight-(tall?710:500))))+'px';
+  // on tall screens the whole floor (head, steps, caption, CTA) lives in one 100vh pin: shrink the scene by whatever still overflows
+  if(tall){const over=pin.scrollHeight-innerHeight; if(over>0) sc.style.height=Math.max(290,sc.offsetHeight-over)+'px';}
+  fitPanes(); pin.style.top=Math.min(0,innerHeight-pin.offsetHeight)+'px'; $('howRun').style.height=(pin.offsetHeight+(4*STEP_VH+CLOSE_VH)*innerHeight)+'px';}
 function howScroll(){const pin=$('howPin'), run=$('howRun'), steps=4*STEP_VH*innerHeight, scrolled=parseFloat(pin.style.top)-run.getBoundingClientRect().top;
   const p=clamp(scrolled/steps), x=Math.min(3.999,p*4), i=Math.floor(x);
   if(i!==howIdx){howIdx=i; setTab(i);}
