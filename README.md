@@ -73,8 +73,9 @@ Optimisation in place:
 
 ## Deploy
 
-```bash
-cd web && vercel deploy --prod --yes
-```
+Vercel deploys from GitHub automatically:
 
-The Vercel project is `lansy-prototype`.
+- a push to `main` goes to production at https://lansy-prototype.vercel.app;
+- any other branch or pull request gets its own preview URL.
+
+The Vercel project is `lansy-prototype`, with its root directory set to `web`.
