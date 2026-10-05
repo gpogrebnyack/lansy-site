@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hero shader lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1F1F21;--grey:#8A8A8F;--line:#E6E6E8;--soft:#F4F4F5;--lime:#98F048}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,sans-serif;background:#fff;color:var(--ink)}
+.bar{position:fixed;z-index:20;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:6px;padding:6px;border-radius:999px;background:rgba(31,31,33,.88)}
+.bar button{border:0;border-radius:999px;padding:8px 14px;background:transparent;color:#cfcfd4;font:500 13px Inter,sans-serif;cursor:pointer}
+.bar button.on{background:#fff;color:var(--ink)}
+.hero{position:relative;overflow:hidden;padding:120px 0 120px}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.wrap{position:relative;z-index:1;width:min(1200px,calc(100% - 32px));margin:0 auto}
+h1{font-size:64px;line-height:1.04;font-weight:500;letter-spacing:-.035em;max-width:1000px}
+p.sub{margin-top:20px;font-size:20px;color:#5C5C61}
+.ctas{display:flex;gap:12px;margin-top:32px}.btn{display:inline-flex;align-items:center;height:44px;padding:0 24px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none}
+.dark{background:var(--ink);color:#fff}.ghost{border:1px solid var(--line);color:var(--ink);background:#fff}
+.shot{margin-top:96px;width:min(1360px,calc(100vw - 32px));margin-left:calc(50% - min(680px,50vw - 16px));aspect-ratio:1360/880;border:1px solid rgba(212,212,216,.6);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(4px) saturate(1.3);backdrop-filter:blur(4px) saturate(1.3);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 30px 80px -40px rgba(31,31,33,.18)}
+.chrome{height:48px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid rgba(212,212,216,.5);background:rgba(255,255,255,.12);font-size:13px;color:var(--grey)}
+.chrome i{position:absolute;left:16px;display:flex;gap:7px}.chrome i b{width:11px;height:11px;border-radius:50%;background:#D4D4D8}
+.body{flex:1;background:var(--soft);display:grid;place-items:center;font-size:14px;color:var(--grey)}
+.note{position:fixed;z-index:20;bottom:16px;left:50%;transform:translateX(-50%);padding:8px 14px;border-radius:10px;background:rgba(31,31,33,.88);color:#e8e8ec;font:500 12px 'JetBrains Mono',monospace}
+.knobs{position:fixed;z-index:20;right:16px;bottom:56px;width:280px;padding:14px 16px;border-radius:14px;background:rgba(31,31,33,.9);color:#e8e8ec;font:500 12px Inter,sans-serif;display:none}
+.knobs.on{display:block}.knobs label{display:grid;grid-template-columns:1fr 52px;gap:4px 8px;align-items:center;margin-bottom:8px}.knobs label span{opacity:.75}.knobs label b{text-align:right;font:500 11px 'JetBrains Mono',monospace}
+.knobs .pal{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 8px}.knobs .pal button{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:transparent;color:#e8e8ec;font:500 11px Inter,sans-serif;cursor:pointer;text-align:left}.knobs .pal i{flex:none;width:22px;height:10px;border-radius:3px}
+.knobs .cols{display:flex;gap:8px;margin-bottom:6px}.knobs .c{flex:1;display:flex!important;align-items:center;justify-content:space-between;margin:0!important}.knobs .c input{width:44px;height:24px;padding:0;border:0;background:none;grid-column:auto}
+.knobs input{grid-column:1/-1;width:100%;accent-color:#98F048}.knobs .row{display:flex;gap:8px;margin-top:6px}.knobs button{flex:1;border:0;border-radius:8px;padding:8px;background:#fff;color:#1F1F21;font:500 12px Inter,sans-serif;cursor:pointer}.knobs button.ghost{background:transparent;color:#e8e8ec;border:1px solid rgba(255,255,255,.25)}
+</style></head><body>
+<div class="bar" id="bar"><button data-k="ribbons" class="on">A · Ribbons lime</button><button data-k="ribbonsMono">B · Ribbons mono</button><button data-k="threads">C · Threads</button><button data-k="waves">D · Waves</button></div>
+<section class="hero" id="hero"><canvas id="c2d"></canvas><canvas id="cgl"></canvas>
+  <div class="wrap"><h1>Every customer conversation&nbsp;— advice for your team, insight for your business</h1>
+  <p class="sub">Lansy hears and analyzes every in-person conversation.</p>
+  <div class="ctas"><a class="btn dark" href="#">Book a demo →</a><a class="btn ghost" href="#">How it works</a></div>
+  <div class="shot"><div class="chrome"><i><b></b><b></b><b></b></i>app.lansy.ai</div><div class="body">Product screen</div></div></div>
+</section>
+<div class="knobs" id="knobs"></div>
+<div class="note" id="note"></div>
+<script>
+const hero=document.getElementById('hero'), c2d=document.getElementById('c2d'), cgl=document.getElementById('cgl'), ctx=c2d.getContext('2d');
+let W=0,H=0,DPR=Math.min(devicePixelRatio||1,2), mode='ribbons', mx=.5, my=.5;
+const NOTES={ribbons:'A — twisted line ribbons (like the ref), lime → grey, slow twist',ribbonsMono:'B — same ribbons, monochrome ink/grey, lime only at the twist highlights',threads:'C — React Bits «Threads», tilted to run under the title bar, Lansy lime + pair from the presets, follows the cursor',waves:'D — React Bits «Waves», light grey line field, reacts to the cursor'};
+function size(){const r=hero.getBoundingClientRect(); W=r.width; H=r.height; for(const c of [c2d,cgl]){c.width=W*DPR; c.height=H*DPR;} ctx.setTransform(DPR,0,0,DPR,0,0); if(mode==='waves')wavesInit(); glResize();}
+addEventListener('resize',size);
+addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect(); mx=(e.clientX-r.left)/r.width; my=(e.clientY-r.top)/r.height; wavesMouse(e.clientX-r.left,e.clientY-r.top);});
+
+/* ---------- A/B: twisted ribbons of thin lines (canvas 2D) ---------- */
+const bez=(p,s)=>{const a=1-s; return [a*a*a*p[0][0]+3*a*a*s*p[1][0]+3*a*s*s*p[2][0]+s*s*s*p[3][0], a*a*a*p[0][1]+3*a*a*s*p[1][1]+3*a*s*s*p[2][1]+s*s*s*p[3][1]];};
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+function ribbon(P,width,twist,phase,t,mono){
+  const N=72, S=160, pts=[];
+  for(let j=0;j<=S;j++){const s=j/S, p=bez(P,s), q=bez(P,Math.min(1,s+.002)), r=bez(P,Math.max(0,s-.002)); let dx=q[0]-r[0], dy=q[1]-r[1]; const l=Math.hypot(dx,dy)||1; pts.push([p[0],p[1],-dy/l,dx/l,s]);}
+  for(let k=0;k<N;k++){const u=k/(N-1)-.5;
+    const c0=mono?[200,200,206]:[152,240,72], c1=mono?[31,31,33]:[176,176,184];
+    ctx.beginPath();
+    for(let j=0;j<=S;j++){const [x,y,nx,ny,s]=pts[j], th=s*twist*Math.PI+t*.25+phase, o=u*width*Math.cos(th)*(0.55+0.45*Math.sin(s*Math.PI));
+      j?ctx.lineTo(x+nx*o,y+ny*o):ctx.moveTo(x+nx*o,y+ny*o);}
+    const g=ctx.createLinearGradient(P[0][0],P[0][1],P[3][0],P[3][1]); const ca=mix(c0,c1,(u+.5)), cb=mix(c1,c0,(u+.5)*.6);
+    g.addColorStop(0,`rgba(${ca},0)`); g.addColorStop(.25,`rgba(${ca},${mono?.55:.7})`); g.addColorStop(.75,`rgba(${cb},${mono?.45:.6})`); g.addColorStop(1,`rgba(${cb},0)`);
+    ctx.strokeStyle=g; ctx.lineWidth=1; ctx.stroke();}
+}
+function drawRibbons(t,mono){ctx.clearRect(0,0,W,H);
+  const shot=document.querySelector('.shot').getBoundingClientRect(), hr=hero.getBoundingClientRect(), wt=shot.top-hr.top, wb=shot.bottom-hr.top, wl=shot.left-hr.left;
+  // upper right: falls from the corner, sweeps under the glass title bar and fades out to the left
+  ribbon([[W+60,-40],[W*.80,wt*.75],[W*.70,wt+10],[W*.30,wt+30]],230,2.4,0,t,mono);
+  // lower left: rises from the corner and slips behind the window's bottom-left edge
+  ribbon([[-80,wb-420],[wl-60,wb+200],[W*.22,wb+170],[W*.48,wb-30]],200,2.0,2.1,t*.9,mono);
+}
+/* ---------- C: React Bits Threads (fragment shader ported as-is, raw WebGL) ---------- */
+let gl=null, prog=null, uni={};
+const FS=`precision highp float;uniform float iTime;uniform vec3 iResolution;uniform vec3 uColor;uniform float uAmplitude;uniform float uDistance;uniform vec2 uMouse;uniform float uY;uniform float uFade;uniform float u_line_width;
+#define PI 3.1415926538
+const int u_line_count=60;const float u_line_blur=10.0;
+float Perlin2D(vec2 P){vec2 Pi=floor(P);vec4 Pf_Pfmin1=P.xyxy-vec4(Pi,Pi+1.0);vec4 Pt=vec4(Pi.xy,Pi.xy+1.0);Pt=Pt-floor(Pt*(1.0/71.0))*71.0;Pt+=vec2(26.0,161.0).xyxy;Pt*=Pt;Pt=Pt.xzxz*Pt.yyww;vec4 hash_x=fract(Pt*(1.0/951.135664));vec4 hash_y=fract(Pt*(1.0/642.949883));vec4 grad_x=hash_x-0.49999;vec4 grad_y=hash_y-0.49999;vec4 grad_results=inversesqrt(grad_x*grad_x+grad_y*grad_y)*(grad_x*Pf_Pfmin1.xzxz+grad_y*Pf_Pfmin1.yyww);grad_results*=1.4142135623730950;vec2 blend=Pf_Pfmin1.xy*Pf_Pfmin1.xy*Pf_Pfmin1.xy*(Pf_Pfmin1.xy*(Pf_Pfmin1.xy*6.0-15.0)+10.0);vec4 blend2=vec4(blend,vec2(1.0-blend));return dot(grad_results,blend2.zxzx*blend2.wwyy);}
+float pixel(float count,vec2 resolution){return (1.0/max(resolution.x,resolution.y))*count;}
+float lineFn(vec2 st,float width,float perc,float offset,vec2 mouse,float time,float amplitude,float distance){float split_offset=(perc*0.4);float split_point=0.1+split_offset;float amplitude_normal=smoothstep(split_point,0.7,st.x);float amplitude_strength=0.5;float finalAmplitude=amplitude_normal*amplitude_strength*amplitude*(1.0+(mouse.y-0.5)*0.2);float time_scaled=time/10.0+(mouse.x-0.5)*1.0;float blur=smoothstep(split_point,split_point+0.05,st.x)*perc;float xnoise=mix(Perlin2D(vec2(time_scaled,st.x+perc)*2.5),Perlin2D(vec2(time_scaled,st.x+time_scaled)*3.5)/1.5,st.x*0.3);float y=uY+(perc-0.5)*distance+xnoise/2.0*finalAmplitude;float line_start=smoothstep(y+(width/2.0)+(u_line_blur*(u_line_width/7.0)*pixel(1.0,iResolution.xy)*blur),y,st.y);float line_end=smoothstep(y,y-(width/2.0)-(u_line_blur*(u_line_width/7.0)*pixel(1.0,iResolution.xy)*blur),st.y);return clamp((line_start-line_end)*(1.0-uFade*smoothstep(0.0,1.0,pow(perc,0.3))),0.0,1.0);}
+uniform float uAngle;uniform vec3 uColorA;uniform vec3 uColorB;uniform float uBoost;uniform float uLime;
+void main(){vec2 uv=gl_FragCoord.xy/iResolution.xy;
+  // turn the field around its left edge at the band height, in aspect-correct space, so the wide end climbs to the top-right corner
+  float asp=iResolution.x/iResolution.y; vec2 pv=vec2(0.0,uY); vec2 d=(uv-pv)*vec2(asp,1.0); float c=cos(uAngle),s=sin(uAngle); d=vec2(c*d.x+s*d.y,-s*d.x+c*d.y); uv=pv+d/vec2(asp,1.0);
+  vec3 col=vec3(0.0); float keep=1.0;
+  for(int i=0;i<u_line_count;i++){float p=float(i)/float(u_line_count);
+    float a=min(1.0,uBoost*lineFn(uv,u_line_width*pixel(1.0,iResolution.xy)*(1.0-p),p,(PI*1.0)*p,uMouse,iTime,uAmplitude,uDistance));
+    vec3 lc=mix(uColorA,uColorB,smoothstep(uLime-0.12,uLime+0.12,p));
+    col=col*(1.0-a)+lc*a; keep*=(1.0-a);}
+  float alpha=1.0-keep; gl_FragColor=vec4(col/max(alpha,1e-4),alpha);}`;
+function glInit(){gl=cgl.getContext('webgl',{premultipliedAlpha:false,alpha:true}); const sh=(t,src)=>{const s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s;};
+  prog=gl.createProgram(); gl.attachShader(prog,sh(gl.VERTEX_SHADER,'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}')); gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(prog); gl.useProgram(prog);
+  const b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); const loc=gl.getAttribLocation(prog,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  ['iTime','iResolution','uColor','uAmplitude','uDistance','uMouse','uY','uAngle','uColorA','uColorB','uBoost','uLime','uFade','u_line_width'].forEach(n=>uni[n]=gl.getUniformLocation(prog,n)); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA); glResize();}
+function glResize(){if(!gl)return; gl.viewport(0,0,cgl.width,cgl.height); gl.uniform3f(uni.iResolution,cgl.width,cgl.height,cgl.width/cgl.height);}
+let gm=[.5,.5];
+// tuning knobs for Threads (kept in this browser; Copy puts them on the clipboard)
+// approved settings (2026-10-04): Lansy lime → grass, thin lines, band along the title bar
+const TP_DEF={left:200,right:-180,amp:1.5,spread:.23,boost:2.5,speed:.5,lime:.4,fade:.7,width:1.5,shift:70,ca:'#9CDE45',cb:'#5FB82E'};
+let TP=(()=>{try{return Object.assign({},TP_DEF,JSON.parse(localStorage.getItem('lansy-threads'))||{})}catch(e){return {...TP_DEF}}})();
+function drawThreads(t){gm[0]+=(mx-gm[0])*.05; gm[1]+=((1-my)-gm[1])*.05; gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniform1f(uni.iTime,t*TP.speed); gl.uniform1f(uni.uBoost,TP.boost); gl.uniform1f(uni.uLime,TP.lime); gl.uniform1f(uni.uFade,TP.fade); gl.uniform1f(uni.u_line_width,TP.width); gl.uniform3f(uni.uColor,.12,.12,.13);  {const h=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16)/255); gl.uniform3f(uni.uColorA,...h(TP.ca)); gl.uniform3f(uni.uColorB,...h(TP.cb));} gl.uniform1f(uni.uAmplitude,TP.amp); gl.uniform1f(uni.uDistance,TP.spread); gl.uniform2f(uni.uMouse,gm[0],gm[1]); {// band runs along the glass title bar: just under it on the left, out past its top-right corner on the right
+  const sr=document.querySelector('.shot').getBoundingClientRect(), hr=hero.getBoundingClientRect(), wt=sr.top-hr.top, py=wt+TP.left+TP.shift, ey=wt+TP.right+TP.shift;
+  gl.uniform1f(uni.uY,1-py/hr.height); gl.uniform1f(uni.uAngle,Math.atan2(py-ey,hr.width));} gl.drawArrays(gl.TRIANGLES,0,3);}
+
+/* ---------- D: React Bits Waves (canvas 2D, ported) ---------- */
+const P=[151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180];
+const G3=[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[1,0],[-1,0],[0,1],[0,-1],[0,1],[0,-1]], perm=[], gradP=[];
+(()=>{let seed=Math.floor(Math.random()*65536); for(let i=0;i<256;i++){const v=i&1?P[i]^(seed&255):P[i]^((seed>>8)&255); perm[i]=perm[i+256]=v; gradP[i]=gradP[i+256]=G3[v%12];}})();
+const fade=t=>t*t*t*(t*(t*6-15)+10), lerp=(a,b,t)=>(1-t)*a+t*b;
+function perlin2(x,y){let X=Math.floor(x),Y=Math.floor(y); x-=X; y-=Y; X&=255; Y&=255; const d=(g,a,b)=>g[0]*a+g[1]*b;
+  const n00=d(gradP[X+perm[Y]],x,y), n01=d(gradP[X+perm[Y+1]],x,y-1), n10=d(gradP[X+1+perm[Y]],x-1,y), n11=d(gradP[X+1+perm[Y+1]],x-1,y-1); const u=fade(x); return lerp(lerp(n00,n10,u),lerp(n01,n11,u),fade(y));}
+let lines=[]; const mouse={x:-10,y:0,lx:0,ly:0,sx:0,sy:0,v:0,vs:0,a:0,set:false};
+function wavesInit(){lines=[]; const xGap=10,yGap=32, tl=Math.ceil((W+200)/xGap), tp=Math.ceil((H+30)/yGap), xs=(W-xGap*tl)/2, ys=(H-yGap*tp)/2;
+  for(let i=0;i<=tl;i++){const pts=[]; for(let j=0;j<=tp;j++)pts.push({x:xs+xGap*i,y:ys+yGap*j,wave:{x:0,y:0},cursor:{x:0,y:0,vx:0,vy:0}}); lines.push(pts);}}
+function wavesMouse(x,y){mouse.x=x; mouse.y=y; if(!mouse.set){mouse.sx=mouse.lx=x; mouse.sy=mouse.ly=y; mouse.set=true;}}
+function drawWaves(t){const m=mouse; m.sx+=(m.x-m.sx)*.1; m.sy+=(m.y-m.sy)*.1; const dx=m.x-m.lx,dy=m.y-m.ly,d=Math.hypot(dx,dy); m.vs+=(d-m.vs)*.1; m.vs=Math.min(100,m.vs); m.lx=m.x; m.ly=m.y; m.a=Math.atan2(dy,dx);
+  lines.forEach(pts=>pts.forEach(p=>{const mv=perlin2((p.x+t*.0125)*.002,(p.y+t*.005)*.0015)*12; p.wave.x=Math.cos(mv)*32; p.wave.y=Math.sin(mv)*16;
+    const ddx=p.x-m.sx,ddy=p.y-m.sy,dist=Math.hypot(ddx,ddy),l=Math.max(175,m.vs); if(dist<l){const s=1-dist/l,f=Math.cos(dist*.001)*s; p.cursor.vx+=Math.cos(m.a)*f*l*m.vs*.00065; p.cursor.vy+=Math.sin(m.a)*f*l*m.vs*.00065;}
+    p.cursor.vx+=(0-p.cursor.x)*.005; p.cursor.vy+=(0-p.cursor.y)*.005; p.cursor.vx*=.925; p.cursor.vy*=.925; p.cursor.x=Math.max(-100,Math.min(100,p.cursor.x+p.cursor.vx*2)); p.cursor.y=Math.max(-100,Math.min(100,p.cursor.y+p.cursor.vy*2));}));
+  ctx.clearRect(0,0,W,H); ctx.beginPath(); ctx.strokeStyle='rgba(31,31,33,.16)'; ctx.lineWidth=1;
+  lines.forEach(pts=>pts.forEach((p,i)=>{const x=p.x+p.wave.x+p.cursor.x, y=p.y+p.wave.y+p.cursor.y; i?ctx.lineTo(x,y):ctx.moveTo(x,y);})); ctx.stroke();}
+
+
+// knob panel for Threads
+const KN=[['shift','Move whole band, px (− up, + down)',-400,400,1],['width','Line thickness',.5,10,.1],['left','Left end, px below bar top',-300,500,1],['right','Right end, px below bar top',-600,300,1],['spread','Spread',0,.6,.01],['amp','Wave amplitude',0,3,.05],['boost','Line strength',.5,4,.1],['speed','Speed',0,3,.05],['lime','First colour share',0,1,.01],['fade','Fade of far lines',0,1,.01]];
+const PAL=[['Lime → grass','#9CDE45','#5FB82E'],['Lime → mint','#9CDE45','#2FBF8F'],['Chartreuse → lime','#D9F36A','#9CDE45'],['Lime → ink','#9CDE45','#1F1F21']];
+const kn=document.getElementById('knobs');
+kn.innerHTML=KN.map(([k,l,mn,mx,st])=>`<label><span>${l}</span><b id="v_${k}"></b><input type="range" min="${mn}" max="${mx}" step="${st}" data-k="${k}"></label>`).join('')+'<div class="pal">'+PAL.map((p,i)=>`<button data-p="${i}" title="${p[0]}"><i style="background:linear-gradient(90deg,${p[1]},${p[2]})"></i>${p[0]}</button>`).join('')+'</div><div class="cols"><label class="c"><span>From</span><input type="color" data-c="ca"></label><label class="c"><span>To</span><input type="color" data-c="cb"></label></div>'+'<div class="row"><button id="kCopy">Copy values</button><button class="ghost" id="kReset">Reset</button></div>';
+const kSave=()=>{try{localStorage.setItem('lansy-threads',JSON.stringify(TP))}catch(_){}};
+const kSync=()=>{KN.forEach(([k])=>{kn.querySelector(`[data-k=${k}]`).value=TP[k]; document.getElementById('v_'+k).textContent=TP[k];}); kn.querySelector('[data-c=ca]').value=TP.ca.toLowerCase(); kn.querySelector('[data-c=cb]').value=TP.cb.toLowerCase();};
+kn.addEventListener('click',e=>{const b=e.target.closest('[data-p]'); if(!b)return; const p=PAL[+b.dataset.p]; TP.ca=p[1]; TP.cb=p[2]; kSave(); kSync();});
+kn.addEventListener('input',e=>{const c=e.target.dataset.c; if(!c)return; TP[c]=e.target.value.toUpperCase(); kSave();});
+kn.addEventListener('input',e=>{const k=e.target.dataset.k; if(!k)return; TP[k]=+e.target.value; document.getElementById('v_'+k).textContent=TP[k]; try{localStorage.setItem('lansy-threads',JSON.stringify(TP))}catch(_){}});
+document.getElementById('kCopy').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(JSON.stringify(TP)); document.getElementById('kCopy').textContent='Copied';setTimeout(()=>document.getElementById('kCopy').textContent='Copy values',1200);};
+document.getElementById('kReset').onclick=()=>{TP={...TP_DEF}; try{localStorage.removeItem('lansy-threads')}catch(_){} kSync();};
+kSync();
+/* ---------- switcher + loop ---------- */
+function set(k){mode=k; document.querySelectorAll('#bar button').forEach(b=>b.classList.toggle('on',b.dataset.k===k)); document.getElementById('note').textContent=NOTES[k];
+  cgl.style.display=k==='threads'?'block':'none'; kn.classList.toggle('on',k==='threads'); c2d.style.display=k==='threads'?'none':'block'; if(k==='threads'&&!gl)glInit(); if(k==='waves')wavesInit(); ctx.clearRect(0,0,W,H); history.replaceState(null,'','#'+k);}
+document.getElementById('bar').onclick=e=>{const b=e.target.closest('button'); if(b)set(b.dataset.k);};
+size(); set((location.hash||'#ribbons').slice(1));
+addEventListener('hashchange',()=>set(location.hash.slice(1)));
+(function loop(ms){const t=ms/1000; if(mode==='ribbons')drawRibbons(t,false); else if(mode==='ribbonsMono')drawRibbons(t,true); else if(mode==='threads')drawThreads(t); else drawWaves(ms); requestAnimationFrame(loop);})(0);
+</script></body></html>

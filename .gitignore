@@ -1,0 +1,21 @@
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+
+# local tooling caches
+.wrangler/
+.playwright-mcp/
+web/.vercel/
+node_modules/
+
+# heavy sources and working material, kept locally, not in git
+3d/
+web/storyboard/
+refs-*.jpg
+*.mp4
+*.mov
+*.blend
+
+# personal session notes
+.claude/HANDOFF.md
