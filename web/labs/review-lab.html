@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Review layouts</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1F1F21;--line:#E6E6E8}*{box-sizing:border-box;margin:0}
+body{background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;padding:48px 16px 120px}
+.wrap{width:min(860px,100%);margin:0 auto}
+h1{font-size:28px;font-weight:600} .v{margin-top:56px} .v h2{font-size:18px;font-weight:600} .v p.n{margin:6px 0 16px;font-size:15px;color:#737378}
+.sc{position:relative;width:796px;max-width:100%;height:560px;border-radius:24px;overflow:hidden;background:#141519}
+.dg-dots{position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1.3px) 0 0/20px 20px;-webkit-mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent);mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent)}
+
+/* lab · step 3 review: the employee's photo + a review card like the school lesson report (score ring, recording chapters, criteria) */
+.pane.rvp{justify-content:flex-start}
+.rv-photo{position:absolute;left:5%;top:12%;bottom:12%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;box-shadow:0 24px 48px -12px rgba(0,0,0,.6)}
+.rv-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.rv-photo::after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(180deg,rgba(20,21,25,0),rgba(20,21,25,.85))}
+.rv-who{position:absolute;left:16px;right:16px;bottom:14px;z-index:1;color:#fff}.rv-who b{display:block;font-size:16px;font-weight:600}.rv-who span{font-size:13px;color:rgba(255,255,255,.6)}
+.gcard2.rv-card{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:min(420px,54%);gap:12px}
+.rv-sum{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
+.ring{width:56px;height:56px;flex:none;transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:6}.ring .rt{stroke:rgba(255,255,255,.1)}.ring .rf{stroke:#9CDE45;stroke-linecap:round}
+.rv-st{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.rv-st .pct{font-size:22px;font-weight:600}
+.rv-st .chip{height:22px;padding:0 8px;border-radius:999px;background:rgba(156,222,69,.18);color:#C9F08F;font-size:12px;font-weight:500;line-height:22px}
+.rv-st p{flex-basis:100%;font-size:13px;color:rgba(255,255,255,.6)}
+.rv-wave{padding:10px 12px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
+.rv-wave svg{display:block;width:100%;height:30px}.rv-wave rect{fill:rgba(255,255,255,.22)}.rv-wave rect.hl{fill:#9CDE45}
+.rv-chs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.rv-chs span{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:7px;background:rgba(255,255,255,.06);font-size:12px;color:rgba(255,255,255,.7)}
+.rv-chs em{font:500 11px "JetBrains Mono",monospace;font-style:normal;color:rgba(255,255,255,.45)}
+.rv-chs span.on{background:rgba(156,222,69,.16);color:#C9F08F}.rv-chs span.on em{color:#9CDE45}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;padding:4px 2px 0}
+.rc{display:flex;align-items:center;gap:8px;font-size:13px;line-height:1.25;color:rgba(255,255,255,.85)}
+.fr{flex:none;width:40px;height:22px;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;background:rgba(156,222,69,.16);font:500 11px "JetBrains Mono",monospace;color:#C9F08F}
+.fr i{font-style:normal;color:rgba(201,240,143,.55)}
+.rc.miss{color:rgba(255,255,255,.5)}.rc.miss .fr{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}.rc.miss .fr i{color:rgba(255,255,255,.35)}
+
+/* lab · steps 3–4 in the same dark glass language as «Devices» */
+.gcard2{position:relative;width:min(440px,86%);display:flex;flex-direction:column;gap:8px;padding:22px;border-radius:22px;background:rgba(30,31,36,.92);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 24px 48px -8px rgba(0,0,0,.45);color:#fff}
+.gh2{display:flex;justify-content:space-between;align-items:baseline}
+.gh2 b{font-size:18px;font-weight:600}.gh2 span{font-size:14px;color:rgba(255,255,255,.5)}.gh2 em{font-style:normal;font-size:18px;font-weight:600;color:#9CDE45}
+.gsub{margin:-2px 0 6px;font-size:13px;color:rgba(255,255,255,.45)}
+.grow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
+.grow .gt{flex:1;font-size:15px;color:rgba(255,255,255,.95)}
+.gv{font:500 12px "JetBrains Mono",monospace;color:rgba(255,255,255,.6)}
+.ck{width:20px;height:20px;flex:none;display:grid;place-items:center;border-radius:50%;font-style:normal;font-size:11px;font-weight:700;background:#9CDE45;color:#141519}
+.ck.no{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.5)}
+.grow.miss .gt{color:rgba(255,255,255,.55)}.grow.miss .gv{color:rgba(255,255,255,.4)}
+.msg .mh{display:flex;align-items:center;gap:12px}
+.msg .lico{width:40px;height:40px;flex:none;color:#9CDE45}
+.msg .mh div{flex:1}.msg .mh b{display:block;font-size:16px;font-weight:600}.msg .mh small{font-size:13px;color:rgba(255,255,255,.45)}
+.msg .mt{margin:8px 0 4px;font-size:18px;line-height:1.5;color:rgba(255,255,255,.95)}
+.grow.ex{align-items:center}.grow.ex .gt{font-family:Inter,"IBM Plex Sans Arabic",sans-serif;font-size:16px}
+.grow.ex .gt small{display:block;margin-bottom:2px;font-family:Inter,sans-serif;font-size:12px;color:rgba(255,255,255,.45)}
+.pl{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:50%;background:#9CDE45;color:#141519;font-size:11px}
+.mf{display:flex;justify-content:space-between;padding-top:6px;font-size:12px;color:rgba(255,255,255,.45)}
+.mf .up b{font-weight:600;color:#9CDE45}
+
+/* overrides per layout */
+.gcard2.rv-card{transform:none;top:auto;right:auto}
+/* A · full-bleed photo, card in the empty half */
+.vA .sc{background:#1b1c20 var(--ph) 0% 50%/cover no-repeat}
+.vA .rv-card{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:400px}
+.vA .tag{position:absolute;left:5%;bottom:24px;color:#fff} .vA .tag b{display:block;font-size:16px} .vA .tag span{font-size:13px;color:rgba(255,255,255,.6)}
+/* B · photo and card side by side */
+.vB .rv-photo{left:5%;top:9%;bottom:9%}
+.vB .rv-card{position:absolute;left:350px;top:50%;transform:translateY(-50%);width:396px}
+.vB .rv-photo::after{display:none}
+/* C · photo lives inside the card as a profile header */
+.vC .sc{display:grid;place-items:center}
+.vC .rv-card{position:relative;width:480px}
+.prof{display:flex;align-items:center;gap:12px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:4px}
+.prof img{width:52px;height:52px;border-radius:14px;object-fit:cover;object-position:50% 20%}
+.prof div{flex:1}.prof b{display:block;font-size:16px}.prof div span{font-size:13px;color:rgba(255,255,255,.5)}
+/* D · big photo top-left, card overlaps only the apron area */
+.vD .rv-photo{left:5%;top:6%;bottom:auto;height:62%}
+.vD .rv-photo .rv-who{display:none}
+.vD .rv-card{position:absolute;right:5%;bottom:6%;width:440px}
+.vD .tag{position:absolute;left:5%;bottom:8%;color:#fff}.vD .tag b{display:block;font-size:16px}.vD .tag span{font-size:13px;color:rgba(255,255,255,.6)}
+</style></head><body><div class="wrap"><h1>Review step · layouts</h1>
+<section class="v vA"><h2>A · Photo across the whole scene</h2><p class="n">Like step 1: the portrait fills the scene, a blurred café behind Omar, the card in the darker half. Face is fully free.</p>
+  <div class="sc" id="scA" style="--ph:url(../how/omar-wide.webp?v=2)"><div class="gcard2 rv-card ">
+  <div class="gh2"><b>Conversation review</b><span>Today · 14:06</span></div>
+  <div class="rv-sum"><svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" class="rt"/><circle cx="32" cy="32" r="27" class="rf" style="stroke-dasharray:118.8 169.6"/></svg>
+    <div class="rv-st"><span class="pct">70%</span><span class="chip">Good</span><p>Warm and quick. Missed the add-on offer.</p></div></div>
+  <div class="rv-wave"><svg class="rvw" preserveAspectRatio="none"></svg><div class="rv-chs"><span><em>0:02</em>Greeting</span><span><em>0:06</em>Order</span><span class="on"><em>0:09</em>Oat milk</span></div></div>
+  <div class="rv-grid"><div class="rc"><span class="fr">2<i>/2</i></span>Greeted the guest</div><div class="rc"><span class="fr">2<i>/2</i></span>Asked what they’d like</div><div class="rc"><span class="fr">2<i>/2</i></span>Offered an alternative</div><div class="rc miss"><span class="fr">0<i>/2</i></span>Add-on offer</div><div class="rc"><span class="fr">1<i>/2</i></span>Thanked and said goodbye</div><div class="rc"><span class="fr">2<i>/2</i></span>Pace and tone</div></div>
+</div></div></section>
+<section class="v vB"><h2>B · Side by side</h2><p class="n">Portrait in the café on the left, the review card pulled close and resting on his shoulder.</p>
+  <div class="sc"><div class="dg-dots"></div><div class="rv-photo"><img src="../how/omar-portrait-cafe.webp" alt=""></div><div class="gcard2 rv-card ">
+  <div class="gh2"><b>Conversation review</b><span>Today · 14:06</span></div>
+  <div class="rv-sum"><svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" class="rt"/><circle cx="32" cy="32" r="27" class="rf" style="stroke-dasharray:118.8 169.6"/></svg>
+    <div class="rv-st"><span class="pct">70%</span><span class="chip">Good</span><p>Warm and quick. Missed the add-on offer.</p></div></div>
+  <div class="rv-wave"><svg class="rvw" preserveAspectRatio="none"></svg><div class="rv-chs"><span><em>0:02</em>Greeting</span><span><em>0:06</em>Order</span><span class="on"><em>0:09</em>Oat milk</span></div></div>
+  <div class="rv-grid"><div class="rc"><span class="fr">2<i>/2</i></span>Greeted the guest</div><div class="rc"><span class="fr">2<i>/2</i></span>Asked what they’d like</div><div class="rc"><span class="fr">2<i>/2</i></span>Offered an alternative</div><div class="rc miss"><span class="fr">0<i>/2</i></span>Add-on offer</div><div class="rc"><span class="fr">1<i>/2</i></span>Thanked and said goodbye</div><div class="rc"><span class="fr">2<i>/2</i></span>Pace and tone</div></div>
+</div></div></section>
+<section class="v vC"><h2>C · Photo inside the card</h2><p class="n">The employee is the card's header, like a profile in the product. Calmest option.</p>
+  <div class="sc"><div class="dg-dots"></div><div class="gcard2 rv-card "><div class="prof"><img src="../how/omar-portrait.webp" alt=""><div><b>Omar Haddad</b><span>Barista · Counter 2 · Dubai Mall</span></div><span class="gv">23 today</span></div>
+  <div class="gh2"><b>Conversation review</b><span>Today · 14:06</span></div>
+  <div class="rv-sum"><svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" class="rt"/><circle cx="32" cy="32" r="27" class="rf" style="stroke-dasharray:118.8 169.6"/></svg>
+    <div class="rv-st"><span class="pct">70%</span><span class="chip">Good</span><p>Warm and quick. Missed the add-on offer.</p></div></div>
+  <div class="rv-wave"><svg class="rvw" preserveAspectRatio="none"></svg><div class="rv-chs"><span><em>0:02</em>Greeting</span><span><em>0:06</em>Order</span><span class="on"><em>0:09</em>Oat milk</span></div></div>
+  <div class="rv-grid"><div class="rc"><span class="fr">2<i>/2</i></span>Greeted the guest</div><div class="rc"><span class="fr">2<i>/2</i></span>Asked what they’d like</div><div class="rc"><span class="fr">2<i>/2</i></span>Offered an alternative</div><div class="rc miss"><span class="fr">0<i>/2</i></span>Add-on offer</div><div class="rc"><span class="fr">1<i>/2</i></span>Thanked and said goodbye</div><div class="rc"><span class="fr">2<i>/2</i></span>Pace and tone</div></div>
+</div></div></section>
+<section class="v vD"><h2>D · Photo on top, card over the apron</h2><p class="n">Big portrait top-left, the card overlaps only the lower part of the photo.</p>
+  <div class="sc"><div class="dg-dots"></div><div class="rv-photo"><img src="../how/omar-portrait.webp" alt=""></div><div class="gcard2 rv-card ">
+  <div class="gh2"><b>Conversation review</b><span>Today · 14:06</span></div>
+  <div class="rv-sum"><svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" class="rt"/><circle cx="32" cy="32" r="27" class="rf" style="stroke-dasharray:118.8 169.6"/></svg>
+    <div class="rv-st"><span class="pct">70%</span><span class="chip">Good</span><p>Warm and quick. Missed the add-on offer.</p></div></div>
+  <div class="rv-wave"><svg class="rvw" preserveAspectRatio="none"></svg><div class="rv-chs"><span><em>0:02</em>Greeting</span><span><em>0:06</em>Order</span><span class="on"><em>0:09</em>Oat milk</span></div></div>
+  <div class="rv-grid"><div class="rc"><span class="fr">2<i>/2</i></span>Greeted the guest</div><div class="rc"><span class="fr">2<i>/2</i></span>Asked what they’d like</div><div class="rc"><span class="fr">2<i>/2</i></span>Offered an alternative</div><div class="rc miss"><span class="fr">0<i>/2</i></span>Add-on offer</div><div class="rc"><span class="fr">1<i>/2</i></span>Thanked and said goodbye</div><div class="rc"><span class="fr">2<i>/2</i></span>Pace and tone</div></div>
+</div></div></section>
+</div>
+<script>
+document.querySelectorAll('.rvw').forEach(sv=>{const n=90,w=900,h=30; let s=11,o='';
+  for(let i=0;i<n;i++){s=(s*9301+49297)%233280; const r=s/233280, bh=Math.max(3,(.2+.8*r)*h*(.4+.6*Math.abs(Math.sin(i/n*9)))); const bw=w/n;
+    o+=`<rect x="${(i*bw+bw*.2).toFixed(1)}" y="${((h-bh)/2).toFixed(1)}" width="${(bw*.6).toFixed(1)}" height="${bh.toFixed(1)}" rx="1.5"${i>=20&&i<30?' class="hl"':''}/>`;}
+  sv.setAttribute('viewBox',`0 0 ${w} ${h}`); sv.innerHTML=o;});
+</script></body></html>
