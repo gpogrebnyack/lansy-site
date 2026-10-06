@@ -413,9 +413,10 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .mid-cta .btns{display:flex;gap:12px;flex:none}
 @media (max-width:900px){#midCta{margin-top:72px}.mid-cta{flex-direction:column;align-items:flex-start;gap:24px;padding:28px 20px}
   .mid-cta h3{font-size:24px}}
-/* tall desktop screens: the CTA lives inside the How it works pin, at its foot (the copy after the floor hides there) */
-.how-pin .mid-cta.in-how{display:none}
-@media (min-height:1000px) and (min-width:901px){.how-pin .mid-cta.in-how{display:flex;margin-top:auto;margin-bottom:32px}#midCta{display:none}#howPin>.how{padding-bottom:56px}#howPin>*{flex-shrink:0}}
+/* desktop: the CTA follows the pin and is pulled up into its empty foot, so it rises in under the caption once the steps are
+   done; it takes no room from the scene while the steps play */
+#midCta{position:relative;z-index:1}
+@media (min-height:1000px) and (min-width:901px){#howPin>.how{padding-bottom:56px}#howPin>*{flex-shrink:0}}
 /* 05 · phones: the heading takes the full width; no subline and no arrows — the cards are swiped */
 @media (max-width:900px){.inds .cases-hd{display:block}.inds .isub,.inds .arrows{display:none}
   .inds .cases-hd h2{font-size:34px!important;text-wrap:balance}   /* three balanced lines that stay off the edges */
@@ -755,7 +756,6 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
     </div>
   </div>
 </section>
-<section class="mid-cta in-how"><h3>Start with one counter. Your team gets its first tips within days.</h3><div class="btns"><a class="btn lg dark" href="#">Start a pilot <span>→</span></a></div></section>
 </div></div></div>
 </div></div></div>
 <div class="wrap" id="midCta"><section class="mid-cta"><h3>Start with one counter. Your team gets its first tips within days.</h3><div class="btns"><a class="btn lg dark" href="#">Start a pilot <span>→</span></a></div></section></div>
@@ -992,7 +992,7 @@ const STEP_VH=.6, CLOSE_VH=.4; let howIdx=-1;
 const illRO=new ResizeObserver(es=>es.forEach(e=>e.target.querySelector('.ill').style.setProperty('--k',e.contentRect.width/600)));
 document.querySelectorAll('.scene .pane').forEach(p=>illRO.observe(p));
 function howLayout(){const pin=$('howPin'), sc=document.querySelector('.scene'), col=sc.parentElement, grid=document.querySelector('.how-grid');
-  if(howMob.matches){grid.style.gridTemplateColumns=''; sc.style.height=''; sc.style.width=''; col.style.maxWidth=''; pin.style.top=''; $('howRun').style.height=''; return;}
+  if(howMob.matches){grid.style.gridTemplateColumns=''; sc.style.height=''; sc.style.width=''; col.style.maxWidth=''; pin.style.top=''; $('howRun').style.height=''; $('midCta').style.marginTop=''; return;}
   // the scene keeps one frame, a square, so photos crop the same on every screen. If the steps and caption don't fit under the
   // top bar (or, on tall screens, the whole 100vh pin overflows), the scene shrinks as a whole instead of turning into a strip.
   // Width goes to the scene first: the steps column gives up its spare room (340 → 220px) before the scene gets any smaller
@@ -1007,18 +1007,14 @@ function howLayout(){const pin=$('howPin'), sc=document.querySelector('.scene'),
   // whatever width the scene didn't need goes back to the steps column, up to its full 340px
   const h=sc.offsetHeight, tw=Math.max(TMIN,Math.min(TMAX,GW-GAP-Math.max(h,Math.min(W,600))));
   grid.style.gridTemplateColumns=tw+'px 1fr';
-  pin.style.top=Math.min(0,innerHeight-pin.offsetHeight)+'px'; $('howRun').style.height=(pin.offsetHeight+(4*STEP_VH+CLOSE_VH)*innerHeight)+'px';}
-function howScroll(){if(howMob.matches){nextFloor().style.marginTop=''; return;}
+  pin.style.top=Math.min(0,innerHeight-pin.offsetHeight)+'px'; $('howRun').style.height=(pin.offsetHeight+(4*STEP_VH+CLOSE_VH)*innerHeight)+'px';
+  // the CTA sits 96px under the caption: pull it up over the pin's empty foot
+  $('midCta').style.marginTop=Math.round(96-(pin.getBoundingClientRect().bottom-grid.getBoundingClientRect().bottom))+'px';}
+function howScroll(){if(howMob.matches)return;
   const pin=$('howPin'), run=$('howRun'), steps=4*STEP_VH*innerHeight, scrolled=parseFloat(pin.style.top)-run.getBoundingClientRect().top;
   const p=clamp(scrolled/steps), x=Math.min(3.999,p*4), i=Math.floor(x);
   if(i!==howIdx){howIdx=i; setTab(i);}
-  document.querySelectorAll('.tab').forEach((t,k)=>t.style.setProperty('--f',k<i?0:k===i?(x-i):0));
-  const cta=document.querySelector('.mid-cta.in-how'); if(cta.offsetParent){const g=document.querySelector('.how-grid'), gap=cta.getBoundingClientRect().top-parseFloat(cta.style.transform.replace(/[^-\d.]/g,'')||0)-g.getBoundingClientRect().bottom-64, k=ease(clamp((scrolled-steps)/(CLOSE_VH*innerHeight)));
-    cta.style.transform=`translateY(${-Math.max(0,gap)*k}px)`;
-    // pull the next floor up by the same amount, so the space the CTA left behind doesn't scroll by as a hole
-    nextFloor().style.marginTop=-Math.max(0,gap)+'px';} else nextFloor().style.marginTop='';}
-// the floor right after How it works (skips hidden floors, e.g. the separate CTA when the CTA sits inside the pin)
-function nextFloor(){let t=$('howRun').nextElementSibling; while(t&&(t.hidden||getComputedStyle(t).display==='none')) t=t.nextElementSibling; return t;}
+  document.querySelectorAll('.tab').forEach((t,k)=>t.style.setProperty('--f',k<i?0:k===i?(x-i):0));}
 $('tabs').addEventListener('click',e=>{const t=e.target.closest('.tab'); if(!t)return; const run=$('howRun'), pin=$('howPin'), steps=4*STEP_VH*innerHeight;
   scrollTo({top:run.getBoundingClientRect().top+scrollY-parseFloat(pin.style.top)+steps*(+t.dataset.i+.02)/4,behavior:'instant'});});
 setTab(0); howLayout(); howScroll(); addEventListener('scroll',howScroll,{passive:true}); addEventListener('resize',()=>{howLayout(); howScroll();});
