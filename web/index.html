@@ -110,7 +110,7 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .video:hover .pp,.video.paused .pp{opacity:1;transform:none}.pp:focus{outline:none}.snd{z-index:2}.video video{cursor:pointer}
 .after{height:0}
 /* 04 how it works — Figma 20:60: centred head, tabs left, scene + caption right */
-.how{padding:72px 0 64px}
+.how{padding:72px 0 32px}
 /* pinned while the four steps play out on scroll */
 .how-run{position:relative;margin-top:88px}.how-pin{position:sticky}
 .tab{position:relative}.tab::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ink);transform-origin:left;transform:scaleX(var(--f,0))}
@@ -123,24 +123,11 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .tab.on,.tab:hover{color:var(--ink)}
 .tab:focus{outline:none}.tab:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .badge-svg{flex:none;width:auto;height:min(310px,70%)}
-.scene{position:relative;height:520px;border-radius:24px;background:#F2F2F5;overflow:hidden}
+.scene{position:relative;height:520px;overflow:hidden}
 .pane{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:110px;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s;pointer-events:none}
 .pane.on{opacity:1;transform:none;pointer-events:auto}
 .card{width:340px;background:#fff;border-radius:16px;padding:20px;box-shadow:0 12px 32px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px}
 .card.wide{width:440px}
-/* 04 · step 1 on the pendant photo (Figma «вариант А»): dark glass card, a callout to the LED */
-.pane.photo{background:#111 url(https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/how/badge.webp) 50% 50%/cover no-repeat;align-items:flex-start;justify-content:flex-start}
-.card.glass{position:absolute;left:8.2%;top:12.2%;padding:20px;border-radius:20px;background:rgba(19,19,22,.55);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 24px 48px -8px rgba(0,0,0,.45);color:#fff}
-.card.glass .card-h b{color:#fff}.card.glass .card-h span{color:rgba(255,255,255,.5)}
-.card.glass .row{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);border-radius:12px}
-.card.glass .who b{color:rgba(255,255,255,.95);font-weight:500}.card.glass .who small{color:rgba(255,255,255,.45)}
-.card.glass .val{font:500 12px 'JetBrains Mono',monospace;color:rgba(255,255,255,.8)}.card.glass .val.mute{color:rgba(255,255,255,.4)}
-.card.glass .st{background:rgba(255,255,255,.3)}.card.glass .st.rec{background:#9CDE45;box-shadow:0 0 8px 1px rgba(156,222,69,.8);animation:recPulse 1.6s ease-in-out infinite}
-@keyframes recPulse{50%{box-shadow:0 0 2px 0 rgba(156,222,69,.4)}}
-.callout{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.callout path{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1}.callout .c0{fill:rgba(255,255,255,.8)}
-.callout .c1{fill:none;stroke:#9CDE45;stroke-width:1.5}.callout .c2{fill:#9CDE45;filter:drop-shadow(0 0 5px rgba(156,222,69,.9))}
-@media (max-width:900px){.card.glass{left:16px;top:16px}.callout{display:none}}
 .card-h{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:4px}
 .card-h b{font-size:16px;font-weight:600}.card-h span{font-size:13px;color:#737378}
 .row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#F5F5F7}
@@ -454,24 +441,6 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .hero .shot{will-change:transform}
 .hero>p{animation-delay:.1s}.hero .ctas{animation-delay:.2s}.hero .shot{animation-delay:.3s}
 @media (prefers-reduced-motion:reduce){.manifesto .w{opacity:1;transform:none;transition:none}.rv,.rv.rv-in{opacity:1;animation:none}.hero h1,.hero>p,.hero .ctas,.hero .shot{animation:none}}
-/* 04 · step 2 as a dark dialogue: Gulf words in lime, a white suggester under two of them */
-.pane.dgp{background:#141519;align-items:center;justify-content:center}
-.dg-dots{position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1.3px) 0 0/20px 20px;-webkit-mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent);mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent)}
-.dg{position:relative;width:min(640px,86%);display:flex;flex-direction:column;gap:64px}
-.dr{display:flex}.dr.g{justify-content:flex-end}
-.bub{display:flex;align-items:flex-end;gap:14px}.bub.r{flex-direction:row-reverse}
-.avp{width:64px;height:64px;flex:none;display:block}
-.bt{min-width:250px;padding:12px 18px 14px;border-radius:16px;background:#212227;border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);color:#fff}
-.bub.r .bt{border-bottom-right-radius:6px;background:#26272C}.bub:not(.r) .bt{border-bottom-left-radius:6px}
-.bt small{display:flex;justify-content:space-between;gap:24px;font-size:13px;color:rgba(255,255,255,.45)}
-.bt small em{font:500 12px "JetBrains Mono",monospace;font-style:normal}
-.bt p{margin-top:4px;font-size:22px;line-height:1.45;color:rgba(255,255,255,.95);font-family:Struve,"IBM Plex Sans Arabic",sans-serif}
-.bt p[dir=rtl]{text-align:right}
-.dw{position:relative;color:#9CDE45}
-.dw.hl{padding:0 3px;border-radius:3px;background:linear-gradient(180deg,transparent 64%,rgba(156,222,69,.32) 64%)}
-.tp{position:absolute;left:50%;top:calc(100% + 16px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;background:#fff;white-space:nowrap;font:500 14px/1 Struve,sans-serif;color:var(--ink);box-shadow:0 10px 24px -8px rgba(0,0,0,.6);z-index:2}
-.tp b{font-weight:500}.tp i{font:500 10px "JetBrains Mono",monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#5C8F2C}
-.tp::after{content:"";position:absolute;left:50%;top:-3px;width:8px;height:8px;margin-left:-4px;background:#fff;transform:rotate(45deg);border-radius:1.5px}
 /* 04 · captions get a heading */
 .how-cap{min-height:160px;margin-top:32px}
 .how-cap h3{font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
@@ -486,16 +455,10 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .how-cta.dk .spinbox{display:grid;place-items:center}
 .how-cta.dk .spin{width:216px;height:216px}
 @media (max-width:900px){.how-cta.dk{grid-template-columns:1fr}.how-cta.dk .spinbox{display:none}}
-/* 04 · steps 3–4 in the same dark glass language as «Devices» */
-.gcard2{position:relative;width:min(440px,86%);display:flex;flex-direction:column;gap:8px;padding:22px;border-radius:22px;background:rgba(30,31,36,.92);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 24px 48px -8px rgba(0,0,0,.45);color:#fff}
-.gh2{display:flex;justify-content:space-between;align-items:baseline}
-.gh2 b{font-size:18px;font-weight:600}.gh2 span{font-size:14px;color:rgba(255,255,255,.5)}.gh2 em{font-style:normal;font-size:18px;font-weight:600;color:#9CDE45}
 .gsub{margin:-2px 0 6px;font-size:13px;color:rgba(255,255,255,.45)}
 .grow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
 .grow .gt{flex:1;font-size:15px;color:rgba(255,255,255,.95)}
 .gv{font:500 12px "JetBrains Mono",monospace;color:rgba(255,255,255,.6)}
-.ck{width:20px;height:20px;flex:none;display:grid;place-items:center;border-radius:50%;font-style:normal;font-size:11px;font-weight:700;background:#9CDE45;color:#141519}
-.ck.no{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.5)}
 .grow.miss .gt{color:rgba(255,255,255,.55)}.grow.miss .gv{color:rgba(255,255,255,.4)}
 .msg .mh{display:flex;align-items:center;gap:12px}
 .msg .lico{width:40px;height:40px;flex:none;color:#9CDE45}
@@ -513,63 +476,125 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .how-cta.dk.lime .btn.dark{background:#141519;color:#fff}.how-cta.dk.lime .btn.dark:hover{background:#2A2B30}
 .how-cta.dk.lime .btn.ghost{color:#141519;border-color:rgba(20,21,25,.25)}.how-cta.dk.lime .btn.ghost:hover{background:rgba(20,21,25,.06)}
 .how-cta.dk.lime .spin{width:198px;height:198px;filter:drop-shadow(0 18px 22px rgba(58,130,0,.45))}
-/* 04 · step 3 review: the employee's photo + a review card like the school lesson report (score ring, recording chapters, criteria) */
-.pane.rvp{justify-content:flex-start}
-.rv-photo{position:absolute;left:5%;top:12%;bottom:12%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;box-shadow:0 24px 48px -12px rgba(0,0,0,.6)}
-.rv-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.rv-photo::after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(180deg,rgba(20,21,25,0),rgba(20,21,25,.85))}
-.rv-who{position:absolute;left:16px;right:16px;bottom:14px;z-index:1;color:#fff}.rv-who b{display:block;font-size:16px;font-weight:600}.rv-who span{font-size:13px;color:rgba(255,255,255,.6)}
-.gcard2.rv-card{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:min(420px,54%);gap:12px}
-.rv-sum{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
-.ring{width:56px;height:56px;flex:none;transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:6}.ring .rt{stroke:rgba(255,255,255,.1)}.ring .rf{stroke:#9CDE45;stroke-linecap:round}
-.rv-st{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.rv-st .pct{font-size:22px;font-weight:600}
-.rv-st .chip{height:22px;padding:0 8px;border-radius:999px;background:rgba(156,222,69,.18);color:#C9F08F;font-size:12px;font-weight:500;line-height:22px}
-.rv-st p{flex-basis:100%;font-size:13px;color:rgba(255,255,255,.6)}
-.rv-wave{padding:10px 12px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
-.rv-wave svg{display:block;width:100%;height:30px}.rv-wave rect{fill:rgba(255,255,255,.22)}.rv-wave rect.hl{fill:#9CDE45}
-.rv-chs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.rv-chs span{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:7px;background:rgba(255,255,255,.06);font-size:12px;color:rgba(255,255,255,.7)}
-.rv-chs em{font:500 11px "JetBrains Mono",monospace;font-style:normal;color:rgba(255,255,255,.45)}
-.rv-chs span.on{background:rgba(156,222,69,.16);color:#C9F08F}.rv-chs span.on em{color:#9CDE45}
-.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;padding:4px 2px 0}
-.rc{display:flex;align-items:center;gap:8px;font-size:13px;line-height:1.25;color:rgba(255,255,255,.85)}
-.fr{flex:none;width:40px;height:22px;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;background:rgba(156,222,69,.16);font:500 11px "JetBrains Mono",monospace;color:#C9F08F}
-.fr i{font-style:normal;color:rgba(201,240,143,.55)}
-.rc.miss{color:rgba(255,255,255,.5)}.rc.miss .fr{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}.rc.miss .fr i{color:rgba(255,255,255,.35)}
-/* 04 · review layout B: café portrait on the left, the card pulled in and resting on his shoulder */
-.rvb{position:absolute;inset:7% 5%;display:flex;align-items:center}
-.rvb .rv-photo{position:relative;left:auto;top:auto;bottom:auto;align-self:center;translate:0 var(--pdy,0px);width:52%;height:auto;max-height:100%;aspect-ratio:3/4;flex:none}
-.rvb .rv-photo::after{display:none}
-.rvb .gcard2.rv-card{position:relative;right:auto;top:auto;transform:none;width:min(396px,56%);flex:none;margin-left:-56px;align-self:center;translate:0 var(--cdy,0px);z-index:1}
-/* 04 · step 4 advise: a messenger thread — Lansy sends the tip and a clip from the shift, Omar replies */
-.dg.adv{gap:14px}
-.dg.adv .dr.g{margin-top:34px}
-.avp.lav{width:60px;height:60px;margin:0 2px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
-.avp.gap{visibility:hidden}
-.dg.adv .bt p{font-size:20px}
-.dg.adv .bub:not(.r) .bt{max-width:470px}
-.bt.clip{display:flex;align-items:center;gap:14px;min-width:330px}
 .cp{width:40px;height:40px;flex:none;border:0;border-radius:50%;background:#9CDE45;color:#141519;font-size:13px;cursor:pointer}
 .cw{flex:1}.cw svg{display:block;width:100%;height:30px}.cw rect{fill:rgba(255,255,255,.3)}.cw rect.hl{fill:#9CDE45}
 .cw small{margin-top:6px}
-/* 04 · step 4 v2: AI assistant thread — Omar asks, the assistant answers with an analysis-based tip */
-.dg.adv{gap:40px}.dg.adv .dr.g{margin-top:0}
-.aiav{width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:50%;background:#9CDE45}.aiav svg{width:40px;height:40px}
-.bt.ai{width:min(520px,100%);display:flex;flex-direction:column;gap:12px;padding-bottom:16px}
-.bt.ai .lead{margin-top:2px;font-size:20px}
-.bt.ai .sec{padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
-.bt.ai .sec p{margin-top:4px;font-size:16px;line-height:1.45;color:rgba(255,255,255,.85)}
-.bt.ai .k{display:inline-flex;align-items:center;gap:6px;font:500 10px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45)}
-.bt.ai .k::before{content:"";width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
-.bt.ai .k.try{color:#C9F08F}.bt.ai .k.try::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
-.bt.ai .say{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(156,222,69,.1);border-left:2px solid #9CDE45;font-size:16px;line-height:1.45;color:#fff}
-.bt.ai .src{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:rgba(255,255,255,.4)}.bt.ai .src span{color:#C9F08F}
 /* 04 · the CTA never shrinks inside the 100vh pin, and stays compact so short screens keep the scene */
 .how-cta.dk{flex:none}
 .how-cta.dk .txt{padding:32px 40px;gap:20px}
 .how-cta.dk h3{font-size:26px}
 .how-cta.dk.lime .spin{width:170px;height:170px}
+/* 04 · step illustrations (from labs/steps-lab.html): each step is drawn on one 600×600 canvas and scaled to its square pane,
+   so the frame, proportions and visual weight match on every screen. Type scale: 22 titles, numbers, dialogue · 18 body · 15 meta · 12 mono */
+.scene .pane{background:#141519;
+  /* smooth (superellipse) corners like iOS icons: a 9-slice mask keeps the corner curve and stretches the edges */
+  -webkit-mask-box-image:url(how/squircle.svg?v=2) 40 fill / var(--sq,54px) stretch;mask-border:url(how/squircle.svg?v=2) 40 fill / var(--sq,54px) stretch}
+.scene .score,.scene .score b{color:inherit}   /* global .score / .score b (metric cards) would recolour the review score */
+.scene .ill{position:absolute;left:0;top:0;width:600px;height:600px;transform-origin:0 0;transform:scale(var(--k,1))}
+.scene .dots{position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.3px) 0 0/24px 24px;-webkit-mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent);mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent)}
+.scene .ctr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+
+/* type scale, the same on all four steps: 22 titles, numbers and dialogue lines · 18 body · 15 meta · 12 mono labels */
+/* shared card: same surface, radius, padding and type scale on steps 3 and 4 */
+.scene .ui{position:relative;width:500px;border-radius:24px;background:#1E1F24;border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 30px 60px -16px rgba(0,0,0,.6);color:#fff;overflow:hidden}
+.scene .ui .bd{padding:22px 26px 24px;display:flex;flex-direction:column;gap:16px}
+.scene .k{display:inline-flex;align-items:center;gap:8px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.scene .k::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35)}
+.scene .k.on{color:#C9F08F}.scene .k.on::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
+.scene .hr{height:1px;background:rgba(255,255,255,.08)}
+
+/* 1 · Record: Omar in a black turtleneck and apron, the pendant on its chain (how/badge-omar.webp, crop zoom 1.20 · x −24 · y −115 baked in; LED at 53% / 53.2%), one quiet recording pill tied to the LED */
+.scene .s1 .ill{background:#111 url(how/badge-omar.webp) 0 0/600px 600px no-repeat}
+.scene .rec{position:absolute;right:327px;top:293px;display:flex;align-items:center;gap:12px;height:52px;padding:0 20px 0 18px;border-radius:999px;background:rgba(19,19,22,.55);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 18px 36px -10px rgba(0,0,0,.5);color:#fff;font-size:18px;font-weight:500}
+.scene .rec .dot{width:10px;height:10px;border-radius:50%;background:#9CDE45;box-shadow:0 0 10px 2px rgba(156,222,69,.75);animation:recDot 1.6s ease-in-out infinite}
+@keyframes recDot{50%{box-shadow:0 0 2px 0 rgba(156,222,69,.4)}}
+.scene .rec .bars{display:flex;align-items:center;gap:3px;height:20px}.scene .rec .bars i{width:3px;border-radius:2px;background:rgba(255,255,255,.8);animation:recBar 1.1s ease-in-out infinite}
+.scene .rec .bars i:nth-child(2){animation-delay:-.3s}.scene .rec .bars i:nth-child(3){animation-delay:-.6s}.scene .rec .bars i:nth-child(4){animation-delay:-.15s}.scene .rec .bars i:nth-child(5){animation-delay:-.45s}
+@keyframes recBar{0%,100%{height:5px}50%{height:18px}}
+.scene .rec time{font:500 15px "JetBrains Mono",monospace;color:rgba(255,255,255,.6)}
+.scene .lead{position:absolute;inset:0;pointer-events:none}.scene .lead path{fill:none;stroke:rgba(255,255,255,.5);stroke-width:1.2}
+.scene .lead .c1{fill:none;stroke:#9CDE45;stroke-width:1.5}.scene .lead .c2{fill:#9CDE45;filter:drop-shadow(0 0 5px rgba(156,222,69,.9))}
+
+/* 2 · Transcribe: the dialogue as it is now */
+.scene .dg{width:520px;display:flex;flex-direction:column;gap:60px}
+.scene .dr{display:flex}.scene .dr.g{justify-content:flex-end}
+.scene .bub{display:flex;align-items:flex-end;gap:14px}.scene .bub.r{flex-direction:row-reverse}
+.scene .avp{width:64px;height:64px;flex:none;display:block}
+.scene .bt{min-width:250px;padding:12px 18px 14px;border-radius:16px;background:#212227;border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);color:#fff}
+.scene .bub.r .bt{border-bottom-right-radius:6px;background:#26272C}.scene .bub:not(.r) .bt{border-bottom-left-radius:6px}
+.scene .bt small{display:flex;justify-content:space-between;gap:24px;font-size:15px;color:rgba(255,255,255,.45)}
+.scene .bt small em{font:500 12px "JetBrains Mono",monospace;font-style:normal}
+.scene .bt p{margin-top:4px;font-size:22px;line-height:1.45;color:rgba(255,255,255,.95);font-family:Struve,"IBM Plex Sans Arabic",sans-serif}
+.scene .bt p[dir=rtl]{text-align:right}
+.scene .dw{position:relative;color:#9CDE45}
+.scene .dw.hl{padding:0 3px;border-radius:3px;background:linear-gradient(180deg,transparent 64%,rgba(156,222,69,.32) 64%)}
+.scene .tp{position:absolute;left:50%;top:calc(100% + 16px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;background:#fff;white-space:nowrap;font:500 15px/1 Struve,sans-serif;color:#1F1F21;box-shadow:0 10px 24px -8px rgba(0,0,0,.6);z-index:2}
+.scene .tp b{font-weight:500}.scene .tp i{font:500 12px "JetBrains Mono",monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#5C8F2C}
+.scene .tp::after{content:"";position:absolute;left:50%;top:-3px;width:8px;height:8px;margin-left:-4px;background:#fff;transform:rotate(45deg);border-radius:1.5px}
+
+/* 3 · Review: a portrait header, one big number, three checks — the miss is the only other accent */
+.scene .ui.rvc{width:420px;overflow:visible}
+/* Omar stands in a green panel inside the card; the panel clips his sides and bottom, his head rises above the card */
+.scene .rvc .stage{position:relative;height:196px;border-radius:16px;background:#1A1817;color:#fff}   /* text on the photo stays white in both themes */
+/* café behind Omar: darkened and softened so it reads as a place, not as detail */
+.scene .rvc .stage .bg{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+.scene .rvc .stage .bg::before{content:"";position:absolute;inset:-8px;background:url(how/cafe-bg.webp) 30% 40%/cover no-repeat;filter:blur(3px) brightness(.5) saturate(.85)}
+.scene .rvc .stage .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,18,20,.55),rgba(18,18,20,0) 65%)}
+.scene .rvc .stage .fig{position:absolute;inset:0;clip-path:inset(-200px 0 0 0 round 0 0 16px 16px)}
+.scene .rvc .stage .fig img{position:absolute;right:-4px;bottom:-56px;width:240px;display:block;filter:drop-shadow(0 8px 16px rgba(0,0,0,.35))}
+.scene .rvc .stage .who{position:absolute;left:20px;bottom:16px;z-index:1}
+.scene .rvc .stage .who b{display:block;font-size:22px;font-weight:600}.scene .rvc .stage .who span{font-size:15px;color:rgba(255,255,255,.7)}
+.scene .rvc .stage .score{position:absolute;left:18px;top:16px;z-index:1;display:flex;align-items:center;gap:12px}
+.scene .gauge{position:relative;width:76px;height:76px}
+.scene .gauge svg{width:100%;height:100%;transform:rotate(-90deg)}.scene .gauge circle{fill:none;stroke-width:6}.scene .gauge .rt{stroke:rgba(255,255,255,.18)}.scene .gauge .rf{stroke:#9CDE45;stroke-linecap:round}
+.scene .rvc .gauge b{position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:600;letter-spacing:-.01em}
+.scene .rvc .stage .score .chip{transform:none}
+.scene .rvc .bd{padding-top:24px}
+.scene .score{display:flex;align-items:baseline;gap:12px}
+.scene .score b{font-size:44px;font-weight:600;line-height:1;letter-spacing:-.02em}
+.scene .score .chip{height:26px;padding:0 11px;border-radius:999px;background:rgba(156,222,69,.18);color:#C9F08F;font-size:15px;font-weight:500;line-height:26px;transform:translateY(-6px)}
+.scene .checks{display:flex;flex-direction:column;gap:12px}
+.scene .ck{display:flex;align-items:center;gap:12px;font-size:18px;color:rgba(255,255,255,.9)}
+.scene .ck i{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(156,222,69,.16);color:#9CDE45}
+.scene .ck i svg{width:14px;height:14px}
+.scene .ck.miss{color:#fff}.scene .ck.miss i{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+.scene .ck.miss em{margin-left:auto;font:500 12px "JetBrains Mono",monospace;font-style:normal;color:rgba(255,255,255,.45)}
+
+/* 4 · Advise: one block of recommendations, no chat; same width as the review */
+.scene .ui.adv{width:420px}
+.scene .ah{display:flex;align-items:center;gap:14px}
+.scene .ico3d{width:52px;height:52px;flex:none;margin:-4px -2px -4px -4px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}   /* the 3D Lansy icon, a still with alpha */
+.scene .ah b{display:block;font-size:22px;font-weight:600}.scene .ah span{font-size:15px;color:rgba(255,255,255,.5)}
+.scene .tip p{margin-top:8px;font-size:18px;line-height:1.45;color:rgba(255,255,255,.9)}
+.scene .tip p em{font-style:normal;color:#C9F08F}
+.scene .say{margin-top:12px;padding:12px 16px;border-radius:12px;background:rgba(156,222,69,.1);border-left:2px solid #9CDE45;font-size:18px;line-height:1.45;color:#fff}
+.scene .src{display:flex;justify-content:space-between;font-size:14px;color:rgba(255,255,255,.4)}.scene .src span{color:#C9F08F}
+
+/* Omar's avatar in step 2, built from layers: green circle, the cutout clipped to the circle below its middle and free above */
+.scene .avo{position:relative;width:64px;height:64px;flex:none}
+.scene .avo::before{content:"";position:absolute;inset:0;border-radius:50%;background:#33694F}
+.scene .avo .clip{position:absolute;inset:0;clip-path:path("M0 32 A32 32 0 0 0 64 32 L64 -200 L0 -200 Z")}
+.scene .avo img{position:absolute;left:-10px;top:-6px;width:88px;display:block}
+/* 04 · CTA under the steps is parked for now (it squeezed the scene on tall screens) */
+.how-cta.dk.lime{display:none!important}
+/* 04 · phones: no pin, no tabs — the four steps stack, each with a label, its picture and its own caption (built in JS) */
+.pane-k,.pane-cap{display:none}
+@media (max-width:900px){
+  .how-run{height:auto!important;margin-top:88px}
+  .how-pin{position:static;top:auto!important;height:auto!important;display:block}
+  .how-head h2 br{display:none}.how-head h2{text-wrap:balance}
+  .tabs,#howCap{display:none}
+  .how-grid{margin-top:40px;gap:0}.how-grid>*{min-width:0}
+  .scene{height:auto!important;background:none;overflow:visible;border-radius:0;display:flex;flex-direction:column}
+  .scene .pane{--sq:46px;position:relative;inset:auto;min-width:0;aspect-ratio:1;border-radius:0;overflow:hidden;pointer-events:auto}
+  .pane-k{display:block;margin-bottom:8px;font:500 12px/1.6 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+  .pane-cap{display:block;margin:20px 0 64px}.pane-cap:last-child{margin-bottom:0}
+  .pane-cap h3{font-size:24px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
+  .pane-cap p{margin-top:8px;font-size:17px;line-height:1.55;color:#737378}.pane-cap b{font-weight:inherit;color:inherit}
+  .scene>*{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+  .scene>.in{opacity:1;transform:none}
+}
+@media (max-width:900px) and (prefers-reduced-motion:reduce){.scene>*{opacity:1;transform:none;transition:none}}
 /* language switch: shadcn Dropdown Menu (radio group) rebuilt in plain HTML — a short EN / AR trigger, a small menu below it */
 .lang-dd{position:relative;display:inline-flex}
 .lang-t{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 8px;margin:0 -8px;border:0;border-radius:8px;background:none;color:inherit;font:inherit;cursor:pointer;transition:background .15s}
@@ -589,14 +614,14 @@ html[dir=rtl] .lang-m{transform-origin:top left}
    Struve has no Arabic, so Arabic glyphs fall through to --arf; Latin words (Lansy, CRM) keep Struve */
 html.i18n-wait body{visibility:hidden}
 html[lang=ar]{--arf:'IBM Plex Sans Arabic'}
-html[lang=ar] :not(.scene *):not(.il *):not(.shot *):not(.tiles *):not(.rdev *):not(svg *){font-family:Struve,var(--arf),system-ui,sans-serif;letter-spacing:0 !important;text-transform:none}
+html[lang=ar] :not(.pane *):not(.il *):not(.shot *):not(.tiles *):not(.rdev *):not(svg *){font-family:Struve,var(--arf),system-ui,sans-serif;letter-spacing:0 !important;text-transform:none}
 html[lang=ar] .case .clogo.sayori{text-transform:uppercase}
 html[lang=ar] .hero h1{line-height:1.3}
-html[lang=ar] :is(h2,h3,.manifesto):not(.scene *):not(.il *){line-height:1.4 !important}
-html[lang=ar] :is(p,blockquote,.ind p):not(.scene *):not(.il *){line-height:1.65}
+html[lang=ar] :is(h2,h3,.manifesto):not(.pane *):not(.il *){line-height:1.4 !important}
+html[lang=ar] :is(p,blockquote,.ind p):not(.pane *):not(.il *){line-height:1.65}
 html[lang=ar] .lbl{font-size:14px;font-weight:500}
-html[lang=ar] :is(h2,h3):not(.scene *):not(.il *){text-wrap:balance}
-html[dir=rtl] :is(.scene,.il,.shot,.tiles,.rdev,#rlogos){direction:ltr}
+html[lang=ar] :is(h2,h3):not(.pane *):not(.il *){text-wrap:balance}
+html[dir=rtl] :is(.pane,.il,.shot,.tiles,.rdev,#rlogos){direction:ltr}
 html[dir=rtl] .shot{margin-left:0;margin-right:calc((100% - var(--w))/2)}
 html[dir=rtl] .scrib{margin:-.25em 0 -.25em .04em}
 html[dir=rtl] :is(.tab,.qa button){text-align:right}
@@ -644,7 +669,7 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
   <button class="snd" id="snd" aria-label="Turn sound on"></button>
 </section>
 <div class="how-run" id="howRun"><div class="wrap how-pin" id="howPin"><section class="how" id="how">
-  <div class="how-head"><div class="lbl">How it works</div><h2>From a hello at the counter<br>to a tip after the shift</h2></div>
+  <div class="how-head"><div class="lbl">How it works</div><h2>From a hello at the counter <br>to a tip after the shift</h2></div>
   <div class="how-grid">
     <div class="tabs" id="tabs">
       <button class="tab on" data-i="0"><b>1</b><span>Record</span><i>›</i></button>
@@ -654,41 +679,37 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
     </div>
     <div>
       <div class="scene">
-        <div class="pane on photo"><svg class="callout" id="callout" aria-hidden="true"><path/><circle class="c0" r="2.5"/><circle class="c1" r="7"/><circle class="c2" r="3"/></svg>
-          <div class="card glass" id="devCard"><div class="card-h"><b>Devices</b><span>2 of 3 recording</span></div>
-            <div class="row"><i class="st rec"></i><div class="who"><b>Badge · Omar</b><small>Barista</small></div><span class="val">REC&nbsp;&nbsp;2h 14m</span></div>
-            <div class="row"><i class="st"></i><div class="who"><b>Badge · Fatima</b><small>Barista</small></div><span class="val mute">ON BREAK</span></div>
-            <div class="row"><i class="st rec"></i><div class="who"><b>Counter mic</b><small>Front desk</small></div><span class="val">REC&nbsp;&nbsp;5h 02m</span></div>
-          </div></div>
-        <div class="pane dgp"><div class="dg-dots"></div>
-          <div class="dg">
-            <div class="dr g"><div class="bub r"><img class="avp" src="how/av-guest-pop.webp?v=3" alt=""><div class="bt"><small>Guest<em>0:04</em></small><p dir="rtl" lang="ar"><span class="dw">شلونك</span>؟ القهوة اليوم <span class="dw hl">وايد<span class="tp" dir="ltr"><b>very</b><i>Gulf</i></span></span> زينة</p></div></div></div>
-            <div class="dr b"><div class="bub"><img class="avp" src="how/av-barista-pop.webp?v=3" alt=""><div class="bt"><small>Barista<em>0:06</em></small><p dir="ltr">All good! <span lang="ar" dir="rtl"><span class="dw hl">تبي<span class="tp" dir="ltr"><b>do you want</b><i>Gulf</i></span></span> نفس الطلب؟</span></p></div></div></div>
-            <div class="dr g"><div class="bub r"><img class="avp" src="how/av-guest-pop.webp?v=3" alt=""><div class="bt"><small>Guest<em>0:09</em></small><p dir="rtl"><span lang="ar">إي، بس <span class="dw">خله</span></span> <span dir="ltr">oat milk</span></p></div></div></div>
-          </div></div>
-        <div class="pane dgp rvp"><div class="dg-dots"></div>
-          <div class="rvb"><div class="rv-photo"><img src="how/omar-portrait-cafe.webp" alt=""></div>
-          <div class="gcard2 rv-card">
-            <div class="gh2"><b>Conversation review</b><span>Today · 14:06</span></div>
-            <div class="rv-sum">
-              <svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" class="rt"/><circle cx="32" cy="32" r="27" class="rf" style="stroke-dasharray:118.8 169.6"/></svg>
-              <div class="rv-st"><span class="pct">70%</span><span class="chip">Good</span><p>Warm and quick. Missed the add-on offer.</p></div>
-            </div>
-            <div class="rv-wave"><svg id="rvw" preserveAspectRatio="none"></svg>
-              <div class="rv-chs"><span><em>0:02</em>Greeting</span><span><em>0:06</em>Order</span><span class="on"><em>0:09</em>Oat milk</span></div></div>
-            <div class="rv-grid"><div class="rc"><span class="fr">2<i>/2</i></span>Greeted the guest</div><div class="rc"><span class="fr">2<i>/2</i></span>Asked what they’d like</div><div class="rc"><span class="fr">2<i>/2</i></span>Handled the oat milk request</div><div class="rc miss"><span class="fr">0<i>/2</i></span>Add-on offer</div><div class="rc"><span class="fr">1<i>/2</i></span>Thanked and said goodbye</div><div class="rc"><span class="fr">2<i>/2</i></span>Pace and tone</div></div>
-          </div></div></div>
-        <div class="pane dgp"><div class="dg-dots"></div>
-          <div class="dg adv">
-            <div class="dr g"><div class="bub r"><img class="avp" src="how/av-barista-pop.webp?v=3" alt=""><div class="bt"><small>Omar<em>18:02</em></small><p>How did my shift go? What should I work on?</p></div></div></div>
-            <div class="dr b"><div class="bub"><span class="aiav"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M78.0732 32.8895L81.3308 34.3135C75.19 48.3551 71.8524 61.6415 71.8524 69.3343C71.8524 73.4207 73.1164 75.4431 74.3772 76.5151C75.75 77.6799 77.7084 78.2239 79.8524 78.2239C82.39 78.2239 84.0348 77.8047 85.5324 77.0143C87.1516 76.1631 88.8124 74.7743 91.2572 72.4095C94.182 69.5871 98.6908 69.0271 102.211 71.2287L104.23 72.4895C106.723 74.0479 107.507 77.3663 105.884 79.8783C92.4252 100.729 75.046 113.779 56.7388 113.779C45.5516 113.779 36.4604 109.593 30.2652 101.632C24.1692 93.7919 21.1836 82.6943 21.1836 69.3343C21.1836 60.3263 22.166 51.5583 28.5148 34.3263L31.8492 35.5583L35.1868 36.7871C29.0908 53.3343 28.294 61.2703 28.294 69.3343C28.294 81.7535 31.0876 91.1007 35.8812 97.2639C40.5756 103.299 47.4844 106.669 56.7388 106.669C71.1388 106.669 86.214 96.5407 98.9052 77.5487L98.4412 77.2575C97.7628 76.8319 96.838 76.9119 96.2012 77.5263C93.7148 79.9263 91.4332 81.9455 88.8444 83.3087C86.134 84.7327 83.3052 85.3343 79.8524 85.3343C76.662 85.3343 72.8444 84.5471 69.7724 81.9327C66.5884 79.2287 64.742 75.0271 64.742 69.3343C64.742 60.2111 68.5148 45.8719 74.8156 31.4655L78.0732 32.8895ZM69.1836 17.7791L72.3964 19.2991C64.5212 35.9263 59.2924 52.5119 56.6844 67.2863L49.6828 66.0511C52.4092 50.6015 57.8428 33.4111 65.9676 16.2559L69.1836 17.7791ZM56.406 21.0591C50.3228 34.0959 45.9676 48.0223 43.2028 63.4047L36.2044 62.1471C39.0684 46.2047 43.6028 31.6831 49.9644 18.0511L56.406 21.0591Z" fill="#141519"/></svg></span><div class="bt ai"><small>Lansy assistant<em>18:02</em></small>
-              <p class="lead">Good shift — 23 conversations.</p>
-              <div class="sec"><span class="k">Went well</span><p>Milk-free requests: you handled every one without a pause — 4 out of 4.</p></div>
-              <div class="sec"><span class="k try">Try tomorrow</span><p>Suggest a pastry with the coffee. You skipped it in 9 of 11 orders.</p>
-                <div class="say">“Would you like a croissant with that? They’re fresh out of the oven.”</div></div>
-              <div class="src">Based on 23 conversations · 14:00–18:00<span>Show examples →</span></div>
-            </div></div></div>
-          </div></div>
+  <div class="pane on s1"><div class="ill">
+    <svg class="lead" viewBox="0 0 600 600"><path d="M275 319 H311"/><circle class="c1" cx="318" cy="319" r="7"/><circle class="c2" cx="318" cy="319" r="3"/></svg>
+    <div class="rec"><span class="dot"></span>Recording<span class="bars"><i></i><i></i><i></i><i></i><i></i></span></div>
+  </div></div>
+
+  <div class="pane"><div class="ill"><div class="dots"></div><div class="ctr">
+    <div class="dg">
+      <div class="dr g"><div class="bub r"><img class="avp" src="how/av-guest-pop.webp?v=3" alt=""><div class="bt"><small>Guest<em>0:04</em></small><p dir="rtl" lang="ar"><span class="dw">شلونك</span>؟ القهوة اليوم <span class="dw hl">وايد<span class="tp" dir="ltr"><b>very</b><i>Gulf</i></span></span> زينة</p></div></div></div>
+      <div class="dr b"><div class="bub"><span class="avo"><span class="clip"><img src="how/omar-cut.webp" alt=""></span></span><div class="bt"><small>Barista<em>0:06</em></small><p dir="ltr">All good! <span lang="ar" dir="rtl"><span class="dw hl">تبي<span class="tp" dir="ltr"><b>do you want</b><i>Gulf</i></span></span> نفس الطلب؟</span></p></div></div></div>
+      <div class="dr g"><div class="bub r"><img class="avp" src="how/av-guest-pop.webp?v=3" alt=""><div class="bt"><small>Guest<em>0:09</em></small><p dir="rtl"><span lang="ar">إي، بس <span class="dw">خله</span></span> <span dir="ltr">oat milk</span></p></div></div></div>
+    </div></div>
+  </div></div>
+
+  <div class="pane"><div class="ill"><div class="dots"></div><div class="ctr">
+    <div class="ui rvc">
+      <div class="bd">
+        <div class="stage"><div class="bg"></div><div class="score"><span class="gauge"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" class="rt"/><circle cx="32" cy="32" r="28" class="rf" style="stroke-dasharray:123.2 176"/></svg><b>70%</b></span></div><div class="fig"><img src="how/omar-cut.webp" alt=""></div><div class="who"><b>Omar · Barista</b><span>Today · 14:06</span></div></div>
+        <div class="checks"><div class="ck"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Greeted the guest</div><div class="ck"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Handled the oat milk request</div><div class="ck miss"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg></i>Add-on offer<em>▶ 0:12</em></div></div>
+      </div></div></div>
+  </div></div>
+
+  <div class="pane"><div class="ill"><div class="dots"></div><div class="ctr">
+    <div class="ui adv"><div class="bd">
+      <div class="ah"><img class="ico3d" src="how/lansy-icon.webp?v=2" alt="">
+        <b>Tips after your shift</b></div>
+      <div class="hr"></div>
+      <div class="tip"><span class="k">Went well</span><p>Every guest who asked for milk-free got oat or almond offered — <em>4 of 4</em>.</p></div>
+      <div class="tip"><span class="k on">Try tomorrow</span><p>Offer a pastry with the coffee — you skipped it in <em>9 of 11</em> orders. When you did offer, <em>1 in 2</em> guests said yes.</p>
+        <div class="say">“Would you like a croissant with that? They’re fresh out of the oven.”</div></div>
+    </div></div></div>
+  </div></div>
       </div>
       <div class="how-cap" id="howCap"></div>
     </div>
@@ -795,6 +816,7 @@ const ROWS=["0000000000000000000000000001001110011111110111111111111111111111000
 const $=id=>document.getElementById(id);
 // language: Arabic flips to RTL; the switch in the top bar always offers the other language
 const AR=window.I18N_AR||null, RTL=document.documentElement.dir==='rtl';
+const howMob=matchMedia('(max-width:900px)');   // How it works: phones stack the steps instead of pinning
 // language menu (shadcn Dropdown Menu behaviour): click or Enter opens, arrows move, Esc / outside click closes
 (()=>{const dd=$('langDd'), t=dd.querySelector('.lang-t'), items=[...dd.querySelectorAll('.lang-m a')];
   t.querySelector('span').textContent=AR?'AR':'EN'; items.forEach(a=>a.setAttribute('aria-checked',String(a.dataset.l===(AR?'ar':'en'))));
@@ -911,36 +933,34 @@ const CAPS=AR?AR.CAPS:['A <b>counter mic</b> records conversations at the front 
  'Every conversation becomes <b>a transcript with roles</b> — even when several people talk at once. Lansy is tuned on <b>real Gulf conversations</b>: it keeps dialect words instead of “correcting” them into textbook Arabic, and follows guests who <b>switch between Arabic and English</b> mid-sentence. Phone and card numbers <b>are masked</b>.',
  'Lansy checks each conversation against <b>your service standards</b> — greeting, questions, offers, goodbye — and against <b>the metric you chose</b> for your business. Managers see <b>what went well and what was missed</b>, conversation by conversation and across locations, and can open any moment to hear how it actually sounded.',
  'After the shift each employee gets <b>a personal tip</b> based on their own conversations — what to keep doing, one thing to try next time and a phrase to use with guests. Any follow-up question goes to <b>the assistant</b>, right in the messenger they already use, and progress shows week by week. <b>Mentorship, not surveillance.</b>'];
-// 04 · step 1: the pendant photo is cropped like the Figma frame — the LED sits at about 62% / 52% of the scene and the
-// pendant runs off the bottom. On shorter scenes the LED moves up just enough to keep it in view. The callout runs from
-// the card's right edge (level with its header) to the top-left of the LED arc.
-function drawCallout(){const sc=document.querySelector('.scene'), pane=document.querySelector('.pane.photo'), c=$('devCard'), sv=$('callout'); if(!sc||!pane||!c||!sv)return;
-  const s=sc.getBoundingClientRect(), r=c.getBoundingClientRect(); if(!s.width)return;
-  const w=s.width, h=s.height, side=1.24*Math.max(w,h);
-  const lx=.62*w, ly=Math.min(.522*h,Math.max(.12*side,.42*h));            // where the LED centre goes
-  const ox=Math.min(0,Math.max(w-side,lx-.494*side)), oy=Math.min(0,Math.max(h-side,ly-.556*side));
-  pane.style.backgroundSize=side+'px '+side+'px'; pane.style.backgroundPosition=ox+'px '+oy+'px';
-  const x0=r.right-s.left, y0=r.top-s.top+44, bx=ox+.481*side, by=oy+.549*side;
-  sv.setAttribute('viewBox',`0 0 ${w} ${h}`);
-  sv.querySelector('path').setAttribute('d',`M${x0} ${y0} H${x0+92} L${bx} ${by}`);
-  const set=(el,x,y)=>{el.setAttribute('cx',x); el.setAttribute('cy',y);};
-  set(sv.querySelector('.c0'),x0,y0); set(sv.querySelector('.c1'),bx,by); set(sv.querySelector('.c2'),bx,by);}
-addEventListener('resize',drawCallout); new ResizeObserver(drawCallout).observe(document.querySelector('.scene'));
 function setTab(i){document.querySelectorAll('.tab').forEach((t,k)=>t.classList.toggle('on',k===i)); document.querySelectorAll('.pane').forEach((p,k)=>p.classList.toggle('on',k===i)); $('howCap').innerHTML='<h3>'+TITLES[i]+'</h3><p>'+CAPS[i]+'</p>';}
 // scroll drives the steps: the floor pins, each step gets an equal share of the run; the active tab's underline fills as you go
 const STEP_VH=.6, CLOSE_VH=.4; let howIdx=-1;
+// phones (≤900px): the steps stack instead of switching on scroll. Each pane gets its caption below, the step label on top of it;
+// they rise in as they enter the screen. On wider screens these extra nodes stay hidden
+(()=>{const names=[...document.querySelectorAll('.tab span')].map(s=>s.textContent), io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting||e.boundingClientRect.top<0){e.target.classList.add('in'); io.unobserve(e.target);}}),{rootMargin:'0px 0px -10% 0px'});   // jumped past counts as seen
+  document.querySelectorAll('.scene .pane').forEach((p,i)=>{const k=document.createElement('div'), c=document.createElement('div');
+    k.className='pane-k'; k.textContent=String(i+1).padStart(2,'0')+' · '+names[i]; c.className='pane-cap'; c.innerHTML='<h3>'+TITLES[i]+'</h3><p>'+CAPS[i]+'</p>';
+    c.prepend(k); p.after(c); [p,c].forEach(el=>io.observe(el));});})();
 // run = the four steps, then a short stretch where the CTA rises to sit right under the content before the floor leaves
-// step illustrations keep their design size and scale down when the scene gets shorter than they are
-function fitPanes(){document.querySelectorAll('.scene .pane .dg, .scene .pane .rvb').forEach(el=>{el.style.transform='';
-  const pane=el.closest('.pane'), room=pane.clientHeight*.9, need=el.classList.contains('rvb')?el.scrollHeight:el.offsetHeight;
-  const k=Math.min(1,room/need, pane.clientWidth*.94/el.offsetWidth); if(k<1) el.style.transform=`scale(${k.toFixed(3)})`;});}
-function howLayout(){const pin=$('howPin');
-  // square scene (height = width), capped so the floor still fits the screen
-  const sc=document.querySelector('.scene'), tall=innerHeight>=1000; sc.style.height=Math.round(Math.max(tall?290:380,Math.min(sc.offsetWidth,innerHeight-(tall?710:500))))+'px';
-  // on tall screens the whole floor (head, steps, caption, CTA) lives in one 100vh pin: shrink the scene by whatever still overflows
-  if(tall){const over=pin.scrollHeight-innerHeight; if(over>0) sc.style.height=Math.max(290,sc.offsetHeight-over)+'px';}
-  fitPanes(); pin.style.top=Math.min(0,innerHeight-pin.offsetHeight)+'px'; $('howRun').style.height=(pin.offsetHeight+(4*STEP_VH+CLOSE_VH)*innerHeight)+'px';}
-function howScroll(){const pin=$('howPin'), run=$('howRun'), steps=4*STEP_VH*innerHeight, scrolled=parseFloat(pin.style.top)-run.getBoundingClientRect().top;
+// step illustrations: each 600×600 canvas scales to its (square) pane
+const illRO=new ResizeObserver(es=>es.forEach(e=>e.target.querySelector('.ill').style.setProperty('--k',e.contentRect.width/600)));
+document.querySelectorAll('.scene .pane').forEach(p=>illRO.observe(p));
+function howLayout(){const pin=$('howPin'), sc=document.querySelector('.scene'), col=sc.parentElement;
+  if(howMob.matches){sc.style.height=''; col.style.maxWidth=''; pin.style.top=''; $('howRun').style.height=''; return;}
+  // the scene keeps one frame, a square, so photos crop the same on every screen. It starts as wide as its column; if the steps
+  // and caption then don't fit under the top bar (or, on tall screens, the whole 100vh pin overflows), the scene shrinks
+  // as a whole — narrower and lower together — instead of turning into a wide strip
+  const tall=innerHeight>=1000, W=col.parentElement.clientWidth-340-64, grid=document.querySelector('.how-grid');
+  col.style.maxWidth=''; sc.style.height=Math.round(W)+'px';
+  // pinned, the pin's bottom meets the screen's bottom: from the grid's top to the pin's end must fit under the top bar (80px)
+  // a narrower column wraps the caption onto more lines, so settle it in a few passes
+  for(let k=0;k<3;k++){const over=tall?pin.scrollHeight-innerHeight:pin.getBoundingClientRect().bottom-grid.getBoundingClientRect().top-(innerHeight-80);
+    if(Math.abs(over)<2)break; const h=Math.round(Math.min(W,Math.max(360,sc.offsetHeight-over)));
+    sc.style.height=h+'px'; col.style.maxWidth=Math.min(W,h)+'px';}
+  pin.style.top=Math.min(0,innerHeight-pin.offsetHeight)+'px'; $('howRun').style.height=(pin.offsetHeight+(4*STEP_VH+CLOSE_VH)*innerHeight)+'px';}
+function howScroll(){if(howMob.matches){nextFloor().style.marginTop=''; return;}
+  const pin=$('howPin'), run=$('howRun'), steps=4*STEP_VH*innerHeight, scrolled=parseFloat(pin.style.top)-run.getBoundingClientRect().top;
   const p=clamp(scrolled/steps), x=Math.min(3.999,p*4), i=Math.floor(x);
   if(i!==howIdx){howIdx=i; setTab(i);}
   document.querySelectorAll('.tab').forEach((t,k)=>t.style.setProperty('--f',k<i?0:k===i?(x-i):0));
@@ -1288,15 +1308,6 @@ document.querySelectorAll('.faq-cols>div').forEach(col=>col.addEventListener('cl
 })();
 history.scrollRestoration='manual';
 document.fonts.ready.then(()=>{setDigits(false); layout(); frame(); howLayout(); howScroll(); rolesLayout(); rolesScroll();}); addEventListener('resize',()=>{setDigits(false); layout();});
-// 04 · review waveform (deterministic bars, the 0:09 chapter highlighted)
-(()=>{const sv=document.getElementById('rvw'); if(!sv)return; const n=90,w=900,h=30; let s=11,o='';
-  for(let i=0;i<n;i++){s=(s*9301+49297)%233280; const r=s/233280, bh=Math.max(3,(.2+.8*r)*h*(.4+.6*Math.abs(Math.sin(i/n*9)))); const bw=w/n;
-    o+=`<rect x="${(i*bw+bw*.2).toFixed(1)}" y="${((h-bh)/2).toFixed(1)}" width="${(bw*.6).toFixed(1)}" height="${bh.toFixed(1)}" rx="1.5"${i>=20&&i<30?' class="hl"':''}/>`;}
-  sv.setAttribute('viewBox',`0 0 ${w} ${h}`); sv.innerHTML=o;})();
-// 04 · review step: photo and card offset diagonally by half of the free space
-(()=>{const box=document.querySelector('.rvb'); if(!box)return; const ph=box.querySelector('.rv-photo'), cd=box.querySelector('.rv-card');
-  const fit=()=>{const H=box.clientHeight; box.style.setProperty('--pdy',((H-ph.offsetHeight)/4)+'px'); box.style.setProperty('--cdy',(-(H-cd.offsetHeight)/4)+'px');};
-  new ResizeObserver(fit).observe(box); fit();})();
 // 04 · advise clip waveform
 (()=>{const sv=document.querySelector('.advw'); if(!sv)return; const n=46,w=460,h=30; let s=5,o='';
   for(let i=0;i<n;i++){s=(s*9301+49297)%233280; const r=s/233280, bh=Math.max(3,(.25+.75*r)*h*(.45+.55*Math.abs(Math.sin(i/n*7)))); const bw=w/n;

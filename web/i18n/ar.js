@@ -38,7 +38,7 @@ PAIRS:[
 ['Live · conversations','مباشر · المحادثات'],
 ['heard today','سمع اليوم'],
 // how it works
-['From a hello at the counter<br>to a tip after the shift','من التحية الأولى عند الكاشير<br>إلى نصيحة بعد الوردية'],
+['From a hello at the counter <br>to a tip after the shift','من التحية الأولى عند الكاشير <br>إلى نصيحة بعد الوردية'],
 ['<b>1</b><span>Record</span><i>›</i>','<b>1</b><span>التسجيل</span><i>‹</i>'],
 ['<b>2</b><span>Transcribe</span><i>›</i>','<b>2</b><span>التفريغ النصي</span><i>‹</i>'],
 ['<b>3</b><span>Review</span><i>›</i>','<b>3</b><span>التقييم</span><i>‹</i>'],
