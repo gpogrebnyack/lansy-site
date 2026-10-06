@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy bento lab</title>
+<base href="../">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:Struve;src:url(fonts/Struve-Regular.woff2) format('woff2');font-weight:400}
+@font-face{font-family:Struve;src:url(fonts/Struve-Medium.woff2) format('woff2');font-weight:500}
+@font-face{font-family:Struve;src:url(fonts/Struve-Semibold.woff2) format('woff2');font-weight:600}
+*{box-sizing:border-box;margin:0}
+*,::before,::after{font-feature-settings:'ss10'}
+:root{--ink:#1F1F21;--grey:#8A8A8F;--card:#F4F4F5}
+body{background:#fff;color:var(--ink);font-family:Struve,system-ui,sans-serif;padding:40px 24px 120px}
+.lab-h{max-width:1200px;margin:0 auto 40px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.lab-h h1{font-size:22px;font-weight:600}.lab-h p{margin-top:8px;font-size:14px;color:#737378;max-width:620px;line-height:1.5}
+.sw{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:#F2F2F5}
+.seg button{height:32px;padding:0 14px;border:0;border-radius:999px;background:none;font:500 14px Struve,sans-serif;color:#737378;cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.row-l{max-width:1200px;margin:72px auto 20px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.lbl{font:500 12px/1.6 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+
+/* the floor, as on the page */
+.risks{max-width:1200px;margin:0 auto}
+.risks-hd{text-align:center;display:flex;flex-direction:column;align-items:center}
+.risks-hd h2{margin-top:20px;font-size:40px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
+.bento{display:grid;gap:24px;margin-top:32px}
+.bento .brow{display:grid;gap:24px;grid-template-columns:708fr 468fr}.bento .brow.r2{grid-template-columns:468fr 708fr}
+.bc{position:relative;height:420px;border-radius:24px;background:var(--card);overflow:hidden;display:flex;flex-direction:column}
+.bc .tx{padding:32px}.bc h3{font-size:20px;line-height:1.3;font-weight:600}.bc p{margin-top:8px;font-size:16px;line-height:1.45;color:#737378;max-width:420px}
+.bc .il{position:relative;flex:1;min-height:0}
+.bc.tt .tx{padding-bottom:0}   /* text on top: its bottom padding would only push the picture down; the picture area gets that room */
+/* card colour: the hero's neutral (warm grey at the top, fading to the cool grey) */
+body.c-flat{--card:#EDEDE9}
+body.c-grad .bc{background:linear-gradient(180deg,#EDEDE9 0%,#F3F3F4 100%)}
+body.c-grad .bc.tt{background:linear-gradient(0deg,#EDEDE9 0%,#F3F3F4 100%)}   /* text on top: the warm end sits under the picture */
+
+/* phone: one column, same height, phone type scale 34 / 24 / 17 */
+.phone{width:343px;margin:0 auto}
+.phone .risks-hd h2{font-size:34px}
+.phone .bento{gap:20px}.phone .bento .brow,.phone .bento .brow.r2{grid-template-columns:1fr;gap:20px}
+.phone .bc{height:440px}.phone .bc .tx{order:-1;padding:20px 20px 0}   /* every card: text on top, picture below */
+.phone .bc h3{font-size:17px;line-height:1.5;font-weight:600}.phone .bc p{margin-top:2px;font-size:17px;line-height:1.5}   /* the title at text size, set apart by weight only */
+body.c-grad .phone .bc{background:linear-gradient(0deg,#EDEDE9 0%,#F3F3F4 100%)}
+.phone br.dk{display:none}.desk br.mb{display:none}
+/* phone: the pictures are not scaled down; the interface takes the card's width and the phone type scale (17 · 15 · 12) */
+.phone .cvs{left:0;top:0;width:100%;height:100%;transform:none}
+.phone .ui{width:calc(100% - 40px)}.phone .ui .bd{padding:18px 20px 20px;gap:12px}
+.phone .ln p,.phone .cv .t b{font-size:17px}.phone .ln small,.phone .cv .t span,.phone .chip{font-size:15px}
+
+/* ── the illustration system from How it works, light theme: every picture is drawn on one 440×300 canvas and scaled
+      as a whole to fit its card; white interface cards, one type scale (22 titles · 18 body · 15 meta · 12 mono labels),
+      lime as the accent fill and Primary Dark for accent text on white */
+.dots{position:absolute;inset:0;background:radial-gradient(rgba(31,31,33,.09) 1px,transparent 1.3px) 0 0/20px 20px;-webkit-mask:radial-gradient(60% 70% at 50% 50%,#000 30%,transparent);mask:radial-gradient(60% 70% at 50% 50%,#000 30%,transparent)}
+.cvs{position:absolute;left:50%;top:50%;width:440px;height:300px;transform:translate(-50%,-50%) scale(var(--k,1));display:flex;align-items:center;justify-content:center}
+.ui{position:relative;width:380px;border-radius:24px;background:#fff;border:1px solid rgba(31,31,33,.06);box-shadow:0 30px 60px -24px rgba(31,31,33,.22),0 2px 6px rgba(31,31,33,.04);color:var(--ink)}
+.ui .bd{padding:20px 24px 22px;display:flex;flex-direction:column;gap:14px}
+.k{display:inline-flex;align-items:center;gap:8px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F}
+.k::before{content:"";width:7px;height:7px;border-radius:50%;background:#B8B8BD}
+.k.on{color:#33694F}.k.on::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
+.hd{display:flex;justify-content:space-between;align-items:center}
+.hr{height:1px;background:rgba(31,31,33,.08)}
+.ln small{display:block;font-size:15px;color:#8A8A8F}
+.ln p{margin-top:2px;font-size:18px;line-height:1.4}
+
+/* 1 · personal talk: the dotted voice line (kept from the page) */
+.wave,.planet{position:absolute;inset:0;width:100%;height:100%}
+
+/* 2 · anonymized (the first line stays two lines either way, so the card doesn't jump): no overlay — the name or number folds away and a hairline tag with its type takes its place, the line closes up */
+.ui p{color:var(--ink)}.ui p.one{white-space:nowrap}   /* one-line replies never wrap, whichever is wider: the number or its tag */   /* the page's card text is grey; inside the interface it is ink */
+.mask{font-style:normal;white-space:nowrap}
+.mask .o,.mask .t{display:inline-flex;align-items:center;overflow:hidden;white-space:nowrap;vertical-align:baseline}   /* inline-flex keeps the text baseline even while clipped, so the tag label sits on the line's baseline */
+.mask .o{max-width:12em;animation:mOut 5s infinite}
+.mask .t{max-width:0;height:24px;padding:0;border:1px solid rgba(31,31,33,.14);border-radius:999px;font:500 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F;opacity:0;animation:mIn 5s infinite}
+.ln:nth-child(3) .mask *{animation-delay:.35s}.ln:nth-child(4) .mask *{animation-delay:.7s}
+@keyframes mOut{0%,14%{max-width:12em;opacity:1}30%,86%{max-width:0;opacity:0}100%{max-width:12em;opacity:1}}
+@keyframes mIn{0%,14%{max-width:0;padding:0;opacity:0}30%,86%{max-width:6em;padding:0 9px;opacity:1}100%{max-width:0;padding:0;opacity:0}}
+
+/* 3 · private by default: your row is open, the others are blurred and locked */
+.cv{display:flex;align-items:center;gap:14px;padding:10px 12px;margin:0 -12px;border-radius:14px}.cv.me{background:#F6F6F7}
+.cv .t{flex:1;min-width:0}.cv .t b{display:block;font-size:18px;font-weight:600}.cv .t span{font-size:15px;color:#8A8A8F}
+.chip{flex:none;height:26px;padding:0 11px;border-radius:999px;background:rgba(156,222,69,.28);color:#33694F;font-size:15px;font-weight:500;line-height:26px}
+.av{width:44px;height:44px;border-radius:50%;flex:none;background:#E4E4E8}
+.cv.other .t i{display:block;height:9px;border-radius:5px;background:#E4E4E8}.cv.other .t i+i{margin-top:8px;width:55%;background:#EDEDF0}
+.cv.other .av,.cv.other .t{animation:blur 5s infinite}
+.cv.other svg{flex:none;width:18px;height:18px;color:#8A8A8F;opacity:0;animation:lock 5s infinite}
+@keyframes blur{0%,15%{filter:blur(0)}30%,85%{filter:blur(4px)}100%{filter:blur(0)}}
+@keyframes lock{0%,20%{opacity:0}32%,85%{opacity:1}100%{opacity:0}}
+/* Omar's avatar, as in steps 2 and 3: green circle, the cutout free above its middle */
+.avo{position:relative;width:44px;height:44px;flex:none}
+.avo::before{content:"";position:absolute;inset:0;border-radius:50%;background:#33694F}
+.avo .clip{position:absolute;inset:0;clip-path:path("M0 22 A22 22 0 0 0 44 22 L44 -200 L0 -200 Z")}
+.avo img{position:absolute;left:-7px;top:-4px;width:60px;display:block}
+
+/* 4 · voice stays with us: the dotted planet (kept from the page); the UAE mark becomes a pill like "Recording" in step 1 */
+.uae{position:absolute;display:flex;align-items:center;gap:8px;height:32px;padding:0 14px 0 12px;border-radius:999px;background:#fff;border:1px solid rgba(31,31,33,.06);box-shadow:0 12px 24px -10px rgba(31,31,33,.25);font-size:15px;font-weight:500;color:#1F1F21;white-space:nowrap;transform:translate(16px,-50%)}
+.uae.l{transform:translate(calc(-100% - 16px),-50%)}
+.uae i{width:8px;height:8px;border-radius:50%;background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
+</style></head><body class="c-grad">
+<div class="lab-h"><div><h1>Privacy &amp; security · bento lab</h1>
+  <p>Карточки в нейтрали из хиро. Волна и планета остаются (метка UAE — пилюля, как «Recording» в шагах). Две средние иллюстрации переведены на язык How it works в светлой теме: холст 440×300, масштабируется целиком, белые карточки интерфейса, одна шкала кеглей, лайм как акцент.</p></div>
+  <div class="sw"><div class="seg" id="col"><button data-c="c-grey">Grey · now</button><button data-c="c-flat">Hero · flat</button><button data-c="c-grad" class="on">Hero · gradient</button></div></div></div>
+
+<template id="floor">
+<section class="risks">
+  <div class="risks-hd"><div class="lbl">Privacy &amp; security</div><h2>Built to mentor<br class="mb"> your team,<br class="dk"> never<br class="mb"> to watch over it</h2></div>
+  <div class="bento">
+    <div class="brow">
+      <div class="bc"><div class="il"><canvas class="wave"></canvas></div>
+        <div class="tx"><h3>Personal talk stays out</h3><p>Off-topic conversations — a call home, a chat on a break — are detected and removed before analysis.</p></div></div>
+      <div class="bc tt"><div class="tx"><h3>Anonymized</h3><p>Names, phone numbers, addresses and card numbers are masked before any AI sees the text.</p></div>
+        <div class="il"><div class="dots"></div><div class="cvs">
+        <div class="ui"><div class="bd">
+          <span class="k on">Before the AI</span>
+          <div class="ln"><small>Guest</small><p>Hi, this is <em class="mask"><span class="o">Sarah Khan</span><span class="t">Name</span></em> — I booked a table for two at seven.</p></div>
+          <div class="ln"><small>Guest</small><p class="one">Call me at <em class="mask"><span class="o">050 123 4567</span><span class="t">Phone</span></em></p></div>
+          <div class="ln"><small>Barista</small><p class="one">Card ending <em class="mask"><span class="o">4821</span><span class="t">Card</span></em> — done!</p></div>
+        </div></div></div></div></div>
+    </div>
+    <div class="brow r2">
+      <div class="bc"><div class="il"><div class="dots"></div><div class="cvs">
+        <div class="ui"><div class="bd">
+          <span class="k">Conversations</span>
+          <div class="cv me"><span class="avo"><span class="clip"><img src="how/omar-cut.webp" alt=""></span></span><div class="t"><b>You · Omar</b><span>23 today</span></div><span class="chip">Tip ready</span></div>
+          <div class="cv other"><span class="av"></span><div class="t"><i></i><i></i></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+        </div></div></div></div>
+        <div class="tx"><h3>Private by default</h3><p>Each employee sees only their own conversations. Wider access is set by your admin. No public rankings.</p></div></div>
+      <div class="bc tt"><div class="tx"><h3>Voice stays with us</h3><p>Audio never leaves our servers in the UAE. AI sees only anonymized text and never trains on it.</p></div>
+        <div class="il"><canvas class="planet"></canvas><span class="uae"><i></i>Our servers · UAE</span></div></div>
+    </div>
+  </div>
+</section>
+</template>
+
+<div class="row-l">Desktop · 1200</div><div class="desk" id="desk"></div>
+<div class="row-l" style="max-width:343px">iPhone · 343</div><div class="phone" id="phone"></div>
+
+<script>
+const tpl=document.getElementById('floor').content;
+['desk','phone'].forEach(id=>document.getElementById(id).append(tpl.cloneNode(true)));
+// each canvas scales to fit its picture area (440×300 design units)
+const ro=new ResizeObserver(es=>es.forEach(e=>{const r=e.contentRect; e.target.querySelector('.cvs').style.setProperty('--k',Math.min(r.width/440,.92));}));   // one scale on every desktop card (.92), so type and masses match; the card inside is centred and always shorter than the area
+document.querySelectorAll('.il').forEach(el=>el.querySelector('.cvs')&&ro.observe(el));
+// the land mask and the two dotted pictures, ported from the page (one instance per card)
+const ROWS=["000000000000000000000000000100111001111111011111111111111111111100000000000001110000000000000000000000000000000011000000000000000000000000000000", "000000000000000000000001011010011001000000001111111111111111111100000000000000000000000000000000111000000000010111111000000000011000000000000000", "000000000000000000000011110001001011011010000000011111111111111100000000000000000000000000000010000000001111111111111111011000001000000000000000", "100000000100000000000000011111000110111111100000000111111111111000000000000000000000000000000110000111111111111111111111111101111111100000000001", "000001111111111111111111110001000011101100110000000111111111100000000000000000111111111000000101111010111111111111111111111111111111111111111111", "111101111111111111111111111111111111110000111110001111111100001011000000000001111111110001111111111111111111111111111111111111111111111111111111", "000100011111111111111111111111111111010100011100000111110000000010000000000011110111111111111111111111111111111111111111111111111111111111111110", "000000111111111111111111111111111100000001110000000011100000000000000000001111100111111111111111111111111111111111111111111111111111110011111000", "000000000110000001111111111111111110000001111110000000000000000000000010001111100111111111111111111111111111111111111111111111111000000010000000", "000000001000000000011111111111111111100001111111000000000000000000000010000101001111111111111111111111111111111111111111111111100000001110000000", "000000000000000000001111111111111111111011111111110000000000000000001101000111111111111111111111111111111111111111111111111111110000001100000000", "000000000000000000000111111111111111111111111111010000000000000000000011011111111111111111111111111111111111111111111111111111110000000000000000", "000000000000000000000011111111111111111111110100111000000000000000000011111111111111111111111111111111111111111111111111111111110000000000000000", "000000000000000000000011111111111111111111111101000000000000000000000001111111111111010111100111111111111111111111111111111111100000000000000000", "000000000000000000000011111111111111111111110100000000000000000000000101111010111110000011101111111111111111111111111111111111001100000000000000", "000000000000000000000011111111111111111111100000000000000000000000001111100001101111111011110011111111111111111111111111111100001000000000000000", "000000000000000000000001111111111111111111000000000000000000000000001111000000101001111111100011111111111111111111111110001000001000000000000000", "000000000000000000000001111111111111111111000000000000000000000000000000111100000000011111111111111111111111111111111111001100110000000000000000", "000000000000000000000000011111111111111100000000000000000000000000000111111100000000001111111111111111111111111111111111000011000000000000000000", "000000000000000000000000010111111111111000000000000000000000000000001111111111101110101111111111111111111111111111111111100000000000000000000000", "000000000000000000000000001111111100000100000000000000000000000000011111111111111111111111101111111111111111111111111111100000000000000000000000", "000000000000000000000000000011111000000100000000000000000000000000111111111111111111110111111011111111111111111111111111000000000000000000000000", "000000000000000000000000000001111000000000000000000000000000000000111111111111111111110111111110000111111111111111111110100000000000000000000000", "000000000000000000000000000000111000100001000000000000000000000001111111111111111111111011111111000011111110011111100000000000000000000000000000", "000000000000000000000000000000111101100000111000000000000000000001111111111111111111111011111110000001111100001111010000100000000000000000000000", "000000000000000000000000000000000111110000000000000000000000000001111111111111111111111101111000000001110000000111100000100000000000000000000000", "000000000000000000000000000000000000111000000000000000000000000001111111111111111111111111100000000000110000000111110000010000000000000000000000", "000000000000000000000000000000000000000000101000000000000000000000111111111111111111111110010000000000110000000101100000000000000000000000000000", "000000000000000000000000000000000000001111111111000000000000000000011111111111111111111111110000000000001000000100000000001000000000000000000000", "000000000000000000000000000000000000000001111111100000000000000000001111101111111111111111110000000000000000000010000010000000000000000000000000", "000000000000000000000000000000000000000001111111111100000000000000000000000011111111111111100000000000000000000110000110000000000000000000000000", "000000000000000000000000000000000000000011111111111100000000000000000000000011111111111111000000000000000000000110001110100000000000000000000000", "000000000000000000000000000000000000000011111111111111000000000000000000000011111111111110000000000000000000000011001110100011000000000000000000", "000000000000000000000000000000000000000011111111111111111000000000000000000011111111111100000000000000000000000001000000100000111100000000000000", "000000000000000000000000000000000000000011111111111111111100000000000000000001111111111100000000000000000000000000100000000000011110000000000000", "000000000000000000000000000000000000000011111111111111111100000000000000000001111111111100000000000000000000000000000000101000001000000000000000", "000000000000000000000000000000000000000001111111111111111000000000000000000001111111111100000000000000000000000000000000000000000000000000000000", "000000000000000000000000000000000000000001111111111111110000000000000000000001111111111100010000000000000000000000000000000011000000000000000000", "000000000000000000000000000000000000000000011111111111110000000000000000000001111111111100110000000000000000000000000000011111101100000000000000", "000000000000000000000000000000000000000000001111111111110000000000000000000001111111110000110000000000000000000000000000011111111110000000000000", "000000000000000000000000000000000000000000001111111111110000000000000000000001111111110001100000000000000000000000000011111111111111000000000000", "000000000000000000000000000000000000000000001111111111000000000000000000000000111111110001100000000000000000000000000111111111111111100000000000", "000000000000000000000000000000000000000000001111111110000000000000000000000000111111100000000000000000000000000000000111111111111111100000000000", "000000000000000000000000000000000000000000011111111100000000000000000000000000011111100000000000000000000000000000000011111111111111100000000000", "000000000000000000000000000000000000000000011111111100000000000000000000000000011111000000000000000000000000000000000011111111111111100000000000", "000000000000000000000000000000000000000000011111111000000000000000000000000000011100000000000000000000000000000000000011100000111111100000000000", "000000000000000000000000000000000000000000011111100000000000000000000000000000000000000000000000000000000000000000000000000000001111000000000000", "000000000000000000000000000000000000000000011111000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000010", "000000000000000000000000000000000000000000111100000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000100", "000000000000000000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011000", "000000000000000000000000000000000000000000111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000", "000000000000000000000000000000000000000000111000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000", "000000000000000000000000000000000000000000110000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "000000000000000000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], COLS=144, DUBAI=[94.11,21.92];
+const RAD=Math.PI/180;
+const isLand=(lat,lon)=>{const c=Math.floor((lon/RAD+180)/2.5), r=Math.floor((90-lat/RAD)/2.5)-4; return r>=0&&r<ROWS.length&&ROWS[r][((c%COLS)+COLS)%COLS]==='1';};
+function vec(lat,lon){const c=Math.cos(lat); return [c*Math.cos(lon),c*Math.sin(lon),Math.sin(lat)];}
+document.querySelectorAll('canvas.planet').forEach(cv=>{const ctx=cv.getContext('2d'), tag=cv.parentElement.querySelector('.uae'); let W,H,R,CX,CY,pts=[];
+  function size(){const r=cv.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
+    R=Math.max(W*.42,260); CX=W/2; CY=H+R*.22; pts=[]; const N=Math.round(4*Math.PI*R*R/(9*9)), ga=Math.PI*(3-Math.sqrt(5)), U=vec(25.2*RAD,55.3*RAD);
+    for(let i=0;i<N;i++){const lat=Math.asin(1-2*(i+.5)/N), lon=((i*ga)%(2*Math.PI))-Math.PI; if(isLand(lat,lon)){const v=vec(lat,lon); pts.push([lat,lon,Math.acos(Math.min(1,v[0]*U[0]+v[1]*U[1]+v[2]*U[2]))]);}}}
+  const P=(lat,lon,lat0,lon0)=>{const dl=lon-lon0,c=Math.cos(lat); return {x:CX+R*c*Math.sin(dl), y:CY-R*(Math.cos(lat0)*Math.sin(lat)-Math.sin(lat0)*c*Math.cos(dl)), z:Math.sin(lat0)*Math.sin(lat)+Math.cos(lat0)*c*Math.cos(dl)};};
+  function draw(t){const lon0=(55.3-18*Math.sin(t/5000))*RAD, lat0=-14*RAD; ctx.clearRect(0,0,W,H);
+    const ph=(t%2400)/2400, w=ph*12*RAD, band=1.8*RAD, fade=Math.pow(1-ph,1.3);
+    ctx.fillStyle='#1F1F21'; for(const [la,lo,a] of pts){const q=P(la,lo,lat0,lon0); if(q.z<=0||q.y>H+4) continue;
+      const i=a<14*RAD?Math.exp(-Math.pow((a-w)/band,2))*fade:0;
+      ctx.globalAlpha=Math.min(1,.12+.3*q.z+i*.8); ctx.beginPath(); ctx.arc(q.x,q.y,2.4*(1+.3*i),0,7); ctx.fill();}
+    const u=P(25.2*RAD,55.3*RAD,lat0,lon0); ctx.globalAlpha=1; ctx.fillStyle='#9CDE45'; ctx.beginPath(); ctx.arc(u.x,u.y,6,0,7); ctx.fill();
+    tag.style.left=u.x+'px'; tag.style.top=u.y+'px'; tag.classList.toggle('l',u.x+16+tag.offsetWidth>W-12); requestAnimationFrame(draw);}   // no room on the right (phones): the pill goes to the left of the dot
+  size(); new ResizeObserver(size).observe(cv); requestAnimationFrame(draw);});
+// the voice line is laid on an arc, as if it ran around the planet seen from slightly above: columns sit at equal angles,
+// so they crowd together toward the ends; the ends drop and fade with depth, like the planet's limb
+document.querySelectorAll('canvas.wave').forEach(cv=>{const ctx=cv.getContext('2d'); const G=7, S=110*RAD, TILT=.16; let W,H,Rx,n,rows;
+  function size(){const r=cv.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
+    Rx=(W-64)/2/Math.sin(S/2); n=Math.floor(S/(G/Rx)); rows=Math.min(16,Math.floor((H-48)/G/2));}
+  function draw(t){ctx.clearRect(0,0,W,H); ctx.fillStyle='#1F1F21'; const cy=Math.round(H*.46);
+    for(let c=0;c<=n;c++){const u=c/n, th=-S/2+u*S, z=Math.cos(th), x=W/2+Rx*Math.sin(th), base=cy+TILT*Rx*(1-z);
+      const phrase=Math.max(0,Math.sin(u*Math.PI*3.2+t/1700))**.7, swell=Math.sin(Math.PI*u)**.8;
+      const syl=.35+.65*Math.abs(Math.sin(c*.83+t/240)*.6+Math.sin(c*.29-t/430)*.4), amp=phrase*swell*syl*rows;
+      for(let r=-Math.floor(amp);r<=Math.floor(amp);r++){const vz=1-Math.abs(r)/(rows+1); ctx.globalAlpha=.12+.3*vz*(.35+.65*z); ctx.beginPath(); ctx.arc(x,base+r*G,2.4,0,7); ctx.fill();}
+      if(amp<1){ctx.globalAlpha=.12*(.5+.5*z); ctx.beginPath(); ctx.arc(x,base,2.4,0,7); ctx.fill();}}
+    ctx.globalAlpha=1; requestAnimationFrame(draw);}
+  size(); new ResizeObserver(size).observe(cv); requestAnimationFrame(draw);});
+
+// card colour switch
+document.querySelectorAll('#col button').forEach(b=>b.onclick=()=>{document.body.className=b.dataset.c; document.querySelectorAll('#col button').forEach(x=>x.classList.toggle('on',x===b));});
+</script>
+</body></html>

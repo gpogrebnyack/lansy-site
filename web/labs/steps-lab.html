@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How it works · steps lab</title>
+<base href="../">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:Struve;src:url(fonts/Struve-Regular.woff2) format('woff2');font-weight:400}
+@font-face{font-family:Struve;src:url(fonts/Struve-Medium.woff2) format('woff2');font-weight:500}
+@font-face{font-family:Struve;src:url(fonts/Struve-Semibold.woff2) format('woff2');font-weight:600}
+*{box-sizing:border-box;margin:0}
+*,::before,::after{font-feature-settings:'ss10'}
+body{background:#fff;color:#1F1F21;font-family:Struve,system-ui,sans-serif;padding:40px 24px 120px}
+.lab-h{max-width:1240px;margin:0 auto 28px;display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap}
+.lab-h h1{font-size:22px;font-weight:600}.lab-h p{font-size:14px;color:#737378;max-width:620px;line-height:1.5}
+.row-l{max-width:1240px;margin:40px auto 14px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F}
+.grid{max-width:1240px;margin:0 auto;display:grid;gap:24px}
+.grid.desk{grid-template-columns:repeat(2,minmax(0,600px));justify-content:center}
+.grid.phone{grid-template-columns:repeat(4,343px);justify-content:center}
+@media (max-width:1460px){.grid.phone{grid-template-columns:repeat(2,343px)}}
+.cell .cap{margin-top:12px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F}
+
+/* ── the illustration system: every step is drawn on one 600×600 canvas and scaled as a whole, so the frame,
+      proportions and visual weight are identical on every screen */
+.sq{position:relative;aspect-ratio:1;border-radius:24px;overflow:hidden;background:#141519}
+.ill{position:absolute;left:0;top:0;width:600px;height:600px;transform-origin:0 0;transform:scale(var(--k,1))}
+.dots{position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.3px) 0 0/24px 24px;-webkit-mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent);mask:radial-gradient(70% 70% at 50% 50%,#000 30%,transparent)}
+.ctr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+
+/* type scale, the same on all four steps: 22 titles, numbers and dialogue lines · 18 body · 15 meta · 12 mono labels */
+/* shared card: same surface, radius, padding and type scale on steps 3 and 4 */
+.ui{position:relative;width:500px;border-radius:24px;background:#1E1F24;border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 30px 60px -16px rgba(0,0,0,.6);color:#fff;overflow:hidden}
+.ui .bd{padding:22px 26px 24px;display:flex;flex-direction:column;gap:16px}
+.k{display:inline-flex;align-items:center;gap:8px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.k::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35)}
+.k.on{color:#C9F08F}.k.on::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
+.hr{height:1px;background:rgba(255,255,255,.08)}
+
+/* 1 · Record: Omar in a black turtleneck and apron, the pendant on its chain (how/badge-omar.webp, crop zoom 1.20 · x −24 · y −115 baked in; LED at 53% / 53.2%), one quiet recording pill tied to the LED */
+.s1 .ill{background:#111 url(how/badge-omar.webp) 0 0/600px 600px no-repeat}
+.rec{position:absolute;right:327px;top:293px;display:flex;align-items:center;gap:12px;height:52px;padding:0 20px 0 18px;border-radius:999px;background:rgba(19,19,22,.55);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 18px 36px -10px rgba(0,0,0,.5);color:#fff;font-size:18px;font-weight:500}
+.rec .dot{width:10px;height:10px;border-radius:50%;background:#9CDE45;box-shadow:0 0 10px 2px rgba(156,222,69,.75);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 2px 0 rgba(156,222,69,.4)}}
+.rec .bars{display:flex;align-items:center;gap:3px;height:20px}.rec .bars i{width:3px;border-radius:2px;background:rgba(255,255,255,.8);animation:bar 1.1s ease-in-out infinite}
+.rec .bars i:nth-child(2){animation-delay:-.3s}.rec .bars i:nth-child(3){animation-delay:-.6s}.rec .bars i:nth-child(4){animation-delay:-.15s}.rec .bars i:nth-child(5){animation-delay:-.45s}
+@keyframes bar{0%,100%{height:5px}50%{height:18px}}
+.rec time{font:500 15px "JetBrains Mono",monospace;color:rgba(255,255,255,.6)}
+.lead{position:absolute;inset:0;pointer-events:none}.lead path{fill:none;stroke:rgba(255,255,255,.5);stroke-width:1.2}
+.lead .c1{fill:none;stroke:#9CDE45;stroke-width:1.5}.lead .c2{fill:#9CDE45;filter:drop-shadow(0 0 5px rgba(156,222,69,.9))}
+
+/* 2 · Transcribe: the dialogue as it is now */
+.dg{width:520px;display:flex;flex-direction:column;gap:60px}
+.dr{display:flex}.dr.g{justify-content:flex-end}
+.bub{display:flex;align-items:flex-end;gap:14px}.bub.r{flex-direction:row-reverse}
+.avp{width:64px;height:64px;flex:none;display:block}
+.bt{min-width:250px;padding:12px 18px 14px;border-radius:16px;background:#212227;border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);color:#fff}
+.bub.r .bt{border-bottom-right-radius:6px;background:#26272C}.bub:not(.r) .bt{border-bottom-left-radius:6px}
+.bt small{display:flex;justify-content:space-between;gap:24px;font-size:15px;color:rgba(255,255,255,.45)}
+.bt small em{font:500 12px "JetBrains Mono",monospace;font-style:normal}
+.bt p{margin-top:4px;font-size:22px;line-height:1.45;color:rgba(255,255,255,.95);font-family:Struve,"IBM Plex Sans Arabic",sans-serif}
+.bt p[dir=rtl]{text-align:right}
+.dw{position:relative;color:#9CDE45}
+.dw.hl{padding:0 3px;border-radius:3px;background:linear-gradient(180deg,transparent 64%,rgba(156,222,69,.32) 64%)}
+.tp{position:absolute;left:50%;top:calc(100% + 16px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;background:#fff;white-space:nowrap;font:500 15px/1 Struve,sans-serif;color:#1F1F21;box-shadow:0 10px 24px -8px rgba(0,0,0,.6);z-index:2}
+.tp b{font-weight:500}.tp i{font:500 12px "JetBrains Mono",monospace;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#5C8F2C}
+.tp::after{content:"";position:absolute;left:50%;top:-3px;width:8px;height:8px;margin-left:-4px;background:#fff;transform:rotate(45deg);border-radius:1.5px}
+
+/* 3 · Review: a portrait header, one big number, three checks — the miss is the only other accent */
+.ui.rv{width:420px;overflow:visible}
+/* Omar stands in a green panel inside the card; the panel clips his sides and bottom, his head rises above the card */
+.rv .stage{position:relative;height:196px;border-radius:16px;background:#1A1817;color:#fff}   /* text on the photo stays white in both themes */
+/* café behind Omar: darkened and softened so it reads as a place, not as detail */
+.rv .stage .bg{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+.rv .stage .bg::before{content:"";position:absolute;inset:-8px;background:url(how/cafe-bg.webp) 30% 40%/cover no-repeat;filter:blur(3px) brightness(.5) saturate(.85)}
+.rv .stage .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,18,20,.55),rgba(18,18,20,0) 65%)}
+.rv .stage .fig{position:absolute;inset:0;clip-path:inset(-200px 0 0 0 round 0 0 16px 16px)}
+.rv .stage .fig img{position:absolute;right:-4px;bottom:-56px;width:240px;display:block;filter:drop-shadow(0 8px 16px rgba(0,0,0,.35))}
+.rv .stage .who{position:absolute;left:20px;bottom:16px;z-index:1}
+.rv .stage .who b{display:block;font-size:22px;font-weight:600}.rv .stage .who span{font-size:15px;color:rgba(255,255,255,.7)}
+.rv .stage .score{position:absolute;left:18px;top:16px;z-index:1;display:flex;align-items:center;gap:12px}
+.gauge{position:relative;width:76px;height:76px}
+.gauge svg{width:100%;height:100%;transform:rotate(-90deg)}.gauge circle{fill:none;stroke-width:6}.gauge .rt{stroke:rgba(255,255,255,.18)}.gauge .rf{stroke:#9CDE45;stroke-linecap:round}
+.rv .gauge b{position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:600;letter-spacing:-.01em}
+.rv .stage .score .chip{transform:none}
+.rv .bd{padding-top:24px}
+.score{display:flex;align-items:baseline;gap:12px}
+.score b{font-size:44px;font-weight:600;line-height:1;letter-spacing:-.02em}
+.score .chip{height:26px;padding:0 11px;border-radius:999px;background:rgba(156,222,69,.18);color:#C9F08F;font-size:15px;font-weight:500;line-height:26px;transform:translateY(-6px)}
+.checks{display:flex;flex-direction:column;gap:12px}
+.ck{display:flex;align-items:center;gap:12px;font-size:18px;color:rgba(255,255,255,.9)}
+.ck i{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(156,222,69,.16);color:#9CDE45}
+.ck i svg{width:14px;height:14px}
+.ck.miss{color:#fff}.ck.miss i{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+.ck.miss em{margin-left:auto;font:500 12px "JetBrains Mono",monospace;font-style:normal;color:rgba(255,255,255,.45)}
+
+/* 4 · Advise: one block of recommendations, no chat; same width as the review */
+.ui.adv{width:420px}
+.ah{display:flex;align-items:center;gap:14px}
+.ico3d{width:52px;height:52px;flex:none;margin:-4px -2px -4px -4px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}   /* the 3D Lansy icon, a still with alpha */
+.ah b{display:block;font-size:22px;font-weight:600}.ah span{font-size:15px;color:rgba(255,255,255,.5)}
+.tip p{margin-top:8px;font-size:18px;line-height:1.45;color:rgba(255,255,255,.9)}
+.tip p em{font-style:normal;color:#C9F08F}
+.say{margin-top:12px;padding:12px 16px;border-radius:12px;background:rgba(156,222,69,.1);border-left:2px solid #9CDE45;font-size:18px;line-height:1.45;color:#fff}
+.src{display:flex;justify-content:space-between;font-size:14px;color:rgba(255,255,255,.4)}.src span{color:#C9F08F}
+
+/* theme switch */
+.theme{display:inline-flex;padding:3px;border-radius:999px;background:#F2F2F5}
+.theme button{height:32px;padding:0 16px;border:0;border-radius:999px;background:none;font:500 14px Struve,sans-serif;color:#737378;cursor:pointer}
+.theme button.on{background:#fff;color:#1F1F21;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* ── light theme: grey squares, white interfaces. Lime stays the accent fill; on white, accent text uses Primary Dark */
+body.light .sq{background:#F2F2F5}
+body.light .dots{background-image:radial-gradient(rgba(31,31,33,.09) 1px,transparent 1.3px)}
+body.light .rec{background:rgba(255,255,255,.78);border-color:rgba(255,255,255,.6);color:#1F1F21;box-shadow:0 18px 36px -10px rgba(0,0,0,.45)}
+body.light .rec .bars i{background:rgba(31,31,33,.7)}
+body.light .lead path{stroke:rgba(255,255,255,.7)}
+body.light .bt{background:#fff;border-color:rgba(31,31,33,.06);box-shadow:0 10px 24px -12px rgba(31,31,33,.18);color:#1F1F21}
+body.light .bub.r .bt{background:#fff}
+body.light .bt small{color:#8A8A8F}
+body.light .bt p{color:#1F1F21}
+body.light .dw{color:#33694F}
+body.light .dw.hl{background:linear-gradient(180deg,transparent 62%,rgba(156,222,69,.45) 62%)}
+body.light .tp{background:#1F1F21;color:#fff;box-shadow:0 10px 24px -8px rgba(31,31,33,.35)}
+body.light .tp::after{background:#1F1F21}
+body.light .tp i{color:#9CDE45}
+body.light .ui{background:#fff;border-color:rgba(31,31,33,.06);box-shadow:0 30px 60px -24px rgba(31,31,33,.22),0 2px 6px rgba(31,31,33,.04);color:#1F1F21}
+body.light .ck{color:#1F1F21}
+body.light .ck i{background:rgba(156,222,69,.28);color:#33694F}
+body.light .ck.miss{color:#1F1F21}
+body.light .ck.miss i{background:#EDEDF0;color:#8A8A8F}
+body.light .ck.miss em{color:#8A8A8F}
+body.light .k{color:#8A8A8F}
+body.light .k::before{background:#B8B8BD}
+body.light .k.on{color:#33694F}
+body.light .hr{background:rgba(31,31,33,.08)}
+body.light .tip p{color:#1F1F21}
+body.light .tip p em{color:#33694F}
+body.light .say{background:rgba(156,222,69,.16);color:#1F1F21}
+body.light .ico3d{filter:drop-shadow(0 6px 10px rgba(31,31,33,.2))}
+
+/* Omar's avatar, built from layers so it can be framed: green circle, the cutout clipped to the circle below its middle and free above */
+.avo{position:relative;width:64px;height:64px;flex:none}
+.avo::before{content:"";position:absolute;inset:0;border-radius:50%;background:#33694F}
+.avo .clip{position:absolute;inset:0;clip-path:path("M0 32 A32 32 0 0 0 64 32 L64 -200 L0 -200 Z")}
+.avo img{position:absolute;left:-10px;top:-6px;width:88px;display:block}
+</style></head><body>
+<div class="lab-h"><h1>How it works · steps lab</h1><div class="theme"><button data-t="dark" class="on">Dark</button><button data-t="light">Light</button></div>
+  <p>Каждый шаг нарисован на одном холсте 600×600 и масштабируется целиком, поэтому кадр, пропорции и массы одинаковые на любом экране. Сверху — десктоп (600), снизу — айфон (343).</p></div>
+
+<template id="steps">
+  <div class="cell"><div class="sq s1"><div class="ill">
+    <svg class="lead" viewBox="0 0 600 600"><path d="M275 319 H311"/><circle class="c1" cx="318" cy="319" r="7"/><circle class="c2" cx="318" cy="319" r="3"/></svg>
+    <div class="rec"><span class="dot"></span>Recording<span class="bars"><i></i><i></i><i></i><i></i><i></i></span></div>
+  </div></div><div class="cap">01 · Record</div></div>
+
+  <div class="cell"><div class="sq"><div class="ill"><div class="dots"></div><div class="ctr">
+    <div class="dg">
+      <div class="dr g"><div class="bub r"><img class="avp" src="how/av-guest-pop.webp?v=3" alt=""><div class="bt"><small>Guest<em>0:04</em></small><p dir="rtl" lang="ar"><span class="dw">شلونك</span>؟ القهوة اليوم <span class="dw hl">وايد<span class="tp" dir="ltr"><b>very</b><i>Gulf</i></span></span> زينة</p></div></div></div>
+      <div class="dr b"><div class="bub"><span class="avo"><span class="clip"><img src="how/omar-cut.webp" alt=""></span></span><div class="bt"><small>Barista<em>0:06</em></small><p dir="ltr">All good! <span lang="ar" dir="rtl"><span class="dw hl">تبي<span class="tp" dir="ltr"><b>do you want</b><i>Gulf</i></span></span> نفس الطلب؟</span></p></div></div></div>
+      <div class="dr g"><div class="bub r"><img class="avp" src="how/av-guest-pop.webp?v=3" alt=""><div class="bt"><small>Guest<em>0:09</em></small><p dir="rtl"><span lang="ar">إي، بس <span class="dw">خله</span></span> <span dir="ltr">oat milk</span></p></div></div></div>
+    </div></div>
+  </div></div><div class="cap">02 · Transcribe</div></div>
+
+  <div class="cell"><div class="sq"><div class="ill"><div class="dots"></div><div class="ctr">
+    <div class="ui rv">
+      <div class="bd">
+        <div class="stage"><div class="bg"></div><div class="score"><span class="gauge"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" class="rt"/><circle cx="32" cy="32" r="28" class="rf" style="stroke-dasharray:123.2 176"/></svg><b>70%</b></span></div><div class="fig"><img src="how/omar-cut.webp" alt=""></div><div class="who"><b>Omar · Barista</b><span>Today · 14:06</span></div></div>
+        <div class="checks"><div class="ck"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Greeted the guest</div><div class="ck"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Handled the oat milk request</div><div class="ck miss"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg></i>Add-on offer<em>▶ 0:12</em></div></div>
+      </div></div></div>
+  </div></div><div class="cap">03 · Review</div></div>
+
+  <div class="cell"><div class="sq"><div class="ill"><div class="dots"></div><div class="ctr">
+    <div class="ui adv"><div class="bd">
+      <div class="ah"><img class="ico3d" src="how/lansy-icon.webp?v=2" alt="">
+        <b>Tips after your shift</b></div>
+      <div class="hr"></div>
+      <div class="tip"><span class="k">Went well</span><p>Every guest who asked for milk-free got oat or almond offered — <em>4 of 4</em>.</p></div>
+      <div class="tip"><span class="k on">Try tomorrow</span><p>Offer a pastry with the coffee — you skipped it in <em>9 of 11</em> orders. When you did offer, <em>1 in 2</em> guests said yes.</p>
+        <div class="say">“Would you like a croissant with that? They’re fresh out of the oven.”</div></div>
+    </div></div></div>
+  </div></div><div class="cap">04 · Advise</div></div>
+</template>
+
+<div class="row-l">Desktop · 600 × 600</div><div class="grid desk" id="desk"></div>
+<div class="row-l">iPhone · 343 × 343</div><div class="grid phone" id="phone"></div>
+
+<script>
+const t=document.getElementById('steps').content;
+['desk','phone'].forEach(id=>document.getElementById(id).append(t.cloneNode(true)));
+// the recording timer keeps running
+setInterval(()=>document.querySelectorAll('.rec time').forEach(el=>{const [h,m,s]=el.textContent.split(':').map(Number), x=h*3600+m*60+s+1;
+  el.textContent=`${Math.floor(x/3600)}:${String(Math.floor(x/60)%60).padStart(2,'0')}:${String(x%60).padStart(2,'0')}`;}),1000);
+// theme: Dark / Light buttons, or ?light in the URL
+const setTheme=t=>{document.body.classList.toggle('light',t==='light'); document.querySelectorAll('.theme button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));};
+document.querySelectorAll('.theme button').forEach(b=>b.onclick=()=>setTheme(b.dataset.t)); if(/[?&]light/.test(location.search))setTheme('light');
+// each canvas scales to its square
+const ro=new ResizeObserver(es=>es.forEach(e=>e.target.querySelector('.ill').style.setProperty('--k',e.contentRect.width/600)));
+document.querySelectorAll('.sq').forEach(el=>ro.observe(el));
+</script>
+</body></html>
