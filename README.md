@@ -61,6 +61,8 @@ The "Live in 2 weeks" floor is in the markup but hidden (`#launchFloor`).
 
 ## Rules the design follows
 
+The full rules are in [`DESIGN.md`](DESIGN.md): colour, spacing, the mobile type scale and the illustration system.
+
 - **Colour:** monochrome greys. The only accent is the Lansy palette: Primary Light `#9CDE45`, Primary Dark `#33694F`.
 - **Spacing:** 160px between floors.
 - **Motion:** soft rise on scroll, no blur. Pinned floors are driven by scroll progress in JS.

@@ -16,7 +16,9 @@ if(LANG==='ar'){const h=document.documentElement, f={noto:'Noto Sans Arabic',rea
 @font-face{font-family:Struve;src:url(fonts/Struve-Semibold.woff2) format('woff2');font-weight:600;font-style:normal;font-display:swap}
 @font-face{font-family:Struve;src:url(fonts/Struve-Bold.woff2) format('woff2');font-weight:700;font-style:normal;font-display:swap}
 @font-face{font-family:Struve;src:url(fonts/Struve-BoldSlanted.woff2) format('woff2');font-weight:700;font-style:italic;font-display:swap}
-:root{--ink:#1F1F21;--grey:#8A8A8F;--line:#E6E6E8;--soft:#F4F4F5;--dark:#29292B;--bg:#fff}
+:root{--ink:#1F1F21;--grey:#8A8A8F;--line:#E6E6E8;--soft:#F4F4F5;--dark:#29292B;--bg:#fff;
+  /* the hero's neutral, the one grey for surfaces: a full floor fades to near-white like the hero; a card fades warm → cool */
+  --n-floor:linear-gradient(180deg,#EDEDE9 0%,#F3F3F4 60%,#FAFAFA 100%);--n-card:linear-gradient(180deg,#EDEDE9 0%,#F3F3F4 100%)}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--ink);font-family:Struve,system-ui,sans-serif}
 /* Struve ss10 = single-storey a; !important because every `font:` shorthand resets font-feature-settings */
@@ -207,8 +209,8 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .gl{position:relative;margin-top:auto;padding-top:22px}.segs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}.segs i{height:44px;border-radius:3px;background:rgba(31,31,33,.08)}.segs i.k{background:var(--ink)}
 .gl .gt{position:absolute;top:0;bottom:-6px;border-left:1px dashed #5C5C61}.gl .gt span{position:absolute;left:5px;top:0;font-size:11px;color:#737378}
 /* 06 product + roles — Figma 105:2: pinned grey floor, horizontal role tabs switched by scroll, devices bleed off the bottom */
-.roles-run{position:relative;background:#F2F2F5}
-.roles-pin{position:sticky;top:0;height:100vh;overflow:hidden;background:#F2F2F5}
+.roles-run{position:relative;background:#F3F3F4}
+.roles-pin{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--n-floor)}
 .roles-pin .wrap{padding-top:clamp(56px,9vh,96px)}
 .roles-pin h2{margin-top:32px;font-size:40px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
 .rscene{position:relative;margin-top:32px;height:900px}
@@ -219,7 +221,7 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .rtab .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}
 .rtab .body>div{overflow:hidden}
 .rtab .bar{position:relative;height:1px;margin-top:14px;background:rgba(31,31,33,.08)}.rtab .bar::after{content:"";position:absolute;left:0;top:-.5px;height:2px;width:var(--f,0%);background:var(--ink)}
-.rtab h3{margin-top:16px;font-size:20px;line-height:1.3;font-weight:600}.rtab p{margin-top:8px;font-size:15px;line-height:1.45;color:#737378}
+.rtab h3{margin-top:16px;font-size:15px;line-height:1.45;font-weight:500}.rtab p{margin-top:2px;font-size:15px;line-height:1.45;color:#737378}
 .rtab.on{background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06)}.rtab.on .k{color:var(--ink)}.rtab.on .k i{background:var(--ink)}.rtab.on .body{grid-template-rows:1fr}
 .rdev{position:absolute;left:0;right:0;top:233px;height:640px;opacity:0;transform:translateY(24px);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1)}
 .rdev.on{opacity:1;transform:none}
@@ -257,6 +259,9 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .case .clogo.sayori{font-size:22px;font-weight:800;font-style:italic;letter-spacing:-.02em;text-transform:uppercase}
 .case .clogo.pro{font-family:Georgia,serif;font-style:italic;font-size:26px;letter-spacing:-.01em}.case .clogo.pro small{font-family:'JetBrains Mono',monospace;font-style:normal;font-size:11px;font-weight:600;letter-spacing:.04em}
 .case .clogo.brew{font-size:20px;font-weight:600;letter-spacing:-.03em}
+/* clients are under NDA for now: the industry stands in for the logo, the role for the name (the named version is in labs/cases-named.html) */
+.case .clogo.anon{justify-content:space-between;gap:16px;font-size:20px;font-weight:600;letter-spacing:-.02em}
+.case .soonbtn{border:1px solid var(--line);color:#8A8A8F;cursor:default}
 .case blockquote{margin-top:28px;font-size:23px;line-height:1.4;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
 .case .au{margin-top:16px;font-size:15px;color:#737378}.case .au b{font-weight:600;color:var(--ink)}
 .case h3{margin-top:32px;font-size:30px;line-height:1.2;font-weight:600;letter-spacing:-.02em}
@@ -271,6 +276,15 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .case .ph.crop{cursor:grab;outline:2px dashed rgba(31,31,33,.5);outline-offset:-2px}.case .ph.crop.drag{cursor:grabbing}
 .cropval{position:absolute;left:12px;bottom:12px;z-index:2;display:none;padding:4px 8px;border-radius:6px;background:rgba(31,31,33,.72);color:#fff;font:500 11px 'JetBrains Mono',monospace}.case .ph.crop .cropval{display:block}
 @media(max-width:900px){.case{height:auto;grid-template-columns:1fr}.case .ph{height:260px;order:-1}}
+/* 07 · phones: a card fits one screen under the top bar, on the phone type scale (34 / 24 / 17 / 15): shorter photo, 20px padding,
+   the quote at body size, the numbers at card-title size; the arrows stay (they show there is more to the right), beside the heading's short last line so it keeps two lines */
+@media(max-width:900px){.cases .cases-hd{display:block;position:relative}.cases-hd h2{font-size:34px}.cases .arrows{position:absolute;right:0;bottom:0}
+  .case .ph{height:168px}.case .tx{padding:20px 20px 24px}
+  .case .clogo.anon{height:auto;font-size:15px}
+  .case blockquote{margin-top:12px;font-size:17px;line-height:1.5}
+  .case .au{margin-top:8px}
+  .case .ms{gap:16px;margin-top:20px;padding-top:20px}.case .m b{font-size:24px}.case .m span{margin-top:6px}
+  .case .btn{margin-top:20px}}
 /* 08 getting started — Figma 20:154: 14-day ruler that fills as the floor scrolls through; steps light up when reached (Shade ref) */
 .launch{padding:0 0 160px}
 .launch h2{margin-top:24px;font-size:40px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
@@ -291,10 +305,21 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .risks-hd h2{margin-top:20px;font-size:40px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
 .bento{display:grid;gap:24px;margin-top:32px}
 .bento .brow{display:grid;gap:24px;grid-template-columns:708fr 468fr}.bento .brow.r2{grid-template-columns:468fr 708fr}
-.bc{position:relative;height:420px;border-radius:24px;background:#F4F4F5;overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)}
+.bc{position:relative;height:420px;border-radius:24px;background:var(--n-card);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)}
 /* bento cards rise row by row as each row scrolls in; the second card of a row follows the first */
+.bc.tt{background:linear-gradient(0deg,#EDEDE9 0%,#F3F3F4 100%)}   /* the hero's neutral; the warm end sits under the picture (text on top: at the bottom) */
+.bc.tt .tx{padding-bottom:0}   /* text on top: its bottom padding would only push the picture down */
 .brow.in .bc{opacity:1;transform:none}.brow.in .bc:nth-child(2){transition-delay:.15s}
 @media (prefers-reduced-motion:reduce){.bc{opacity:1;transform:none;transition:none}}
+/* 09 · phones: one card after another, all the same height; text on top, picture below; titles at text size (34 · 17 · 15 · 12) */
+@media (max-width:900px){.risks-hd h2{font-size:34px}
+  .bento{gap:20px}.bento .brow,.bento .brow.r2{grid-template-columns:1fr;gap:20px}
+  #risks .bc{height:440px;background:linear-gradient(0deg,#EDEDE9 0%,#F3F3F4 100%)}#risks .bc .tx{order:-1;padding:20px 20px 0}   /* #risks: these follow the base card rules below */
+  #risks .bc h3{font-size:17px;line-height:1.5;font-weight:600}#risks .bc .tx p{margin-top:2px;font-size:17px;line-height:1.5}#risks .bc p br{display:none}
+  /* the interface cards are not scaled down on phones: they take the card's width and the phone type scale */
+  #risks .il .cvs{left:0;top:0;width:100%;height:100%;transform:none}   /* one step more specific: the picture rules come later in the file */
+  #risks .il .ui{width:calc(100% - 40px)}#risks .il .ui .bd{padding:18px 20px 20px;gap:12px}
+  #risks .ui .ln p,#risks .ui .pv .t b{font-size:17px}#risks .ui .ln small,#risks .ui .pv .t span,#risks .ui .pv .chip{font-size:15px}}
 .bc .tx{padding:32px}.bc.b1 p,.bc.b4 p{max-width:600px}.bc h3{font-size:20px;line-height:1.3;font-weight:600}.bc p{margin-top:8px;font-size:16px;line-height:1.45;color:#737378;max-width:420px}
 .bc .il{position:relative;flex:1}
 .risks:not(.playing) .bc *{animation-play-state:paused!important}
@@ -314,25 +339,45 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 @keyframes chipOut{0%{opacity:0;transform:translateX(40px)}10%,30%{opacity:1;transform:none}45%,85%{opacity:.3;transform:none}100%{opacity:0}}
 @keyframes strike{0%,25%{transform:scaleX(0)}38%,100%{transform:scaleX(1)}}
 @keyframes tag9{0%,35%{opacity:0}45%,85%{opacity:1}100%{opacity:0}}
-/* 2 · names and numbers masked */
-.b2 .wpanel{left:32px;right:32px;top:8px;bottom:-24px;padding:24px 24px;display:flex;flex-direction:column;gap:14px;font-size:14px;line-height:1.4;color:#5C5C61}
-.b2 .ln span{color:#8A8A8F;font:500 11px "JetBrains Mono",monospace;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:2px}
-.mask{position:relative;color:#1F1F21;font-style:normal}.mask::after{content:"";position:absolute;left:-2px;right:-2px;top:-1px;bottom:-1px;border-radius:4px;background:#1F1F21;transform:scaleX(0);transform-origin:left;animation:mask9 5s infinite}
-.ln:nth-child(2) .mask::after{animation-delay:.35s}.ln:nth-child(3) .mask::after{animation-delay:.7s}
-@keyframes mask9{0%,12%{transform:scaleX(0)}24%,88%{transform:scaleX(1)}100%{transform:scaleX(0)}}
-/* 3 · only your own conversations */
-.b3 .wpanel{left:24px;right:24px;top:24px;height:210px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
-.cv{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:10px}.cv.me{background:#F4F4F5}
-.cv .av{width:30px;height:30px;border-radius:50%;background:#D9D9DE;flex:none;display:grid;place-items:center;font-size:11px;font-weight:600;color:#5C5C61}
-.cv .t{flex:1;display:flex;flex-direction:column;gap:6px}.cv .t i{display:block;height:7px;border-radius:4px;background:#D9D9DE}.cv .t i:last-child{width:60%;background:#E6E6EA}
-.cv b{font-size:12px;font-weight:600}.cv small{font-size:11px;color:#8A8A8F}
-.cv.other .t,.cv.other .av{filter:blur(0);animation:blur9 5s infinite}
-.cv.other svg{flex:none;opacity:0;animation:lock9 5s infinite}
+/* 2 and 3 · the How it works illustration language, light theme: each picture is drawn on one 440×300 canvas and scaled as a
+   whole (desktop: .92 on every card); white interface cards, one type scale (18 body · 15 meta · 12 mono labels), lime as the accent */
+#risks .dots{position:absolute;inset:0;background:radial-gradient(rgba(31,31,33,.09) 1px,transparent 1.3px) 0 0/20px 20px;-webkit-mask:radial-gradient(60% 70% at 50% 50%,#000 30%,transparent);mask:radial-gradient(60% 70% at 50% 50%,#000 30%,transparent)}
+#risks .cvs{position:absolute;left:50%;top:50%;width:440px;height:300px;transform:translate(-50%,-50%) scale(var(--k,.92));display:flex;align-items:center;justify-content:center}
+#risks .ui{position:relative;width:380px;border-radius:24px;background:#fff;border:1px solid rgba(31,31,33,.06);box-shadow:0 30px 60px -24px rgba(31,31,33,.22),0 2px 6px rgba(31,31,33,.04);color:var(--ink)}
+#risks .ui .bd{padding:20px 24px 22px;display:flex;flex-direction:column;gap:14px}
+#risks .ui .k{display:inline-flex;align-items:center;gap:8px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F}
+#risks .ui .k::before{content:"";width:7px;height:7px;border-radius:50%;background:#B8B8BD}
+#risks .ui .k.on{color:#33694F}#risks .ui .k.on::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
+#risks .ln small{display:block;font-size:15px;color:#8A8A8F}
+#risks .ln p{margin-top:2px;max-width:none;font-size:18px;line-height:1.4;color:var(--ink)}#risks .ln p.one{white-space:nowrap}   /* one-line replies never wrap, whichever is wider: the number or its tag */
+/* 2 · anonymized: the name or number folds away and a hairline tag with its type takes its place; the first reply stays two lines either way */
+#risks .mask{font-style:normal;white-space:nowrap}
+#risks .mask .o,#risks .mask .t{display:inline-flex;align-items:center;overflow:hidden;white-space:nowrap;vertical-align:baseline}   /* inline-flex keeps the baseline while clipped: the tag label sits on the line's baseline */
+#risks .mask .o{max-width:12em;animation:pvOut 5s infinite}
+#risks .mask .t{max-width:0;height:24px;padding:0;border:1px solid rgba(31,31,33,.14);border-radius:999px;font:500 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F;opacity:0;animation:pvIn 5s infinite}
+#risks .ln:nth-child(3) .mask *{animation-delay:.35s}#risks .ln:nth-child(4) .mask *{animation-delay:.7s}
+@keyframes pvOut{0%,14%{max-width:12em;opacity:1}30%,86%{max-width:0;opacity:0}100%{max-width:12em;opacity:1}}
+@keyframes pvIn{0%,14%{max-width:0;padding:0;opacity:0}30%,86%{max-width:6em;padding:0 9px;opacity:1}100%{max-width:0;padding:0;opacity:0}}
+/* 3 · private by default: your row is open, the other one is blurred and locked */
+#risks .pv{display:flex;align-items:center;gap:14px;padding:10px 12px;margin:0 -12px;border-radius:14px}#risks .pv.me{background:#F6F6F7}
+#risks .pv .t{flex:1;min-width:0}#risks .pv .t b{display:block;font-size:18px;font-weight:600}#risks .pv .t span{font-size:15px;color:#8A8A8F}
+#risks .pv .chip{flex:none;height:26px;padding:0 11px;border-radius:999px;background:rgba(156,222,69,.28);color:#33694F;font-size:15px;font-weight:500;line-height:26px}
+#risks .pv .av{width:44px;height:44px;border-radius:50%;flex:none;background:#E4E4E8}
+#risks .pv.other .t i{display:block;height:9px;border-radius:5px;background:#E4E4E8}#risks .pv.other .t i+i{margin-top:8px;width:55%;background:#EDEDF0}
+#risks .pv.other .av,#risks .pv.other .t{animation:blur9 5s infinite}
+#risks .pv.other svg{flex:none;width:18px;height:18px;color:#8A8A8F;opacity:0;animation:lock9 5s infinite}
 @keyframes blur9{0%,15%{filter:blur(0)}30%,85%{filter:blur(4px)}100%{filter:blur(0)}}
 @keyframes lock9{0%,20%{opacity:0}32%,85%{opacity:1}100%{opacity:0}}
+/* Omar's avatar, as in How it works: green circle, the cutout free above its middle */
+#risks .avo{position:relative;width:44px;height:44px;flex:none}
+#risks .avo::before{content:"";position:absolute;inset:0;border-radius:50%;background:#33694F}
+#risks .avo .clip{position:absolute;inset:0;clip-path:path("M0 22 A22 22 0 0 0 44 22 L44 -200 L0 -200 Z")}
+#risks .avo img{position:absolute;left:-7px;top:-4px;width:60px;display:block}
 /* 4 · a big dotted planet with the UAE marked — the large graphic in the bento rhythm */
-.b4 #planet{position:absolute;inset:0;width:100%;height:100%}
-.b4 .uae{position:absolute;font:500 11px "JetBrains Mono",monospace;letter-spacing:.06em;color:#1F1F21;transform:translate(14px,-50%)}
+.b4 #planet{position:absolute;inset:0;z-index:0;width:100%;height:100%}
+.b4 .uae{position:absolute;z-index:1;will-change:transform;display:flex;align-items:center;gap:8px;height:32px;padding:0 14px 0 12px;border-radius:999px;background:#fff;border:1px solid rgba(31,31,33,.06);box-shadow:0 12px 24px -10px rgba(31,31,33,.25);font-size:15px;font-weight:500;color:#1F1F21;white-space:nowrap;transform:translate(16px,-50%)}
+.b4 .uae.l{transform:translate(calc(-100% - 16px),-50%)}   /* no room on the right (phones): the pill goes to the left of the dot */
+.b4 .uae i{width:8px;height:8px;border-radius:50%;background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
 /* (unused) pipeline styles kept below for reference */
 .b4 .zone{position:absolute;left:32px;right:32px;top:8px;bottom:32px;border:1.5px dashed #C4C4CA;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:14px}
 .b4 .zl{position:absolute;left:18px;top:-9px;background:#F4F4F5;padding:0 8px;font:500 11px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F}
@@ -358,6 +403,9 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .qa.open button i{transform:rotate(45deg)}
 .qa .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}.qa.open .a{grid-template-rows:1fr}
 .qa .a>div{overflow:hidden}.qa .a p{padding:0 40px 22px 0;font-size:16px;line-height:1.55;color:#737378}
+/* 10 · phones: one column, on the phone type scale (34 heading · 17 questions and answers, the question set apart by weight) */
+@media (max-width:900px){.faq h2{font-size:34px}.faq-cols{grid-template-columns:1fr;margin-top:24px}
+  .qa button{gap:16px;padding:16px 0;font:500 17px/1.45 Struve,system-ui,sans-serif}.qa .a p{padding:0 32px 18px 0;font-size:17px;line-height:1.5}}
 /* 11 final CTA — Figma 20:220 */
 .final{margin:0 0 160px;padding:96px 40px;border-radius:24px;background:var(--soft);text-align:center;display:flex;flex-direction:column;align-items:center}
 .final h2{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.025em}
@@ -369,14 +417,25 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .final::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1.4px);background-size:18px 18px;-webkit-mask:radial-gradient(70% 80% at 50% 30%,#000,transparent 75%);mask:radial-gradient(70% 80% at 50% 30%,#000,transparent 75%)}
 .final h2{color:#fff}.final p{color:#9C9CA4}
 .final .btn.dark{background:#98F048;color:#141519}.final .btn.dark:hover{background:#A8F65E}
+/* 11 · phones: the phone type scale (34 heading · 17 text), a smaller icon and tighter padding */
+@media (max-width:900px){.final{padding:40px 20px 48px}.final .spin{width:96px;height:96px;margin-bottom:12px}
+  .final h2{font-size:34px;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}.final h2 br{display:none}
+  .final p{margin-top:16px;max-width:290px;font-size:17px;text-wrap:balance}.final .btn{margin-top:28px}}   /* the subline in three lines, clear of the edges */
 /* footer — Aceternity "Simple Footer with Four Grids", light; content from the current lansy.ai footer */
 .foot{position:relative;overflow:hidden}
-.foot .wrap{display:grid;grid-template-columns:1.2fr 1fr 1.6fr 1fr 1.3fr;gap:32px;padding:64px 0 40px}
+.foot .wrap{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.2fr;gap:32px;padding:0 0 40px}   /* the final CTA already leaves the 160px floor step above */
 .flogo{display:block;height:28px;width:auto;color:var(--ink)}
 .foot .copy{margin-top:16px;font-size:13px;color:#8A8A8F;line-height:1.5}
-.foot h5{font-size:13px;font-weight:500;color:#8A8A8F;margin-bottom:14px}
-.foot ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}.foot a{font-size:14px;color:#3A3A3E;text-decoration:none}.foot a:hover{color:var(--ink)}
-.foot .legal{grid-column:1/-1;display:flex;justify-content:space-between;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:#8A8A8F}.foot .legal div{display:flex;gap:24px}.foot .legal a{font-size:13px;color:#8A8A8F}
+.foot h5{margin-bottom:16px;font:500 12px/1.6 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}   /* column titles are the page's mono labels */
+.foot ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:12px}.foot a{font-size:16px;color:#3A3A3E;text-decoration:none}.foot a:hover{color:var(--ink)}
+.foot .legal{grid-column:1/-1;display:flex;justify-content:space-between;padding-top:24px;border-top:1px solid var(--line);font-size:15px;color:#8A8A8F}.foot .legal div{display:flex;gap:24px}.foot .legal a{font-size:15px;color:#8A8A8F}
+/* 12 · phones: a minimal footer — logo, the top bar's sections in two columns, contacts, legal; phone type scale (17 · 15) */
+.foot .fmob{display:none}
+@media (max-width:900px){.foot .wrap{grid-template-columns:1fr;gap:28px;padding-bottom:32px}.foot .wrap>div:not(:first-child):not(.fmob):not(.legal){display:none}
+  .foot .fmob{display:flex;flex-direction:column;gap:28px}
+  .foot .fnav{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}.foot .fmob a{font-size:17px;color:var(--ink)}
+  .foot .fcon{gap:8px}.foot .fcon a{color:#737378}
+  .foot .legal{flex-direction:column;gap:8px;padding-top:20px;font-size:15px}.foot .legal a{font-size:15px}.foot .legal div{gap:20px}}
 /* 05 industries — Aceternity "Apple Cards Carousel": tall photo cards, arrows on top, click opens the industry with its metrics */
 .inds{padding:136px 0 160px}
 .isub{margin-top:32px;max-width:680px;font-size:18px;line-height:1.5;color:#737378}
@@ -384,8 +443,8 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .ind{display:block;text-decoration:none;color:#fff;position:relative;flex:none;width:360px;height:520px;border-radius:24px;overflow:hidden;cursor:pointer;scroll-snap-align:start;background:linear-gradient(160deg,#5C5C61,#2A2A2D 70%);opacity:0;transform:translateY(24px);transition:opacity .6s,transform .7s cubic-bezier(.2,.8,.2,1)}
 .inds.in .ind{opacity:1;transform:none}
 .ind img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}.ind:hover img{transform:scale(1.04)}
-.ind-more{background:#FCFCFC;border:1.5px dashed #D4D4D8;cursor:default;color:var(--ink)}.ind-more::after{display:none}.ind-more:hover{transform:none}
-.ind-more .plus{position:absolute;left:28px;top:28px;width:56px;height:56px;border-radius:50%;background:#F1F1F2;display:grid;place-items:center;color:var(--ink)}
+.ind-more{background:var(--n-card);border:0;cursor:default;color:var(--ink)}.ind-more::after{display:none}.ind-more:hover{transform:none}
+.ind-more .plus{position:absolute;left:28px;top:28px;width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--ink)}
 .ind-more .ov{color:var(--ink)}.ind.ind-more p{font-size:22px;line-height:1.35;color:var(--ink);letter-spacing:-.01em}.ind.ind-more .btn{display:inline-flex;width:auto;margin-top:24px}
 .ind .phx{position:absolute;left:24px;top:24px;right:24px;font-size:12px;line-height:1.4;color:rgba(255,255,255,.5)}
 .ind::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55));pointer-events:none}
@@ -411,8 +470,9 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
   -webkit-mask-box-image:url(how/squircle.svg?v=2) 40 fill / 54px stretch;mask-border:url(how/squircle.svg?v=2) 40 fill / 54px stretch}
 .mid-cta h3{max-width:560px;font-size:28px;line-height:1.25;font-weight:600;letter-spacing:-.02em}
 .mid-cta .btns{display:flex;gap:12px;flex:none}
-@media (max-width:900px){#midCta{margin-top:72px}.mid-cta{flex-direction:column;align-items:flex-start;gap:24px;padding:28px 40px 28px 20px}
-  .mid-cta h3{font-size:24px;text-wrap:balance}}   /* more room on the right and balanced lines, so the heading doesn't run into the corner */
+@media (max-width:900px){#midCta{margin-top:72px}.mid-cta{flex-direction:column;align-items:center;gap:24px;padding:32px 20px;text-align:center}
+  .mid-cta h3{font-size:24px}}   /* centred, three set lines: "first" goes with "Your team gets its" */
+br.mb{display:none}@media (max-width:900px){br.mb{display:inline}br.dk{display:none}}   /* line breaks for phones only */
 /* desktop: the CTA follows the pin and is pulled up into its empty foot, so it rises in under the caption once the steps are
    done; it takes no room from the scene while the steps play */
 #midCta{position:relative;z-index:1}
@@ -423,7 +483,7 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
   /* the industry badge drops to the "Learn more" size (15px) */
   .inds .ind h3.badge{height:36px;padding:0 14px 0 12px;gap:8px;font-size:15px}.inds .ind h3.badge svg{width:18px;height:18px}
   .inds .ind .ov{top:20px;left:20px;right:20px;bottom:20px}.inds .ind-more .plus{left:20px;top:20px}}
-.inds .ind.ind-more{background:#FCFCFC}.inds .ind-more .ov{top:auto}.inds .ind.ind-more p{font-size:22px;line-height:1.35;color:var(--ink)}
+.inds .ind.ind-more{background:var(--n-card)}.inds .ind-more .ov{top:auto}.inds .ind.ind-more p{font-size:22px;line-height:1.35;color:var(--ink)}
 
 .met-link{display:inline-block;margin-top:32px;font-size:16px;font-weight:500;color:var(--ink);text-decoration:none}
 /* 04 CTA — Aceternity "CTA With Dashed Grid Lines" composition (statement + buttons | divider | testimonial), grey block for now */
@@ -618,8 +678,6 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
   .scene .step{display:block;position:sticky;top:calc(76px + var(--i)*10px);margin-bottom:20px;border-radius:28px;overflow:hidden}
   .scene .step:last-child{margin-bottom:0}.scene .step{transform-origin:50% 0}
   .scene .step .pane{-webkit-mask-box-image:none;mask-border:none;border-radius:0}   /* the card's corners round the picture */
-  /* scroll with a light pull: near a card, the page settles so the whole card lands under the top bar */
-  html{scroll-snap-type:y proximity}.scene .step{scroll-snap-align:start;scroll-margin-top:calc(76px + var(--i)*10px)}
   .scene .step .pane-cap{margin:0;padding:20px 20px 24px;background:#fff;border:1px solid rgba(31,31,33,.12);border-top:0;border-radius:0 0 28px 28px}
   .pane-cap h3{font-size:24px;line-height:1.25;font-weight:600;letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
   .pane-cap p{margin-top:8px;font-size:17px;line-height:1.55;color:#737378}.pane-cap b{font-weight:inherit;color:inherit}
@@ -677,6 +735,15 @@ html[dir=rtl] .case .clogo{direction:ltr;align-self:flex-start}   /* client logo
 html[dir=rtl] .tiles{justify-content:flex-end}
 html[dir=rtl] .live .ico{margin:0 -2px 0 0}
 html[dir=rtl] .live .who{margin:0 -4px 0 0}
+/* phones: the rest of the page on one type scale — 40 hero · 34 floor headings · 24 large text · 17 body and buttons · 15 small · 12 mono labels
+   (the top bar keeps its own sizes; product illustrations keep theirs) */
+@media (max-width:900px){.hero h1{font-size:40px;line-height:1.1}
+  .btn.lg{font-size:17px}.snd{font-size:15px}
+  .manifesto{font-size:24px;line-height:1.3}
+  .rint .l,.rint .lg5{font-size:15px}
+  .inds .ind.ind-more p{font-size:24px;line-height:1.3}
+  .roles-pin h2{font-size:34px}
+  .rtab .soon{font-size:12px}.rtab h3,.rtab p{font-size:17px;line-height:1.5}}
 </style></head><body>
 <nav class="topbar"><span class="tb-pill" aria-hidden="true"></span>
   <span class="navlinks tb-l"><span>Product</span><span>Industries</span><span>Cases</span><span>Pricing</span><span>Company</span></span>
@@ -758,7 +825,7 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
 </section>
 </div></div></div>
 </div></div></div>
-<div class="wrap" id="midCta"><section class="mid-cta"><h3>Start with one counter. Your team gets its first tips within days.</h3><div class="btns"><a class="btn lg dark" href="#">Start a pilot <span>→</span></a></div></section></div>
+<div class="wrap" id="midCta"><section class="mid-cta"><h3>Start with one counter.<br class="mb"> Your team gets its first<br class="mb"> tips within days.</h3><div class="btns"><a class="btn lg dark" href="#">Start a pilot <span>→</span></a></div></section></div>
 <div class="wrap" id="indsFloor"><section class="inds" id="inds">
   <div class="cases-hd"><div><div class="lbl">You choose the metric</div><h2 style="margin-top:24px;font-size:40px;line-height:1.15;font-weight:600;letter-spacing:-.02em;max-width:583px">Track what your staff can actually influence</h2><p class="isub">Add-ons in cafés, next visits in clinics, feedback in schools — Lansy measures what matters in your industry and why.</p></div>
     <div class="arrows"><button id="iPrev" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 12.002H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.9999 18.002C10.9999 18.002 4.99998 13.583 4.99997 12.0019C4.99996 10.4208 11 6.00195 11 6.00195" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="iNext" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.5 12L4.99997 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
@@ -790,9 +857,9 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
 <div class="rint" id="rint"><div class="l">Connects to your stack</div><div class="logos" id="rlogos"></div></div>
 </section></div>
 <div class="cases-floor" id="casesFloor"><div class="wrap"><section class="cases" id="cases">
-  <div class="cases-hd"><div><div class="lbl">Cases</div><h2>How our clients use Lansy</h2></div>
+  <div class="cases-hd"><div><div class="lbl">Cases</div><h2>How our clients<br class="mb"> use Lansy</h2></div>
     <div class="arrows"><button id="cPrev" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 12.002H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.9999 18.002C10.9999 18.002 4.99998 13.583 4.99997 12.0019C4.99996 10.4208 11 6.00195 11 6.00195" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="cNext" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.5 12L4.99997 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
-  <div class="track" id="track"><article class="case"><div class="tx"><i class="clogo sayori"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>Sayori</i><blockquote>“We used to hear maybe one call in fifty. Now we see every order — and operators offer add-ons without being reminded.”</blockquote><div class="au"><b>Arjun Mehta</b> · Head chef and co-owner, Sayori</div><div class="ms"><div class="m"><b>×4.3</b><span>more often operators read the order back</span></div><div class="m"><b>−55%</b><span>fewer wrong orders at pickup points</span></div></div><a class="btn md dark" href="#">Read the case <span>↗</span></a></div><div class="ph"><img src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/cases/delivery.webp" style="--z:1.41;--tx:1px;--ty:-52px" alt="" loading="lazy"></div></article><article class="case"><div class="tx"><i class="clogo pro"><small>PRO</small>school</i><blockquote>“Teachers were nervous at first. A month later they were asking for their own feedback after every lesson.”</blockquote><div class="au"><b>Emily Carter</b> · Academic director, PROschool</div><div class="ms"><div class="m"><b>85–90%</b><span>analysis accuracy, checked by experts</span></div><div class="m"><b>Minutes</b><span>to review a lesson instead of hours</span></div></div><a class="btn md dark" href="#">Read the case <span>↗</span></a></div><div class="ph"><img src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/cases/teacher.webp" style="--z:1.63;--tx:-20px;--ty:55px" alt="" loading="lazy"></div></article><article class="case"><div class="tx"><i class="clogo brew"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z" stroke="currentColor" stroke-width="1.8"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5c0 1 1 1.5 1 2.5M12 3.5c0 1 1 1.5 1 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Northbrew</i><blockquote>“Baristas started mentioning the loyalty card on their own — because now they can see who already does it.”</blockquote><div class="au"><b>Marco Reyes</b> · Head barista, Northbrew</div><div class="ms"><div class="m"><b>+50%</b><span>loyalty cards issued</span></div><div class="m"><b>2 weeks</b><span>from one pilot location to first results</span></div></div><a class="btn md dark" href="#">Read the case <span>↗</span></a></div><div class="ph"><img src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/cases/barista.webp" style="--z:1.4;--tx:-1px;--ty:-91px" alt="" loading="lazy"></div></article></div>
+  <div class="track" id="track"><article class="case"><div class="tx"><div class="clogo anon"><div>Food delivery chain</div></div><blockquote>“We used to hear maybe one call in fifty. Now we see every order — and operators offer add-ons without being reminded.”</blockquote><div class="au">Head chef and co-owner</div><div class="ms"><div class="m"><b>×4.3</b><span>more often operators read the order back</span></div><div class="m"><b>−55%</b><span>fewer wrong orders at pickup points</span></div></div><span class="btn md soonbtn" aria-disabled="true">Full case coming soon</span></div><div class="ph"><img src="how/case-delivery.webp" alt="" loading="lazy"></div></article><article class="case"><div class="tx"><div class="clogo anon"><div>Online school</div></div><blockquote>“Teachers were nervous at first. A month later they were asking for their own feedback after every lesson.”</blockquote><div class="au">Academic director</div><div class="ms"><div class="m"><b>85–90%</b><span>analysis accuracy, checked by experts</span></div><div class="m"><b>Minutes</b><span>to review a lesson instead of hours</span></div></div><span class="btn md soonbtn" aria-disabled="true">Full case coming soon</span></div><div class="ph"><img src="how/case-school.webp" alt="" loading="lazy"></div></article><article class="case"><div class="tx"><div class="clogo anon"><div>Coffee chain</div></div><blockquote>“Baristas started mentioning the loyalty card on their own — because now they can see who already does it.”</blockquote><div class="au">Head barista</div><div class="ms"><div class="m"><b>+50%</b><span>loyalty cards issued</span></div><div class="m"><b>2 weeks</b><span>from one pilot location to first results</span></div></div><span class="btn md soonbtn" aria-disabled="true">Full case coming soon</span></div><div class="ph"><img src="how/case-coffee.webp?v=2" alt="" loading="lazy"></div></article></div>
 </section></div></div>
 <div class="wrap" id="launchFloor" hidden><!-- 08 temporarily hidden --><section class="launch" id="launch">
   <div class="lbl">Getting started</div>
@@ -811,25 +878,28 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
   </div>
 </section></div>
 <div class="wrap"><section class="risks" id="risks">
-  <div class="risks-hd"><div class="lbl">Privacy &amp; security</div><h2>Built to mentor your team,<br>never to watch over it</h2></div>
+  <div class="risks-hd"><div class="lbl">Privacy &amp; security</div><h2>Built to mentor<br class="mb"> your team,<br class="dk"> never<br class="mb"> to watch over it</h2></div>
   <div class="bento">
     <div class="brow">
       <div class="bc b1"><div class="il"><canvas id="wave9"></canvas></div>
         <div class="tx"><h3>Personal talk stays out</h3><p>Off-topic conversations — a call home, a chat on a break —<br>are detected and removed before analysis.</p></div></div>
-      <div class="bc b2"><div class="tx"><h3>Anonymized</h3><p>Names, phone numbers, addresses and card numbers are masked before any AI sees the text.</p></div>
-        <div class="il"><div class="wpanel">
-          <div class="ln"><span>Guest</span>Hi, this is <em class="mask">Sarah Khan</em>, a table for two.</div>
-          <div class="ln"><span>Guest</span>Call me at <em class="mask">+971 50 123 4567</em> if it’s late.</div>
-          <div class="ln"><span>Barista</span>Card ending <em class="mask">4821</em> — all done, thanks!</div></div></div></div>
+      <div class="bc b2 tt"><div class="tx"><h3>Anonymized</h3><p>Names, phone numbers, addresses and card numbers are masked before any AI sees the text.</p></div>
+        <div class="il"><div class="dots"></div><div class="cvs"><div class="ui"><div class="bd">
+          <span class="k on">Before the AI</span>
+          <div class="ln"><small>Guest</small><p>Hi, this is <em class="mask"><span class="o">Sarah Khan</span><span class="t">Name</span></em> — I booked a table for two at seven.</p></div>
+          <div class="ln"><small>Guest</small><p class="one">Call me at <em class="mask"><span class="o">050 123 4567</span><span class="t">Phone</span></em></p></div>
+          <div class="ln"><small>Barista</small><p class="one">Card ending <em class="mask"><span class="o">4821</span><span class="t">Card</span></em> — done!</p></div>
+        </div></div></div></div></div>
     </div>
     <div class="brow r2">
-      <div class="bc b3"><div class="il"><div class="wpanel">
-          <div class="cv me"><span class="av">You</span><div class="t"><b>Your shift · 23 conversations</b><small>Tip ready</small></div></div>
-          <div class="cv other"><span class="av">OM</span><div class="t"><i></i><i></i></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8A8A8F" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#8A8A8F" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-          <div class="cv other"><span class="av">LK</span><div class="t"><i></i><i></i></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#8A8A8F" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#8A8A8F" stroke-width="1.8" stroke-linecap="round"/></svg></div></div></div>
+      <div class="bc b3"><div class="il"><div class="dots"></div><div class="cvs"><div class="ui"><div class="bd">
+          <span class="k">Conversations</span>
+          <div class="pv me"><span class="avo"><span class="clip"><img src="how/omar-cut.webp" alt=""></span></span><div class="t"><b>You · Omar</b><span>23 today</span></div><span class="chip">Tip ready</span></div>
+          <div class="pv other"><span class="av"></span><div class="t"><i></i><i></i></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+        </div></div></div></div>
         <div class="tx"><h3>Private by default</h3><p>Each employee sees only their own conversations. Wider access is set by your admin. No public rankings.</p></div></div>
-      <div class="bc b4"><div class="tx"><h3>Voice stays with us</h3><p>Audio never leaves our servers in the UAE. AI sees only anonymized text and never trains on it.</p></div>
-        <div class="il"><canvas id="planet"></canvas><span class="uae">UAE</span></div></div>
+      <div class="bc b4 tt"><div class="tx"><h3>Voice stays with us</h3><p>Audio never leaves our servers in the UAE. AI sees only anonymized text and never trains on it.</p></div>
+        <div class="il"><canvas id="planet"></canvas><span class="uae"><i></i>Our servers · UAE</span></div></div>
     </div>
   </div>
 </section></div>
@@ -838,13 +908,15 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
   <div class="faq-cols"><div><div class="qa"><button><span>Will Lansy increase our revenue?</span><i></i></button><div class="a"><div><p>Lansy doesn’t promise revenue. It shows what actually happens in conversations and helps your team improve the metric you choose — add-ons, loyalty cards, next visits.</p></div></div></div><div class="qa"><button><span>Is recording conversations legal?</span><i></i></button><div class="a"><div><p>Yes, when it’s done right: guests are informed, personal talk is removed and data is anonymized. We help you set up the notices for your locations.</p></div></div></div><div class="qa"><button><span>What hardware do we need?</span><i></i></button><div class="a"><div><p>A counter mic at the front desk and light badges for staff, included in the plan. Lansy can also work with the hardware you already have.</p></div></div></div><div class="qa"><button><span>Which languages are supported?</span><i></i></button><div class="a"><div><p>Arabic — tuned on Gulf conversations — English and Russian, including conversations that switch between them mid-sentence. No need to pick a language.</p></div></div></div><div class="qa"><button><span>How much does it cost? Is there a pilot?</span><i></i></button><div class="a"><div><p>Pricing depends on the number of locations and devices. Most teams start with a pilot at one location.</p></div></div></div></div><div><div class="qa"><button><span>Does it work with our POS or CRM?</span><i></i></button><div class="a"><div><p>Yes. We connect Lansy to your POS, CRM and reporting tools during setup.</p></div></div></div><div class="qa"><button><span>What if the internet goes down?</span><i></i></button><div class="a"><div><p>Devices keep recording and upload everything once the connection is back.</p></div></div></div><div class="qa"><button><span>How is it different from a mystery shopper?</span><i></i></button><div class="a"><div><p>A mystery shopper hears one staged visit a quarter. Lansy hears every real conversation, every day — and turns it into advice.</p></div></div></div><div class="qa"><button><span>Where is our data stored?</span><i></i></button><div class="a"><div><p>On our servers in the UAE or on-premise — encrypted and isolated per company.</p></div></div></div><div class="qa"><button><span>Why don’t you promise 95% accuracy?</span><i></i></button><div class="a"><div><p>Conversational Arabic has no single spelling: even two professional transcribers disagree on 10–13% of words. So we measure on your own recordings — a pilot includes a blind comparison, and every insight links to the moment it came from.</p></div></div></div></div></div>
 </section></div>
 <div class="wrap"><section class="final" id="final"><video class="spin" id="spin" autoplay muted loop playsinline preload="none" aria-hidden="true"></video>
-  <h2>See Lansy on your own<br>conversations</h2>
+  <h2>See Lansy on your own <br>conversations</h2>
   <p>We’ll show real reviews, a manager’s daily report and what employees see after a shift.</p>
-  <a class="btn lg dark" href="#">Book a demo <span>→</span></a>
+  <a class="btn lg dark" href="#">Start a pilot <span>→</span></a>
 </section></div>
 <footer class="foot"><div class="wrap">
   <div><svg class="flogo" viewBox="0 0 432 136" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Lansy"><g fill="currentColor"><path d="M285.238 71.6984C285.238 63.9546 281.515 59.6783 273.771 59.6783C266.027 59.6783 262.304 63.9546 262.304 71.6984V106.798H243.514L243.514 70.5931C243.514 53.5772 254.545 41.9936 273.771 41.9936C292.998 41.9936 304.028 53.5772 304.028 70.5931V106.798H285.238V71.6984Z"/><path d="M146.736 106.801V31.6852L141.808 30.7529L139.277 30.2202V16.236H165.381V106.801H146.736Z"/><path d="M330.68 108.293C326.013 108.293 319.744 107.893 312.676 106.692V93.3556C317.477 94.0225 323.078 94.5559 328.413 94.5559C339.349 94.5559 341.75 92.2887 341.75 89.2212C341.75 86.4205 340.15 84.0199 332.814 81.7526L326.546 79.8855C315.877 76.6847 312.676 69.6162 312.676 61.7475C312.676 49.0776 321.478 42.1425 339.349 42.1425C345.484 42.1425 350.952 42.9427 355.62 43.7429V56.5462C348.285 55.6126 343.35 55.4792 340.95 55.4792C332.548 55.4792 330.28 57.213 330.28 59.4803C330.28 61.7475 331.081 63.4813 335.082 64.815L342.417 67.2156C355.22 71.35 359.354 77.2182 359.354 87.0874C359.354 101.624 349.752 108.293 330.68 108.293Z"/><path d="M60 0C81.5503 0 92.3258 -0.000387591 100.482 4.35938C106.923 7.80184 112.198 13.0772 115.641 19.5176C120 27.6742 120 38.4497 120 60C120 81.5503 120 92.3258 115.641 100.482C112.198 106.923 106.923 112.198 100.482 115.641C92.3258 120 81.5503 120 60 120C38.4497 120 27.6742 120 19.5176 115.641C13.0772 112.198 7.80184 106.923 4.35938 100.482C-0.000387591 92.3258 0 81.5503 0 60C0 38.4497 -0.000387591 27.6742 4.35938 19.5176C7.80184 13.0772 13.0772 7.80184 19.5176 4.35938C27.6742 -0.000387591 38.4497 0 60 0ZM70.1416 29.498C64.2328 43.004 60.6953 56.4474 60.6953 65.0029C60.6955 70.339 62.4272 74.277 65.4111 76.8135C68.2924 79.2622 71.8724 80.0029 74.8623 80.0029C78.0994 80.0028 80.7504 79.4385 83.291 78.1016C85.7179 76.8244 87.8584 74.9324 90.1885 72.6816C90.7857 72.1048 91.6519 72.0308 92.2891 72.4287L92.7256 72.7012C80.8275 90.5072 66.6937 100.004 53.1943 100.004C44.5181 100.004 38.0392 96.8443 33.6377 91.1855C29.1445 85.4084 26.5274 76.6457 26.5273 65.002C26.5274 57.4409 27.274 50.0003 32.9893 34.4873L29.8604 33.335L26.7324 32.1826C20.7813 48.3358 19.8604 56.5569 19.8604 65.002C19.8604 77.5249 22.6599 87.9312 28.375 95.2793C34.182 102.745 42.7043 106.67 53.1943 106.67C70.3567 106.67 86.6492 94.4342 99.2676 74.8867C100.789 72.5302 100.053 69.4198 97.7158 67.959L95.8223 66.7764C92.5223 64.714 88.2977 65.2371 85.5557 67.8857C83.2611 70.1021 81.7045 71.4033 80.1865 72.2021C78.7824 72.941 77.2401 73.3359 74.8623 73.3359C72.8526 73.3359 71.0149 72.8256 69.7295 71.7334C68.5471 70.7283 67.3615 68.8325 67.3613 65.0029C67.3613 57.7882 70.491 45.3321 76.249 32.1709L73.1943 30.835L70.1416 29.498ZM61.8467 15.2402C54.229 31.3221 49.1329 47.4404 46.5771 61.9229L53.1416 63.0811C55.586 49.2298 60.4897 33.6799 67.8721 18.0947L64.8604 16.667L61.8467 15.2402ZM46.8408 16.9248C40.8769 29.7047 36.6273 43.3169 33.9414 58.2627L40.5029 59.4424C43.0945 45.021 47.179 31.9646 52.8818 19.7441L46.8408 16.9248Z"/><path d="M373.997 119.73L381.062 119.997C388.794 119.997 390.527 117.864 394.126 107.333L394.259 106.8H382.795L362 42.8149H381.329L397.992 93.7364L412.388 42.8149H431.051L410.922 113.465C406.656 128.262 399.991 135.06 383.595 135.06C381.329 135.06 378.263 134.927 373.997 134.527V119.73Z"/><path d="M200.594 107.867C184.997 107.867 173 94.803 173 75.6075C173 53.7459 187.404 42 203 42C208.5 42 211.5 43.5 215.98 46.0321L218 43.0001H234.586V106.8H222.588L219.656 100.402C213.791 105.067 209.525 107.867 200.594 107.867ZM191.929 75.0743C191.929 86.9382 198.327 91.7371 207.925 91.7371C209.658 91.7371 212.191 91.6038 215.923 91.0706L215.918 59C214.016 58.0851 211.267 57.3896 209.134 57.3896C197.936 57.3896 191.929 63.3437 191.929 75.0743Z"/></g></svg></div>
-  <div><h5>Product</h5><ul><li><a href="#">What Lansy is</a></li><li><a href="#">Who it helps</a></li><li><a href="#">How it works</a></li><li><a href="#">Data security</a></li><li><a href="#">Lansy technology</a></li><li><a href="#">Lansy Desk</a></li><li><a href="#">Mobile app</a></li></ul></div><div><h5>Industries</h5><ul><li><a href="#">All industries</a></li><li><a href="#">Cafe and Restaurants</a></li><li><a href="#">Schools and Education</a></li><li><a href="#">Retail</a></li><li><a href="#">Pharmacies and Clinics</a></li><li><a href="#">Beauty and Personal Care</a></li><li><a href="#">Call Center and Customer Service</a></li><li><a href="#">Hotels</a></li><li><a href="#">Real Estate</a></li></ul></div><div><h5>Company</h5><ul><li><a href="#">About us</a></li><li><a href="#">Blog</a></li><li><a href="#">Research</a></li><li><a href="#">FAQ</a></li><li><a href="#">Contacts</a></li></ul></div><div><h5>Contact</h5><ul><li><a href="#">sales@lansy.ai</a></li><li><a href="#">+971 (0) 56 509-9514</a></li></ul></div>
+  <div><h5>Product</h5><ul><li><a href="#">What Lansy is</a></li><li><a href="#">How it works</a></li><li><a href="#">Data security</a></li><li><a href="#">Lansy Desk</a></li><li><a href="#">Mobile app</a></li></ul></div><div><h5>Industries</h5><ul><li><a href="#">Cafés</a></li><li><a href="#">Retail</a></li><li><a href="#">Education</a></li><li><a href="#">Healthcare</a></li><li><a href="#">Hotels</a></li><li><a href="#">Beauty</a></li><li><a href="#">Support</a></li></ul></div><div><h5>Company</h5><ul><li><a href="#">About us</a></li><li><a href="#">Blog</a></li><li><a href="#">Research</a></li><li><a href="#">FAQ</a></li></ul></div><div><h5>Contact</h5><ul><li><a href="#">sales@lansy.ai</a></li><li><a href="#">+971 (0) 56 509-9514</a></li></ul></div>
+  <div class="fmob"><ul class="fnav"><li><a href="#">Product</a></li><li><a href="#">Industries</a></li><li><a href="#">Cases</a></li><li><a href="#">Pricing</a></li><li><a href="#">Company</a></li><li><a href="#">FAQ</a></li></ul>
+    <ul class="fcon"><li><a href="#">sales@lansy.ai</a></li><li><a href="#">+971 (0) 56 509-9514</a></li></ul></div>
   <div class="legal"><span>© 2026 Collabo Tech Ltd. All rights reserved.</span><div><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div></div>
 </div></footer>
 <div class="after"></div>
@@ -1277,7 +1349,9 @@ new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting) $('risks').clas
   function size(){const r=cv.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
     R=Math.max(W*.42,260); CX=W/2; CY=H+R*.22; pts=[]; const N=Math.round(4*Math.PI*R*R/(9*9)), ga=Math.PI*(3-Math.sqrt(5));
     const U=vec(25.2*RAD,55.3*RAD);
-    for(let i=0;i<N;i++){const lat=Math.asin(1-2*(i+.5)/N), lon=((i*ga)%(2*Math.PI))-Math.PI; if(isLand(lat,lon)){const v=vec(lat,lon); pts.push([lat,lon,Math.acos(Math.min(1,v[0]*U[0]+v[1]*U[1]+v[2]*U[2]))]);}}}
+    for(let i=0;i<N;i++){const lat=Math.asin(1-2*(i+.5)/N), lon=((i*ga)%(2*Math.PI))-Math.PI; if(isLand(lat,lon)){const v=vec(lat,lon); pts.push([lat,lon,Math.acos(Math.min(1,v[0]*U[0]+v[1]*U[1]+v[2]*U[2]))]);}}
+    // the pill's side is chosen once per size, from the furthest right the UAE gets while the planet sways, so it never flips mid-sway
+    tag.classList.remove('l'); const xr=Math.max(...[-1,1].map(s=>P(25.2*RAD,55.3*RAD,-14*RAD,(55.3+18*s)*RAD).x)); tag.classList.toggle('l',xr+16+tag.offsetWidth>W-12);}
   const P=(lat,lon,lat0,lon0)=>{const dl=lon-lon0,c=Math.cos(lat); return {x:CX+R*c*Math.sin(dl), y:CY-R*(Math.cos(lat0)*Math.sin(lat)-Math.sin(lat0)*c*Math.cos(dl)), z:Math.sin(lat0)*Math.sin(lat)+Math.cos(lat0)*c*Math.cos(dl)};};
   function draw(t){ if($('risks').classList.contains('playing')){
     const lon0=(55.3-18*Math.sin(t/5000))*RAD, lat0=-14*RAD; ctx.clearRect(0,0,W,H);
@@ -1285,51 +1359,33 @@ new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting) $('risks').clas
     ctx.fillStyle='#1F1F21'; for(const [la,lo,a] of pts){const q=P(la,lo,lat0,lon0); if(q.z<=0||q.y>H+4) continue;
       const i=a<14*RAD?Math.exp(-Math.pow((a-w)/band,2))*fade:0;
       ctx.globalAlpha=Math.min(1,.12+.3*q.z+i*.8); ctx.beginPath(); ctx.arc(q.x,q.y,2.4*(1+.3*i),0,7); ctx.fill();}
-    const u=P(25.2*RAD,55.3*RAD,lat0,lon0); ctx.globalAlpha=1; ctx.beginPath(); ctx.arc(u.x,u.y,6,0,7); ctx.fill();
+    const u=P(25.2*RAD,55.3*RAD,lat0,lon0); ctx.globalAlpha=1; ctx.fillStyle='#9CDE45'; ctx.beginPath(); ctx.arc(u.x,u.y,6,0,7); ctx.fill();
     tag.style.left=u.x+'px'; tag.style.top=u.y+'px';}
     requestAnimationFrame(draw);}
   size(); addEventListener('resize',size); requestAnimationFrame(draw);})();
-// 09 · voice line in the planet's dot style: grey dots on the bare card, size and tone like the globe's land dots
-(()=>{const cv=$('wave9'), ctx=cv.getContext('2d'); let W,H,cols,rows; const G=10;
+// 09 · voice line in the planet's dots (same 2.4px dot, ~7px apart as the planet's land shows on screen), laid on an arc as if it ran
+// around the planet seen from slightly above: columns at equal angles crowd toward the ends, the ends drop and fade with depth
+(()=>{const cv=$('wave9'), ctx=cv.getContext('2d'); const G=7, S=110*RAD, TILT=.16; let W,H,Rx,n,rows;
   function size(){const r=cv.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; ctx.setTransform(d,0,0,d,0,0);
-    cols=Math.floor((W-64)/G); rows=Math.min(11,Math.floor((H-48)/G/2));}
+    Rx=(W-64)/2/Math.sin(S/2); n=Math.floor(S/(G/Rx)); rows=Math.min(16,Math.floor((H-48)/G/2));}
   function draw(t){ if($('risks').classList.contains('playing')){
-    ctx.clearRect(0,0,W,H); ctx.fillStyle='#1F1F21'; const cy=Math.round(H*.5/G)*G, x0=(W-cols*G)/2;
-    for(let c=0;c<=cols;c++){const u=c/cols, x=x0+c*G;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#1F1F21'; const cy=Math.round(H*.46);
+    for(let c=0;c<=n;c++){const u=c/n, th=-S/2+u*S, z=Math.cos(th), x=W/2+Rx*Math.sin(th), base=cy+TILT*Rx*(1-z);
       // speech: phrases with short pauses, an overall swell toward the middle, and fast syllable flicker
       const phrase=Math.max(0,Math.sin(u*Math.PI*3.2+t/1700))**.7, swell=Math.sin(Math.PI*u)**.8;
-      const syl=.35+.65*Math.abs(Math.sin(c*.83+t/240)*.6+Math.sin(c*.29-t/430)*.4);
-      const amp=phrase*swell*syl*rows;
-      for(let r=-Math.floor(amp);r<=Math.floor(amp);r++){const z=1-Math.abs(r)/(rows+1);
-        ctx.globalAlpha=.12+.3*z; ctx.beginPath(); ctx.arc(x,cy+r*G,2.4,0,7); ctx.fill();}
-      if(amp<1){ctx.globalAlpha=.12; ctx.beginPath(); ctx.arc(x,cy,2.4,0,7); ctx.fill();}}
+      const syl=.35+.65*Math.abs(Math.sin(c*.83+t/240)*.6+Math.sin(c*.29-t/430)*.4), amp=phrase*swell*syl*rows;
+      for(let r=-Math.floor(amp);r<=Math.floor(amp);r++){const vz=1-Math.abs(r)/(rows+1); ctx.globalAlpha=.12+.3*vz*(.35+.65*z); ctx.beginPath(); ctx.arc(x,base+r*G,2.4,0,7); ctx.fill();}
+      if(amp<1){ctx.globalAlpha=.12*(.5+.5*z); ctx.beginPath(); ctx.arc(x,base,2.4,0,7); ctx.fill();}}
     ctx.globalAlpha=1;}
     requestAnimationFrame(draw);}
   size(); addEventListener('resize',size); requestAnimationFrame(draw);})();
+// 09 · interface pictures: one scale (.92) on every desktop card, so type and masses match; phones don't scale them (CSS)
+(()=>{const ro=new ResizeObserver(es=>es.forEach(e=>e.target.querySelector('.cvs').style.setProperty('--k',Math.min(e.contentRect.width/440,.92))));
+  document.querySelectorAll('#risks .il').forEach(el=>el.querySelector('.cvs')&&ro.observe(el));})();
 // 10 · FAQ accordion: one open answer per column
 document.querySelectorAll('.faq-cols>div').forEach(col=>col.addEventListener('click',e=>{const b=e.target.closest('.qa button'); if(!b)return; const q=b.parentElement, open=!q.classList.contains('open');
   col.querySelectorAll('.qa').forEach(x=>x.classList.remove('open')); q.classList.toggle('open',open);}));
 // 03 · video floor: hosted on Cloudflare R2. Sound on by default — if the browser blocks it, start muted and unmute on the first tap/key.
-// video floor «stop»: a scroll that brings the video halfway in lands exactly on it, and the rest of that flick
-// (trackpad / wheel momentum) is swallowed. The next deliberate scroll gesture moves on as usual.
-(()=>{const fl=$('videoFloor'); let lastY=scrollY, lock=0, lockAt=0, lastWheel=0, auto=false;
-  const top=()=>fl.getBoundingClientRect().top+scrollY;
-  const snap=()=>{auto=true; lock=1; lockAt=performance.now(); scrollTo({top:top(),behavior:'smooth'});
-    // layout above can still shift while the smooth scroll runs (late images, pinned floors), so land exactly at the end
-    const settle=()=>{const d=fl.getBoundingClientRect().top; if(Math.abs(d)>.5) scrollTo({top:scrollY+d,behavior:'instant'});};
-    setTimeout(()=>{settle(); auto=false;},700); setTimeout(settle,1000); setTimeout(()=>{if(performance.now()-lockAt>=1190)lock=0;},1200);};
-  addEventListener('scroll',()=>{const y=scrollY, down=y>lastY; lastY=y; if(auto||lock)return;
-    const r=fl.getBoundingClientRect(), vh=innerHeight;
-    if(down && r.top>vh*.04 && r.top<vh*.55) snap();          // coming in from above
-    else if(!down && r.bottom<vh*.96 && r.bottom>vh*.45) snap(); // coming back from below
-  },{passive:true});
-  // while locked, wheel events that belong to the same flick are eaten; a pause of 140ms (a new gesture) or 1.2s unlocks
-  addEventListener('wheel',e=>{const now=performance.now(), gap=now-lastWheel; lastWheel=now;
-    if(!lock)return;
-    if((gap>140 && now-lockAt>350) || now-lockAt>1200){lock=0; return;}
-    e.preventDefault();},{passive:false});
-  addEventListener('keydown',()=>{lock=0;});
-})();
 (()=>{const v=$('vid'), b=$('snd'), pp=$('pp'), fl=$('videoFloor'); let userPaused=false, autoMuted=false;
   const I={on:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 14.8135V9.18646C14 6.04126 14 4.46866 13.0747 4.0773C12.1494 3.68593 11.0603 4.79793 8.88232 7.02192C7.75439 8.17365 7.11085 8.42869 5.50604 8.42869C4.10257 8.42869 3.40084 8.42869 2.89675 8.77262C1.85035 9.48655 2.00852 10.882 2.00852 12C2.00852 13.118 1.85035 14.5134 2.89675 15.2274C3.40084 15.5713 4.10257 15.5713 5.50604 15.5713C7.11085 15.5713 7.75439 15.8264 8.88232 16.9781C11.0603 19.2021 12.1494 20.3141 13.0747 19.9227C14 19.5313 14 17.9587 14 14.8135Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 9C17.6254 9.81968 18 10.8634 18 12C18 13.1366 17.6254 14.1803 17 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 7C21.2508 8.36613 22 10.1057 22 12C22 13.8943 21.2508 15.6339 20 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',off:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 14.8135V9.18646C14 6.04126 14 4.46866 13.0747 4.0773C12.1494 3.68593 11.0603 4.79793 8.88232 7.02192C7.75439 8.17365 7.11085 8.42869 5.50604 8.42869C4.10257 8.42869 3.40084 8.42869 2.89675 8.77262C1.85035 9.48655 2.00852 10.882 2.00852 12C2.00852 13.118 1.85035 14.5134 2.89675 15.2274C3.40084 15.5713 4.10257 15.5713 5.50604 15.5713C7.11085 15.5713 7.75439 15.8264 8.88232 16.9781C11.0603 19.2021 12.1494 20.3141 13.0747 19.9227C14 19.5313 14 17.9587 14 14.8135Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 10L22 14M18 14L22 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',play:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.8906 12.846C18.5371 14.189 16.8667 15.138 13.5257 17.0361C10.296 18.8709 8.6812 19.7884 7.37983 19.4196C6.8418 19.2671 6.35159 18.9776 5.95624 18.5787C5 17.6139 5 15.7426 5 12C5 8.2574 5 6.3861 5.95624 5.42132C6.35159 5.02245 6.8418 4.73288 7.37983 4.58042C8.6812 4.21165 10.296 5.12907 13.5257 6.96393C16.8667 8.86197 18.5371 9.811 18.8906 11.154C19.0365 11.7084 19.0365 12.2916 18.8906 12.846Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',pause:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7C4 5.58579 4 4.87868 4.43934 4.43934C4.87868 4 5.58579 4 7 4C8.41421 4 9.12132 4 9.56066 4.43934C10 4.87868 10 5.58579 10 7V17C10 18.4142 10 19.1213 9.56066 19.5607C9.12132 20 8.41421 20 7 20C5.58579 20 4.87868 20 4.43934 19.5607C4 19.1213 4 18.4142 4 17V7Z" stroke="currentColor" stroke-width="1.5"/><path d="M14 7C14 5.58579 14 4.87868 14.4393 4.43934C14.8787 4 15.5858 4 17 4C18.4142 4 19.1213 4 19.5607 4.43934C20 4.87868 20 5.58579 20 7V17C20 18.4142 20 19.1213 19.5607 19.5607C19.1213 20 18.4142 20 17 20C15.5858 20 14.8787 20 14.4393 19.5607C14 19.1213 14 18.4142 14 17V7Z" stroke="currentColor" stroke-width="1.5"/></svg>'};
   const ui=()=>{b.innerHTML=v.muted?I.on+(AR?AR.SOUND.on:'Sound on'):I.off+(AR?AR.SOUND.off:'Sound off'); b.setAttribute('aria-label',v.muted?'Turn sound on':'Turn sound off');

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cases with names</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<!-- parked: the cases floor as it was with client names, logos and people (2026-10-06).
+     Taken off the page while the Russian clients are under NDA; bring it back when there are cases we can name. -->
+<style>
+@font-face{font-family:Struve;src:url(../fonts/Struve-Regular.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Struve;src:url(../fonts/Struve-Medium.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:Struve;src:url(../fonts/Struve-Semibold.woff2) format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:Struve;src:url(../fonts/Struve-Bold.woff2) format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:Struve;src:url(../fonts/Struve-BoldSlanted.woff2) format('woff2');font-weight:700;font-style:italic;font-display:swap}
+:root{--ink:#1F1F21;--grey:#8A8A8F;--line:#E6E6E8;--soft:#F4F4F5;--dark:#29292B;--bg:#fff}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Struve,system-ui,sans-serif}
+/* Struve ss10 = single-storey a; !important because every `font:` shorthand resets font-feature-settings */
+*,::before,::after{font-feature-settings:'ss10' !important}
+.wrap{width:min(1200px,calc(100% - 32px));margin:0 auto}
+.lbl{font:500 12px/1.6 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.note{position:fixed;right:16px;bottom:16px;font:12px/1.4 Struve,system-ui,sans-serif;color:var(--grey);z-index:20;background:#fff;padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
+/* nav + hero — Aceternity "Hero Section With Multi Color Background" layout, prototype greys, no shader */
+.logo{display:block;height:36px;width:auto;color:var(--ink)}
+.navlinks{display:flex;gap:28px;font-size:16px;color:#4A4A4F}
+.navright{display:flex;align-items:center;gap:20px;font-size:16px;color:#4A4A4F}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-weight:500;text-decoration:none;white-space:nowrap}
+.btn.sm{height:36px;padding:0 16px;font-size:15px}
+.btn.md{height:44px;padding:0 24px;font-size:15px}
+.btn.lg{height:56px;padding:0 28px;font-size:16px}
+.btn.dark{background:var(--ink);color:#fff}.btn.ghost{border:1px solid var(--line);color:var(--ink);background:#fff}
+/* 07 cases — Figma 20:130: header with arrows, card carousel that bleeds off the right edge */
+.cases-floor{position:relative;z-index:1;background:#fff}
+.cases{padding:160px 0 160px}
+.cases-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.cases-hd h2{margin-top:24px;font-size:40px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
+.arrows{display:flex;gap:8px}.arrows button{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:opacity .2s,background .2s}
+.arrows button:hover{background:var(--soft)}.arrows button:disabled{opacity:.35;cursor:default;background:#fff}.arrows button:focus{outline:none}
+.track{display:flex;gap:24px;margin-top:32px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;--bleed:max(16px,calc((100vw - 1200px)/2));margin:32px calc(-1*var(--bleed)) 0;padding:0 var(--bleed);scroll-padding:0 var(--bleed)}
+.track::-webkit-scrollbar{display:none}
+.case{flex:none;width:min(920px,calc(100vw - 32px));height:540px;display:grid;grid-template-columns:1fr 380px;border-radius:24px;background:#fff;border:1px solid var(--line);overflow:hidden;scroll-snap-align:start}
+.case .tx{display:flex;flex-direction:column;padding:40px}
+.case .clogo{display:flex;align-items:center;gap:8px;height:32px;font-style:normal;color:var(--ink)}.case .clogo svg{flex:none}
+.case .clogo.sayori{font-size:22px;font-weight:800;font-style:italic;letter-spacing:-.02em;text-transform:uppercase}
+.case .clogo.pro{font-family:Georgia,serif;font-style:italic;font-size:26px;letter-spacing:-.01em}.case .clogo.pro small{font-family:'JetBrains Mono',monospace;font-style:normal;font-size:11px;font-weight:600;letter-spacing:.04em}
+.case .clogo.brew{font-size:20px;font-weight:600;letter-spacing:-.03em}
+.case blockquote{margin-top:28px;font-size:23px;line-height:1.4;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+.case .au{margin-top:16px;font-size:15px;color:#737378}.case .au b{font-weight:600;color:var(--ink)}
+.case h3{margin-top:32px;font-size:30px;line-height:1.2;font-weight:600;letter-spacing:-.02em}
+.case p{margin-top:16px;font-size:17px;line-height:1.5;color:#737378;max-width:420px}
+.case .ms{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:auto;padding-top:24px;border-top:1px solid var(--line)}
+.case .m b{display:block;font-size:36px;line-height:1;font-weight:600;letter-spacing:-.02em}.case .m span{display:block;margin-top:8px;font-size:15px;line-height:1.4;color:#737378}
+.case .btn{align-self:flex-start;margin-top:28px}
+.case .ph{position:relative}.case .ph{overflow:hidden}.case .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:translate(var(--tx,0px),var(--ty,0px)) scale(var(--z,1));user-select:none;-webkit-user-drag:none}
+/* prototype-only crop tool: Crop toggles it, drag pans, wheel zooms, double-click resets */
+.cropbtn{position:absolute;right:12px;top:12px;z-index:2;height:28px;padding:0 12px;border:0;border-radius:999px;background:rgba(31,31,33,.72);color:#fff;font:500 12px Struve,system-ui,sans-serif;cursor:pointer;opacity:0;transition:opacity .2s}
+.case .ph:hover .cropbtn,.case .ph.crop .cropbtn{opacity:1}
+.case .ph.crop{cursor:grab;outline:2px dashed rgba(31,31,33,.5);outline-offset:-2px}.case .ph.crop.drag{cursor:grabbing}
+.cropval{position:absolute;left:12px;bottom:12px;z-index:2;display:none;padding:4px 8px;border-radius:6px;background:rgba(31,31,33,.72);color:#fff;font:500 11px 'JetBrains Mono',monospace}.case .ph.crop .cropval{display:block}
+@media(max-width:900px){.case{height:auto;grid-template-columns:1fr}.case .ph{height:260px;order:-1}}
+.note-top{padding:24px 0 0;font-size:14px;color:var(--grey)}
+</style></head><body>
+<div class="wrap note-top">Parked 2026-10-06: the named version of the Cases floor. The page shows the anonymous one while clients are under NDA.</div>
+<div class="cases-floor" id="casesFloor"><div class="wrap"><section class="cases" id="cases">
+  <div class="cases-hd"><div><div class="lbl">Cases</div><h2>How our clients use Lansy</h2></div>
+    <div class="arrows"><button id="cPrev" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 12.002H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.9999 18.002C10.9999 18.002 4.99998 13.583 4.99997 12.0019C4.99996 10.4208 11 6.00195 11 6.00195" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="cNext" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.5 12L4.99997 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 18C13 18 19 13.5811 19 12C19 10.4188 13 6 13 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
+  <div class="track" id="track"><article class="case"><div class="tx"><i class="clogo sayori"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>Sayori</i><blockquote>“We used to hear maybe one call in fifty. Now we see every order — and operators offer add-ons without being reminded.”</blockquote><div class="au"><b>Arjun Mehta</b> · Head chef and co-owner, Sayori</div><div class="ms"><div class="m"><b>×4.3</b><span>more often operators read the order back</span></div><div class="m"><b>−55%</b><span>fewer wrong orders at pickup points</span></div></div><a class="btn md dark" href="#">Read the case <span>↗</span></a></div><div class="ph"><img src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/cases/delivery.webp" style="--z:1.41;--tx:1px;--ty:-52px" alt="" loading="lazy"></div></article><article class="case"><div class="tx"><i class="clogo pro"><small>PRO</small>school</i><blockquote>“Teachers were nervous at first. A month later they were asking for their own feedback after every lesson.”</blockquote><div class="au"><b>Emily Carter</b> · Academic director, PROschool</div><div class="ms"><div class="m"><b>85–90%</b><span>analysis accuracy, checked by experts</span></div><div class="m"><b>Minutes</b><span>to review a lesson instead of hours</span></div></div><a class="btn md dark" href="#">Read the case <span>↗</span></a></div><div class="ph"><img src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/cases/teacher.webp" style="--z:1.63;--tx:-20px;--ty:55px" alt="" loading="lazy"></div></article><article class="case"><div class="tx"><i class="clogo brew"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z" stroke="currentColor" stroke-width="1.8"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5c0 1 1 1.5 1 2.5M12 3.5c0 1 1 1.5 1 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Northbrew</i><blockquote>“Baristas started mentioning the loyalty card on their own — because now they can see who already does it.”</blockquote><div class="au"><b>Marco Reyes</b> · Head barista, Northbrew</div><div class="ms"><div class="m"><b>+50%</b><span>loyalty cards issued</span></div><div class="m"><b>2 weeks</b><span>from one pilot location to first results</span></div></div><a class="btn md dark" href="#">Read the case <span>↗</span></a></div><div class="ph"><img src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/cases/barista.webp" style="--z:1.4;--tx:-1px;--ty:-91px" alt="" loading="lazy"></div></article></div>
+</section></div></div>
+<script>
+const track=document.getElementById('track'),step=()=>track.querySelector('.case').offsetWidth+24,P=document.getElementById('cPrev'),N=document.getElementById('cNext');
+const st=()=>{P.disabled=track.scrollLeft<4;N.disabled=track.scrollLeft>track.scrollWidth-track.clientWidth-4};
+P.onclick=()=>track.scrollBy({left:-step(),behavior:'smooth'});N.onclick=()=>track.scrollBy({left:step(),behavior:'smooth'});
+track.addEventListener('scroll',st,{passive:true});addEventListener('resize',st);st();
+</script></body></html>
