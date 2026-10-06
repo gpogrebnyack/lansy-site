@@ -91,7 +91,7 @@ html.intro .notes{visibility:hidden}
 .ui-nav{display:flex;flex-direction:column;gap:6px}.ui-navb{margin-top:auto}
 .ui-nav i{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;color:#6C6A63}.ui-nav i svg{width:22px;height:22px}
 .ui-nav i.on{color:#33694F;background:rgba(135,224,2,.16)}
-.ui-tip{position:absolute;left:66px;top:86px;padding:5px 10px;border-radius:8px;background:#2C2C2A;color:#fff;font-size:13px;line-height:18px;white-space:nowrap}
+.ui-tip{position:absolute;inset-inline-start:66px;top:86px;padding:5px 10px;border-radius:8px;background:#2C2C2A;color:#fff;font-size:13px;line-height:18px;white-space:nowrap}
 .ui-main{width:1232px;margin:0 auto;display:flex;flex-direction:column;gap:44px;padding:12px 0 160px}
 .ui-sec{display:grid;grid-template-columns:220px 792px 1fr;gap:20px;align-items:start}
 .ui-lab{padding-top:8px}.ui-lab h2{font-size:20px;line-height:25px;font-weight:400}.ui-lab p{margin-top:4px;font-size:14px;line-height:19px;color:#6C6A63}
@@ -112,7 +112,7 @@ html.intro .notes{visibility:hidden}
 .ui-mv{margin-top:6px;font-size:32px;line-height:32px}
 .ui-d{display:inline-flex;align-items:center;gap:4px;margin-top:auto;padding:3px 9px;border-radius:999px;font-size:12px;line-height:16px;font-weight:500}.ui-d svg{width:12px;height:12px}
 .ui-d.g{color:#33694F;background:#E6F0EA}.ui-d.b{color:#B4372A;background:#FBEAE7}
-.ui-mi{position:absolute;right:12px;top:12px;display:grid;place-items:center;width:24px;height:24px;background:none;color:#B9B7B0}.ui-mi svg{width:16px;height:16px}
+.ui-mi{position:absolute;inset-inline-end:12px;top:12px;display:grid;place-items:center;width:24px;height:24px;background:none;color:#B9B7B0}.ui-mi svg{width:16px;height:16px}
 .ui-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .ui-note{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:17px 19px}
 .ui-nh{display:flex;align-items:center;gap:8px}
@@ -160,7 +160,7 @@ html.intro .notes{visibility:hidden}
 .ui-act{display:inline-block;padding:2px 9px;border-radius:7px;background:rgba(135,224,2,.18);color:#33694F;font-size:12px;line-height:18px;font-weight:500}
 .ui-goal h3{margin-top:8px;font-size:16px;line-height:21px;font-weight:600}
 .ui-goal p{margin-top:4px;font-size:13px;line-height:18px;color:#6C6A63}.ui-goal p.ui-gs{margin-top:8px;color:#2C2C2A}
-.ui-gm{position:absolute;right:16px;top:16px;display:grid;place-items:center;width:28px;height:28px;background:none;color:#9A988F}.ui-gm svg{width:18px;height:18px}
+.ui-gm{position:absolute;inset-inline-end:16px;top:16px;display:grid;place-items:center;width:28px;height:28px;background:none;color:#9A988F}.ui-gm svg{width:18px;height:18px}
 .ui-search-w{max-width:none}
 .ui-view{display:flex;padding:3px;border-radius:10px;background:#fff}.ui-view i{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;color:#9A988F}.ui-view i.on{background:#F1F1F0;color:#2C2C2A}.ui-view svg{width:16px;height:16px}
 .ui-tags-f{flex-wrap:wrap;gap:8px;margin-bottom:14px}.ui-tags-f span{padding:6px 12px;border-radius:999px;background:#fff;font-size:13px;line-height:16px;color:#2C2C2A}.ui-tags-f span.on{background:#2C2C2A;color:#fff}
@@ -843,6 +843,11 @@ html[lang=ar] .lbl{font-size:14px;font-weight:500}
 html[lang=ar] :is(h2,h3):not(.pane *):not(.il *){text-wrap:balance}
 html[dir=rtl] :is(.pane,.il,.shot,.tiles,.rdev,#rlogos){direction:ltr}
 html[dir=rtl] .shot{margin-left:0;margin-right:calc((100% - var(--w))/2)}
+/* hero product window: the app itself is translated and mirrors (sidebar on the right); the browser chrome stays LTR */
+html[dir=rtl] .shot .ui-app{direction:rtl}
+html[lang=ar] :is(.ui-app,.ui-app *){font-family:Struve,var(--arf),system-ui,sans-serif;letter-spacing:0 !important;text-transform:none}
+html[lang=ar] .ui-q{quotes:"«" "»"}
+html[dir=rtl] .hnote{transform-origin:calc(100% - 24px) 26px}
 html[dir=rtl] .scrib{margin:-.25em 0 -.25em .04em}
 html[dir=rtl] :is(.tab,.qa button){text-align:right}
 html[dir=rtl] .tab::after{transform-origin:right}
@@ -1458,12 +1463,12 @@ launchScroll(); addEventListener('scroll',launchScroll,{passive:true});
       for(let k=0;k<cnt[b]*3;k+=3){cx.moveTo(a[k]+a[k+2],a[k+1]); cx.arc(a[k],a[k+1],a[k+2],0,TAU);} cx.fill();}
     cx.globalAlpha=1;}
   // ── notifications + comets ──
-  const NOTES=["Good conversations today. Offer more from the seasonal menu.","Nice sale. Next time try adding a service on top.",
+  const NOTES=AR?AR.NOTES:["Good conversations today. Offer more from the seasonal menu.","Nice sale. Next time try adding a service on top.",
     "Great sale. Explain what the extra service gives the guest.","Good greeting. Ask what the guest is in the mood for.",
     "Good conversation. Offer a relevant add-on.","Well done. Suggest the full package next time."];
   const ICON='<svg viewBox="0 0 40 40" aria-hidden="true"><path fill="#87E002" d="M 20 0 C 27.183 0 30.775 0 33.494 1.453 C 35.641 2.601 37.399 4.359 38.547 6.506 C 40 9.225 40 12.817 40 20 C 40 27.183 40 30.775 38.547 33.494 C 37.399 35.641 35.641 37.399 33.494 38.547 C 30.775 40 27.183 40 20 40 C 12.817 40 9.225 40 6.506 38.547 C 4.359 37.399 2.601 35.641 1.453 33.494 C 0 30.775 0 27.183 0 20 C 0 12.817 0 9.225 1.453 6.506 C 2.601 4.359 4.359 2.601 6.506 1.453 C 9.225 0 12.817 0 20 0 Z M 23.381 9.833 C 21.411 14.335 20.232 18.816 20.232 21.668 C 20.232 23.446 20.809 24.759 21.804 25.604 C 22.764 26.421 23.957 26.668 24.954 26.668 C 26.033 26.668 26.917 26.479 27.764 26.034 C 28.573 25.608 29.286 24.977 30.063 24.227 C 30.262 24.035 30.551 24.01 30.763 24.143 L 30.909 24.234 C 26.942 30.169 22.231 33.335 17.731 33.335 C 14.839 33.335 12.68 32.281 11.213 30.395 C 9.715 28.469 8.842 25.549 8.842 21.667 C 8.842 19.147 9.091 16.667 10.996 11.496 L 9.953 11.112 L 8.911 10.728 C 6.927 16.112 6.62 18.852 6.62 21.667 C 6.62 25.842 7.553 29.31 9.458 31.76 C 11.394 34.248 14.235 35.557 17.731 35.557 C 23.452 35.557 28.883 31.478 33.089 24.962 C 33.596 24.177 33.351 23.14 32.572 22.653 L 31.941 22.259 C 30.841 21.571 29.433 21.746 28.519 22.629 C 27.754 23.367 27.235 23.801 26.729 24.067 C 26.261 24.314 25.747 24.445 24.954 24.445 C 24.284 24.445 23.672 24.275 23.243 23.911 C 22.849 23.576 22.454 22.944 22.454 21.668 C 22.454 19.263 23.497 15.111 25.416 10.724 L 24.398 10.278 Z M 20.616 5.08 C 18.076 10.441 16.378 15.813 15.526 20.641 L 17.714 21.027 C 18.529 16.41 20.163 11.227 22.624 6.032 L 21.62 5.556 Z M 15.614 5.642 C 13.626 9.902 12.209 14.439 11.314 19.421 L 13.501 19.814 C 14.365 15.007 15.726 10.655 17.627 6.581 Z"/></svg>';
   const layer=document.createElement('div'); layer.className='notes'; layer.setAttribute('aria-hidden','true'); st.append(layer);
-  const NW=268, NH=56, IC=[24,26];   // card box used for placement; icon centre inside the card = where the comet lands
+  const NW=268, NH=56, IC=[RTL?268-24:24,26];   // in RTL the icon sits at the card's right   // card box used for placement; icon centre inside the card = where the comet lands
   let zones=[], live=[], comets=[], turn=0, msg=0; const HOLD=3000;
   const off=el=>{let x=0,y=0; for(let e=el;e&&e!==st;e=e.offsetParent){x+=e.offsetLeft; y+=e.offsetTop;} return [x,y];};   // stage coords, transforms ignored
   function measure(){const sub=st.querySelector('.hero>p'), sh=st.querySelector('.shot'), h1=st.querySelector('.hero h1'), bs=[...ctas.children];
@@ -1475,7 +1480,8 @@ launchScroll(); addEventListener('scroll',launchScroll,{passive:true});
     add(0, cl, cr-NW, bt+M, ht-NH-M);                            // above the headline
     add(-1, bl+M, cl-NW-M, ht, shT-NH-M);                       // left of it, in the card margin
     add(1, cr+M, br-NW-M, ht, shT-NH-M);                        // right of it
-    add(1, textR+40, cr-NW, pt-8, Math.max(pt-8,cb-NH));         // beside the subtitle and CTAs
+    const textL=Math.min(sl0, ...bs.map(b=>off(b)[0]));   // RTL: the subtitle and CTAs hug the right, the free band is on the left
+    if(RTL) add(-1, cl, textL-40-NW, pt-8, Math.max(pt-8,cb-NH)); else add(1, textR+40, cr-NW, pt-8, Math.max(pt-8,cb-NH));         // beside the subtitle and CTAs
     if(shT-cb>=NH+16){const y=cb+(shT-cb-NH)/2; add(0, cl, cr-NW, y, y);}}   // band under the CTAs
   const hits=(x,y)=>live.some(c=>Math.abs(c.x-x)<NW+16&&Math.abs(c.y-y)<NH+12);
   // a front-facing dot on the requested half of the orb (side 0: either half), in canvas px
@@ -1518,7 +1524,8 @@ launchScroll(); addEventListener('scroll',launchScroll,{passive:true});
 (()=>{const root=document.documentElement; if(!root.classList.contains('intro'))return;
   const st=document.querySelector('.hero-stage'), cv=st.querySelector('.hero-orb'), h1=st.querySelector('.hero h1');
   const line=document.createElement('div'); line.className='intro-line'; line.setAttribute('aria-hidden','true');
-  line.innerHTML='Learn from every conversation.'.split(' ').map(w=>'<span class="w">'+[...w].map(c=>'<span class="c">'+c+'</span>').join('')+'</span>').join(' ');
+  // Arabic letters join, so in Arabic the sand takes whole words instead of single letters
+  line.innerHTML=(AR?AR.INTRO:'Learn from every conversation.').split(' ').map(w=>AR?'<span class="w"><span class="c">'+w+'</span></span>':'<span class="w">'+[...w].map(c=>'<span class="c">'+c+'</span>').join('')+'</span>').join(' ');
   document.body.append(line);
   let ended=false, timers=[]; const at=(ms,f)=>timers.push(setTimeout(f,ms));
   // the orb starts a little bigger and centred in the viewport; it eases back to its place when the card settles
@@ -1552,7 +1559,7 @@ launchScroll(); addEventListener('scroll',launchScroll,{passive:true});
   // screens rotate on a timer (paused off screen / for reduced motion); the sidebar highlight and tooltip move with them
   const scr=[...app.querySelectorAll('.ui-scr')], nav=[...app.querySelectorAll('.ui-navt i')], tip=app.querySelector('.ui-tip'); let cur=0, tmr=0, seen=false;
   const go=k=>{scr[cur].classList.remove('on'); nav[cur].classList.remove('on'); cur=k; scr[cur].classList.add('on'); nav[cur].classList.add('on');
-    tip.textContent=scr[cur].dataset.tip; tip.style.top=(nav[cur].offsetTop+nav[cur].offsetHeight/2-14)+'px';};
+    tip.textContent=AR?AR.TIPS[cur]:scr[cur].dataset.tip; tip.style.top=(nav[cur].offsetTop+nav[cur].offsetHeight/2-14)+'px';};
   const tick=()=>{tmr=setTimeout(()=>{go((cur+1)%scr.length); tick();},4200);};
   if(!matchMedia('(prefers-reduced-motion:reduce)').matches) new IntersectionObserver(es=>{const v=es[0].isIntersecting; if(v&&!tmr)tick(); if(!v){clearTimeout(tmr); tmr=0;}}).observe(body);
   document.fonts.ready.then(()=>go(cur));
