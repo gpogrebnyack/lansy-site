@@ -46,6 +46,19 @@ The floors are, in page order:
 
 The "Live in 2 weeks" floor is in the markup but hidden (`#launchFloor`).
 
+## Arabic version
+
+`?lang=ar` opens the same page in Arabic, right to left. The EN / AR menu in the top bar (a shadcn Dropdown Menu radio group, rebuilt in plain HTML) switches between them.
+
+- **Translation** lives in `web/i18n/ar.js`. It loads only for Arabic and runs before the page script.
+  - Each text block is matched by its English markup. If you edit English text, update its pair in `ar.js`. Otherwise that block stays in English, and the console lists it.
+  - The How it works captions and the sound button labels are arrays in the same file.
+- **Illustrations stay in English and left to right.** These are the product UI: the How it works scenes, the bento panels, the device mockups and the logos.
+- **Font:** Struve has no Arabic letters, so Arabic falls back to IBM Plex Sans Arabic, while Latin words keep Struve.
+  - To compare other Arabic fonts, add `&arfont=noto` or `&arfont=readex` to the URL.
+- **RTL rules** are the `html[dir=rtl]` and `html[lang=ar]` block at the end of the styles.
+- **Production:** use an `/ar/` prefix for every page (`/ar/`, `/ar/pricing`, …) with `hreflang` links between the versions. Search engines don't index a version that is switched by a script.
+
 ## Rules the design follows
 
 - **Colour:** monochrome greys. The only accent is the Lansy palette: Primary Light `#9CDE45`, Primary Dark `#33694F`.
