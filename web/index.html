@@ -411,8 +411,8 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
   -webkit-mask-box-image:url(how/squircle.svg?v=2) 40 fill / 54px stretch;mask-border:url(how/squircle.svg?v=2) 40 fill / 54px stretch}
 .mid-cta h3{max-width:560px;font-size:28px;line-height:1.25;font-weight:600;letter-spacing:-.02em}
 .mid-cta .btns{display:flex;gap:12px;flex:none}
-@media (max-width:900px){#midCta{margin-top:72px}.mid-cta{flex-direction:column;align-items:flex-start;gap:24px;padding:28px 20px}
-  .mid-cta h3{font-size:24px}}
+@media (max-width:900px){#midCta{margin-top:72px}.mid-cta{flex-direction:column;align-items:flex-start;gap:24px;padding:28px 40px 28px 20px}
+  .mid-cta h3{font-size:24px;text-wrap:balance}}   /* more room on the right and balanced lines, so the heading doesn't run into the corner */
 /* desktop: the CTA follows the pin and is pulled up into its empty foot, so it rises in under the caption once the steps are
    done; it takes no room from the scene while the steps play */
 #midCta{position:relative;z-index:1}
