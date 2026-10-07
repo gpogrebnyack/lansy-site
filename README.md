@@ -18,12 +18,14 @@ Then open http://localhost:8765. In Claude Code the same server is in `.claude/l
 web/
   index.html              the whole page: markup, CSS and JS in one file, floors in page order
   mckp/                   device renders for the "roles" floor (exported from mckp.live Pro)
-    frames3/              MacBook opening sequence with the Summary screen: f001–f100.avif + manifest.json, scrubbed by scroll
-                          at 2400px for the desktop; frames3m/: 50 frames at 1800px for phones
-                          (AVIF, SVT-AV1 crf 28, 10-bit: 4.3 MB + 1.2 MB)
-    frames2/, frames2m/   the same frames in WebP, loaded only by browsers without AVIF
-                          (a new folder name per export: the files are cached for a week)
-    employees.webp        iPhone · data.webp — iPad in a frame · counter.webp — iPad on a grille
+    frames4/              MacBook opening sequence with the Summary screen: f001–f060.avif + manifest.json, scrubbed by scroll
+                          at 2400px for the desktop; frames4m/: 40 frames at 1440px for phones
+                          (AVIF, SVT-AV1 crf 28, 10-bit: 2.6 MB + 0.7 MB)
+    frames2/, frames2m/   the MacBook in WebP (100 and 50 frames), loaded only by browsers without AVIF
+    iphone1/, iphone1m/   iPhone zoom for "For employees": 60 frames at 2400px, 40 at 1440px for phones (AVIF;
+                          -webp folders are the fallback). The screen is a placeholder for now
+    ipad6/, ipad6m/       iPad Pro turning 180° from its back to the assistant, for "For your data": 60 frames at 2400px, 40 at 1440px (AVIF + -webp)
+                          (a new folder name per export: the files are cached for a year, immutable)
   logos/                  messenger / calling app logos for "Connects to your stack" (Simple Icons)
   labs/
     hero-shader-lab.html  approved hero background shader (React Bits "Threads", Lansy greens),

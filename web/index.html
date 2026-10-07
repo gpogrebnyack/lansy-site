@@ -668,7 +668,7 @@ br.mb{display:none}@media (max-width:900px){br.mb{display:inline}br.dk{display:n
 .mk3d::before{content:"mckp export goes here";position:absolute;inset:0;display:grid;place-items:center;font:500 12px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#A1A1A8}
 .mk3d.ready::before,.mk3d:has(.still)::before{display:none}
 .mk3d .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.mk3d .still[src*=employees]{object-position:50% 15%}   /* keep the top of the phone in a wide scene */
-#seq{position:absolute;inset:0;width:100%;height:100%;z-index:auto;pointer-events:none}
+.mk3d canvas{position:absolute;inset:0;width:100%;height:100%;z-index:auto;pointer-events:none}
 
 /* scroll reveal for floors without their own motion: a clear rise and fade, staggered within a group, no blur.
    keyframes (not transitions) so elements keep their own hover/state transitions */
@@ -1091,9 +1091,9 @@ html[dir=rtl] .rtx .bar::after{left:auto;right:0;transform-origin:right}
       <div class="rtab" data-i="3"><div class="k"><i></i>At the counter<span class="soon">Soon</span></div><div class="body"><div><div class="bar"></div><h3>Copilot at the counter</h3><p>A quiet prompt during the conversation: the right question or offer at the right moment.</p></div></div></div>
     </div>
     <div class="rdev on"><div class="mk3d"><canvas class="seq" id="seq" aria-label="MacBook with the Lansy dashboard"></canvas></div></div>
-    <div class="rdev"><div class="mk3d"><img class="still" src="mckp/employees.webp" alt="iPhone with a tip after the shift" loading="lazy" onerror="this.remove()"></div></div>
-    <div class="rdev"><div class="mk3d"><img class="still" src="mckp/data.webp" alt="iPad with the data assistant" loading="lazy" onerror="this.remove()"></div></div>
-    <div class="rdev"><div class="mk3d"><img class="still" src="mckp/counter.webp" alt="iPad at the counter" loading="lazy" onerror="this.remove()"></div></div>
+    <div class="rdev"><div class="mk3d"><canvas class="seq" id="seqPhone" aria-label="iPhone with a tip after the shift"></canvas></div></div>
+    <div class="rdev"><div class="mk3d"><canvas class="seq" id="seqTab" aria-label="iPad with the data assistant"></canvas></div></div>
+    <div class="rdev"><div class="mk3d"></div></div>   <!-- At the counter: Soon, no picture yet -->
   </div>
 </div>
 <div class="rint" id="rint"><div class="l">Connects to your stack</div><div class="logos" id="rlogos"></div></div>
@@ -1442,7 +1442,7 @@ function rolesLayout(){if(matchMedia('(max-width:900px)').matches){$('rolesRun')
 function rolesScroll(){if(matchMedia('(max-width:900px)').matches){$('rint').style.translate='';$('casesFloor').style.marginTop='';return;} const run=$('rolesRun'), steps=ROLES*STEP_VH*innerHeight, scrolled=-run.getBoundingClientRect().top, p=clamp(scrolled/steps), x=Math.min(ROLES-.001,p*ROLES), i=Math.floor(x);
   if(i!==roleIdx){roleIdx=i; document.querySelectorAll('.rtab').forEach((t,k)=>t.classList.toggle('on',k===i)); document.querySelectorAll('.rdev').forEach((d,k)=>d.classList.toggle('on',k===i));}
   document.querySelectorAll('.rtab .bar').forEach((b,k)=>b.style.setProperty('--f',(k===i?(x-i)*100:0)+'%'));
-  SEQ.show(clamp(x));
+  SEQ.forEach((q,k)=>q.show(clamp(x-k)));
   const pin=$('rolesPin'), strip=$('rint'), dev=document.querySelectorAll('.rdev')[i], sc=document.querySelector('.rscene');
   const devBottom=sc.offsetTop+dev.offsetTop+Math.max(...[...dev.children].map(c=>c.offsetTop+c.offsetHeight));
   const gap=strip.offsetTop-devBottom-GAP6(), k=ease(clamp((scrolled-steps)/(CLOSE_VH*innerHeight)));
@@ -1457,31 +1457,39 @@ const slots=LOGOS.slice(0,5).map(L=>{const d=document.createElement('div'); d.cl
 const ORDER=[0,2,4,1,3]; let nextLogo=5, nextSlot=0;
 setInterval(()=>{const d=slots[ORDER[nextSlot]], L=LOGOS[nextLogo%LOGOS.length]; d.classList.add('out');
   setTimeout(()=>{d.innerHTML=lgHTML(L); d.classList.remove('out');},450); nextLogo++; nextSlot=(nextSlot+1)%5;},1800);
-// 06 · managers: the MacBook turn is a frame sequence (exported from mckp) drawn on a canvas; the first tab's scroll scrubs it.
-// frames live in mckp/frames3/ (AVIF) with a manifest {count, ext}, and in mckp/frames2/ (WebP) for browsers without AVIF; they start loading two screens before the floor
-// the first set whose manifest loads and whose first frame decodes here (AVIF first, WebP for older browsers)
+// 06 · the MacBook opening (managers), the iPhone zoom (employees) and the iPad turn (data) are frame sequences exported from mckp, drawn on a canvas;
+// each role's scroll scrubs its device. Every set has a manifest {count, ext}: AVIF first, WebP for browsers without AVIF
+// the first set whose manifest loads and whose first frame decodes here
 const frameSet=async(...dirs)=>{for(const d of dirs){try{const m=await fetch(d+'manifest.json').then(r=>r.ok?r.json():null); if(!m)continue;
   const ok=await new Promise(r=>{const i=new Image(); i.onload=()=>r(i.naturalWidth>0); i.onerror=()=>r(false); i.src=d+'f001'+(m.ext||'.webp');}); if(ok)return {...m,dir:d};}catch(e){}} return null;};
-const SEQ=(()=>{const cv=$('seq'), ctx=cv.getContext('2d'), imgs=[]; let n=0, ext='.webp', dir='', want=0, shown=-1;
-  const size=()=>{const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2); cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); shown=-1; draw();};
-  const draw=()=>{if(!n)return; let k=Math.round(want*(n-1)); while(k>0&&!(imgs[k]&&imgs[k].complete&&imgs[k].naturalWidth))k--;   // nearest frame already loaded
+// a sequence on a canvas: drawn to cover it, ax / ay place the crop (0 left or top … 1 right or bottom); frames start loading two screens ahead.
+// a manifest's `hold` keeps the first frame for that many extra steps, so the motion starts a little later in the scroll.
+// `after` queues the devices: a set shows its first frame at once, and loads the rest once the set before it is done (`done`)
+const frameSeq=(cv,dirs,{ax=.5,ay=.5,after}={})=>{const ctx=cv.getContext('2d'), imgs=[]; let n=0, hold=0, want=0, shown=-1, fin; const done=new Promise(r=>fin=r);
+  const draw=()=>{if(!n||!cv.width)return; let k=Math.max(0,Math.round(want*(n+hold-1))-hold); while(k>0&&!(imgs[k]&&imgs[k].complete&&imgs[k].naturalWidth))k--;   // nearest frame already loaded
     const im=imgs[k]; if(!im||!im.naturalWidth||k===shown)return; shown=k;
     const s=Math.max(cv.width/im.naturalWidth,cv.height/im.naturalHeight), w=im.naturalWidth*s, h=im.naturalHeight*s;
-    ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(im,(cv.width-w)/2,(cv.height-h)/2,w,h);};
-  const load=async()=>{const m=await frameSet('mckp/frames3/','mckp/frames2/'); if(!m)return; n=m.count; ext=m.ext||ext; dir=m.dir;
-    cv.parentElement.classList.add('ready'); let next=0;
-    const one=()=>{if(next>=n)return; const k=next++, im=new Image(); im.decoding='async'; im.onload=()=>{draw(); one();}; im.onerror=one; im.src=`${dir}f${String(k+1).padStart(3,'0')}${ext}`; imgs[k]=im;};
+    ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(im,(cv.width-w)*ax,(cv.height-h)*ay,w,h);};
+  const size=()=>{const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2); if(!r.width)return; cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); shown=-1; draw();};
+  const load=async()=>{const m=await frameSet(...dirs); if(!m){fin();return;} n=m.count; hold=m.hold||0; cv.parentElement.classList.add('ready');
+    const src=k=>`${m.dir}f${String(k+1).padStart(3,'0')}${m.ext}`, first=new Image(); first.onload=draw; first.src=src(0); imgs[0]=first;   // decoded already by frameSet
+    await after; let next=1, left=n-1; if(!left){fin();return;}
+    const one=()=>{if(next>=n)return; const k=next++, im=new Image(); im.decoding='async'; const end=()=>{if(--left===0)fin(); one();};
+      im.onload=()=>{draw(); end();}; im.onerror=end; im.src=src(k); imgs[k]=im;};
     for(let c=0;c<6;c++)one();};
-  new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect(); load();}},{rootMargin:'200% 0px'}).observe(cv);
+  new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect(); load();}},{rootMargin:'200% 0px'}).observe(cv);   // a hidden (display:none) canvas never loads
   new ResizeObserver(size).observe(cv);
-  return {show(p){want=p; draw();}};})();
+  return {show(p){want=p; draw();}, done};};
+// desktop sets: 60 frames at 2400px (the tops of the phone and the iPad stay in the wide scene; only the bottom is cut)
+const macD=frameSeq($('seq'),['mckp/frames4/','mckp/frames2/']), phoneD=frameSeq($('seqPhone'),['mckp/iphone1/','mckp/iphone1-webp/'],{ay:.15,after:macD.done}),
+  SEQ=[macD, phoneD, frameSeq($('seqTab'),['mckp/ipad6/','mckp/ipad6-webp/'],{ay:0,after:phoneD.done})];   // MacBook first, then the iPhone, then the iPad
 rolesLayout(); rolesScroll(); onScrollFrame(rolesScroll); addEventListener('resize',()=>{rolesLayout(); rolesScroll();});
 // ── phones: stacked role cards built from the tabs (text) and the device pictures; each has a runway, the hairline fills along it
 const PH=matchMedia('(max-width:900px)'), POS=['55% 50%','48% 50%','50% 50%','48% 50%'], RUN=.7;   // RUN: scroll per card, in screen heights
 (()=>{const tabs=[...document.querySelectorAll('.rtab')], devs=[...document.querySelectorAll('.rdev')], sc=document.querySelector('.rscene');
   const col=document.createElement('div'); col.className='rcards';
   tabs.forEach((t,i)=>{const h=document.createElement('div'); h.className='rhold';
-    const still=devs[i].querySelector('img.still'), pic=i===0?'<canvas class="mseq" aria-label="MacBook with the Lansy dashboard"></canvas>':`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
+    const cvs=devs[i].querySelector('canvas'), still=devs[i].querySelector('img.still'), pic=!cvs&&!still?'':cvs?`<canvas class="mseq" aria-label="${cvs.getAttribute('aria-label')}"></canvas>`:still.parentElement.tagName==='PICTURE'?still.parentElement.outerHTML.replace(' class="still"','').replace(' loading="lazy"',` style="object-position:${POS[i]}"`):`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
     h.innerHTML=`<article class="rcard"><div class="rtx"></div><div class="rpic">${pic}</div></article>`;
     const tx=h.querySelector('.rtx'); tx.append(t.querySelector('.k').cloneNode(true)); tx.insertAdjacentHTML('beforeend',`<div class="bar"></div><h3>${t.querySelector('h3').innerHTML}</h3><p>${t.querySelector('p').innerHTML}</p>`);
     if(t.querySelector('.soon')){h.classList.add('soon-only'); h.querySelector('.rpic').remove(); tx.querySelectorAll('.bar,h3,p').forEach(e=>e.remove());}   // announced only
@@ -1490,17 +1498,13 @@ const PH=matchMedia('(max-width:900px)'), POS=['55% 50%','48% 50%','50% 50%','48
   const holds=[...col.children].filter(h=>!h.classList.contains('soon-only'));
   const ic=document.createElement('div'); ic.className='ricons'; ic.innerHTML=['whatsapp','telegram','slack','microsoftteams','googlemeet','messenger'].map(f=>LOGOS.find(L=>L[0]===f)).map(([f,n])=>`<span title="${n}"><img src="logos/${f}.svg" alt="${n}"></span>`).join('')+`<span class="more">+${LOGOS.length-6}</span>`; $('rint').append(ic);
   const fit=()=>holds.forEach(h=>h.style.height=PH.matches?(h.firstChild.offsetHeight+innerHeight*RUN)+'px':'');
-  // the MacBook frames: a phone set (mckp/frames3m, AVIF, or frames2m, WebP: 50 frames at 1800px, enough for the square crop at 3x)
-  const cv=col.querySelector('.mseq'), ctx=cv.getContext('2d'), F=[]; let want=0, shown=-1, n=0;
-  const size=()=>{const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2); if(!r.width)return; cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); shown=-1; draw();};
-  const draw=()=>{if(!n)return; let k=Math.round(want*(n-1)); while(k>0&&!(F[k]&&F[k].naturalWidth))k--; const im=F[k]; if(!im||!im.naturalWidth||k===shown)return; shown=k;
-    const s=Math.max(cv.width/im.naturalWidth,cv.height/im.naturalHeight), w=im.naturalWidth*s, h=im.naturalHeight*s; ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(im,(cv.width-w)*.55,(cv.height-h)/2,w,h);};
-  new IntersectionObserver(async(es,o)=>{if(!es[0].isIntersecting)return; o.disconnect(); const m=await frameSet('mckp/frames3m/','mckp/frames2m/'); if(!m)return; n=m.count; for(let k=0;k<n;k++){const im=new Image(); im.decoding='async'; im.onload=draw; im.src=`${m.dir}f${String(k+1).padStart(3,'0')}${m.ext}`; F[k]=im;}},{rootMargin:'100% 0px'}).observe(cv);
-  new ResizeObserver(size).observe(cv);
+  // phone sets (square crop, canvas at 2x): 40 frames at 1440px
+  const [mac,iph,tab]=col.querySelectorAll('.mseq'), macM=frameSeq(mac,['mckp/frames4m/','mckp/frames2m/'],{ax:.55}), phoneM=frameSeq(iph,['mckp/iphone1m/','mckp/iphone1m-webp/'],{after:macM.done}),
+    MSEQ=[macM, phoneM, frameSeq(tab,['mckp/ipad6m/','mckp/ipad6m-webp/'],{after:phoneM.done})];
   // progress of each card along its runway: 0 when it docks under the top bar, 1 just before it leaves
   const tick=()=>{if(!PH.matches)return; holds.forEach((h,i)=>{const c=h.firstChild, r=h.getBoundingClientRect(), p=clamp((76-r.top)/(h.offsetHeight-c.offsetHeight));
     c.querySelector('.bar').style.setProperty('--f',p.toFixed(4)); c.querySelector('.rpic>*').style.setProperty('--z',(1.06-.06*p).toFixed(4));
-    if(i===0){want=p; draw();}});};
+    if(MSEQ[i])MSEQ[i].show(p);});};
   fit(); tick(); addEventListener('resize',()=>{fit(); tick();}); onScrollFrame(tick); document.fonts.ready.then(()=>{fit(); tick();});})();
 // 07: arrows step the carousel one card at a time
 const track=$('track'), cardStep=()=>track.querySelector('.case').offsetWidth+24;
