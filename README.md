@@ -18,7 +18,11 @@ Then open http://localhost:8765. In Claude Code the same server is in `.claude/l
 web/
   index.html              the whole page: markup, CSS and JS in one file, floors in page order
   mckp/                   device renders for the "roles" floor (exported from mckp.live Pro)
-    frames/               MacBook opening sequence: f001–f100.webp + manifest.json, scrubbed by scroll
+    frames3/              MacBook opening sequence with the Summary screen: f001–f100.avif + manifest.json, scrubbed by scroll
+                          at 2400px for the desktop; frames3m/: 50 frames at 1800px for phones
+                          (AVIF, SVT-AV1 crf 28, 10-bit: 4.3 MB + 1.2 MB)
+    frames2/, frames2m/   the same frames in WebP, loaded only by browsers without AVIF
+                          (a new folder name per export: the files are cached for a week)
     employees.webp        iPhone · data.webp — iPad in a frame · counter.webp — iPad on a grille
   logos/                  messenger / calling app logos for "Connects to your stack" (Simple Icons)
   labs/

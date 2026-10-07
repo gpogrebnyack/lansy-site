@@ -376,7 +376,7 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .roles-pin h2{margin-top:0;font-size:clamp(40px,3.9vw,56px);line-height:1.08;font-weight:400;letter-spacing:-.015em}   /* section heading size (56 at 1440); the manifesto's regular weight */
 .rscene{position:relative;margin-top:32px;height:900px}
 .rtabs{position:absolute;left:0;right:0;top:0;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start;z-index:2}
-.rtab{position:relative;border-radius:12px;background:rgba(255,255,255,.6);padding:13px 16px;cursor:pointer;transition:background .3s,box-shadow .3s}
+.rtab{position:relative;border-radius:12px;background:rgba(255,255,255,.6);padding:13px 16px;cursor:pointer;transition:background .3s,box-shadow .3s}.rtab[data-i="3"]{cursor:default}
 .rtab .k{display:flex;align-items:center;gap:8px;font:500 12px/17px Struve,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#737378}
 .rtab .k i{width:8px;height:8px;border-radius:1.5px;background:#737378}.rtab .soon{margin-left:auto;font-size:11px;line-height:15px;font-weight:600;letter-spacing:0;text-transform:none;color:#fff;background:#737378;border-radius:999px;padding:1px 8px}
 .rtab .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}
@@ -1389,9 +1389,11 @@ $('chips').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(c)
 // 06: the floor pins and scroll walks through the four roles; the active tab's line fills as you go
 let roleIdx=-1;
 // air between the mockup and the integrations strip, grows with screen height
+// the scroll opens the first three roles; "At the counter" is Soon and stays a closed tab, so after "For your data" the page scrolls on
+const ROLES=3;
 const GAP6=()=>Math.round(Math.min(112,Math.max(56,innerHeight*.07)));
 // devices always bleed off the bottom: about 540px of them stay on screen, between 233 and 330px under the tabs
-function rolesLayout(){$('rolesRun').style.height=(innerHeight*(1+4*STEP_VH+CLOSE_VH))+'px';
+function rolesLayout(){$('rolesRun').style.height=(innerHeight*(1+ROLES*STEP_VH+CLOSE_VH))+'px';
   const sc=document.querySelector('.rscene'), scTop=sc.getBoundingClientRect().top-$('rolesPin').getBoundingClientRect().top, top=Math.min(330,Math.max(233,innerHeight-scTop-540));
   document.querySelectorAll('.rdev').forEach(d=>d.style.top=top+'px');
   // device scene: full width of the tabs row, as tall as the space between the tabs and the integrations block allows
@@ -1399,8 +1401,8 @@ function rolesLayout(){$('rolesRun').style.height=(innerHeight*(1+4*STEP_VH+CLOS
   const mks=[...document.querySelectorAll('.mk3d')]; if(mks.length){const MT=Math.max(...[...document.querySelectorAll('.rtab')].map(t=>t.querySelector('.k').offsetHeight+26+t.querySelector('.body>div').scrollHeight))+24, stripH=$('rint').offsetHeight+32+GAP6(); 
     const ratio=1, h=Math.round(Math.max(360,Math.min(mks[0].offsetWidth*ratio, innerHeight-(scTop+MT)-stripH)));
     mks.forEach(mk=>{mk.parentElement.style.top=MT+'px'; mk.style.height=h+'px';});}}
-// after the four roles, the integrations strip rises to sit 64px under the devices; the next floor follows it up
-function rolesScroll(){const run=$('rolesRun'), steps=4*STEP_VH*innerHeight, scrolled=-run.getBoundingClientRect().top, p=clamp(scrolled/steps), x=Math.min(3.999,p*4), i=Math.floor(x);
+// after the last role, the integrations strip rises to sit 64px under the devices; the next floor follows it up
+function rolesScroll(){const run=$('rolesRun'), steps=ROLES*STEP_VH*innerHeight, scrolled=-run.getBoundingClientRect().top, p=clamp(scrolled/steps), x=Math.min(ROLES-.001,p*ROLES), i=Math.floor(x);
   if(i!==roleIdx){roleIdx=i; document.querySelectorAll('.rtab').forEach((t,k)=>t.classList.toggle('on',k===i)); document.querySelectorAll('.rdev').forEach((d,k)=>d.classList.toggle('on',k===i));}
   document.querySelectorAll('.rtab .bar').forEach((b,k)=>b.style.setProperty('--f',(k===i?(x-i)*100:0)+'%'));
   SEQ.show(clamp(x));
@@ -1408,8 +1410,8 @@ function rolesScroll(){const run=$('rolesRun'), steps=4*STEP_VH*innerHeight, scr
   const devBottom=sc.offsetTop+dev.offsetTop+Math.max(...[...dev.children].map(c=>c.offsetTop+c.offsetHeight));
   const gap=strip.offsetTop-devBottom-GAP6(), k=ease(clamp((scrolled-steps)/(CLOSE_VH*innerHeight)));
   strip.style.translate=`0 ${-Math.max(0,gap)*k}px`; $('casesFloor').style.marginTop=-Math.max(0,gap)+'px';}
-$('rtabs').addEventListener('click',e=>{const t=e.target.closest('.rtab'); if(!t)return; const run=$('rolesRun'), steps=4*STEP_VH*innerHeight;
-  scrollTo({top:run.getBoundingClientRect().top+scrollY+steps*(+t.dataset.i+.02)/4,behavior:'instant'});});
+$('rtabs').addEventListener('click',e=>{const t=e.target.closest('.rtab'); if(!t||+t.dataset.i>=ROLES)return; const run=$('rolesRun'), steps=ROLES*STEP_VH*innerHeight;
+  scrollTo({top:run.getBoundingClientRect().top+scrollY+steps*(+t.dataset.i+.02)/ROLES,behavior:'instant'});});
 // calling apps and messengers Lansy connects to (list to confirm with the team)
 const LOGOS=[['whatsapp','WhatsApp'],['telegram','Telegram'],['slack','Slack'],['microsoftteams','Teams'],['zoom','Zoom'],['googlemeet','Google Meet'],['webex','Webex'],['viber','Viber'],['messenger','Messenger'],['googlechat','Google Chat'],['aircall','Aircall'],['twilio','Twilio'],['line','LINE'],['signal','Signal']];
 const lgHTML=([f,n])=>`<img src="logos/${f}.svg" alt="">${n}`;
@@ -1419,16 +1421,19 @@ const ORDER=[0,2,4,1,3]; let nextLogo=5, nextSlot=0;
 setInterval(()=>{const d=slots[ORDER[nextSlot]], L=LOGOS[nextLogo%LOGOS.length]; d.classList.add('out');
   setTimeout(()=>{d.innerHTML=lgHTML(L); d.classList.remove('out');},450); nextLogo++; nextSlot=(nextSlot+1)%5;},1800);
 // 06 · managers: the MacBook turn is a frame sequence (exported from mckp) drawn on a canvas; the first tab's scroll scrubs it.
-// frames live in mckp/frames/ with a manifest {count, ext}; they start loading two screens before the floor
-const SEQ=(()=>{const cv=$('seq'), ctx=cv.getContext('2d'), imgs=[]; let n=0, ext='.webp', want=0, shown=-1;
+// frames live in mckp/frames3/ (AVIF) with a manifest {count, ext}, and in mckp/frames2/ (WebP) for browsers without AVIF; they start loading two screens before the floor
+// the first set whose manifest loads and whose first frame decodes here (AVIF first, WebP for older browsers)
+const frameSet=async(...dirs)=>{for(const d of dirs){try{const m=await fetch(d+'manifest.json').then(r=>r.ok?r.json():null); if(!m)continue;
+  const ok=await new Promise(r=>{const i=new Image(); i.onload=()=>r(i.naturalWidth>0); i.onerror=()=>r(false); i.src=d+'f001'+(m.ext||'.webp');}); if(ok)return {...m,dir:d};}catch(e){}} return null;};
+const SEQ=(()=>{const cv=$('seq'), ctx=cv.getContext('2d'), imgs=[]; let n=0, ext='.webp', dir='', want=0, shown=-1;
   const size=()=>{const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2); cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); shown=-1; draw();};
   const draw=()=>{if(!n)return; let k=Math.round(want*(n-1)); while(k>0&&!(imgs[k]&&imgs[k].complete&&imgs[k].naturalWidth))k--;   // nearest frame already loaded
     const im=imgs[k]; if(!im||!im.naturalWidth||k===shown)return; shown=k;
     const s=Math.max(cv.width/im.naturalWidth,cv.height/im.naturalHeight), w=im.naturalWidth*s, h=im.naturalHeight*s;
     ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(im,(cv.width-w)/2,(cv.height-h)/2,w,h);};
-  const load=async()=>{try{const m=await fetch('mckp/frames/manifest.json').then(r=>r.ok?r.json():null); if(!m)return; n=m.count; ext=m.ext||ext;}catch(e){return;}
+  const load=async()=>{const m=await frameSet('mckp/frames3/','mckp/frames2/'); if(!m)return; n=m.count; ext=m.ext||ext; dir=m.dir;
     cv.parentElement.classList.add('ready'); let next=0;
-    const one=()=>{if(next>=n)return; const k=next++, im=new Image(); im.decoding='async'; im.onload=()=>{draw(); one();}; im.onerror=one; im.src=`mckp/frames/f${String(k+1).padStart(3,'0')}${ext}`; imgs[k]=im;};
+    const one=()=>{if(next>=n)return; const k=next++, im=new Image(); im.decoding='async'; im.onload=()=>{draw(); one();}; im.onerror=one; im.src=`${dir}f${String(k+1).padStart(3,'0')}${ext}`; imgs[k]=im;};
     for(let c=0;c<6;c++)one();};
   new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect(); load();}},{rootMargin:'200% 0px'}).observe(cv);
   new ResizeObserver(size).observe(cv);
