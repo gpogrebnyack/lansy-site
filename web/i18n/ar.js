@@ -79,7 +79,7 @@ PAIRS:[
 ['Contact us <span>→</span>','تواصل معنا <span>←</span>'],
 // roles
 ['Product','المنتج'],
-['Same data, a different helper<br><span class="smk">for every role</span>','البيانات نفسها، ومساعد مختلف<br>لكل دور'],
+['Same data,<br class="mb"> a different helper<br><span class="smk">for every role</span>','البيانات نفسها، ومساعد مختلف<br>لكل دور'],
 ['<i></i>For managers','<i></i>للمديرين'],
 ['A partner for the manager','شريك للمدير'],
 ['A summary of locations, promos and demand: what guests ask for and what’s missing.','ملخّص للفروع والعروض والطلب: ما يطلبه الضيوف وما ينقصهم.'],

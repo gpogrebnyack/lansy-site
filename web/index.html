@@ -914,6 +914,43 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
   .inds .ind.ind-more p{font-size:24px;line-height:1.3}
   .roles-pin h2{font-size:34px;line-height:1.1}
   .rtab .soon{font-size:12px}.rtab h3,.rtab p{font-size:17px;line-height:1.5}}
+/* ── phones: the roles come one after another, each card as wide as the column. A card stops under the top bar; the hairline
+      under its label fills as you scroll (on the first card the MacBook opens with it); once full, the card moves on and the next
+      one arrives. Type on the phone scale (DESIGN.md): 34 heading · 17 title and text · 15 logos · 12 labels */
+.rcards,.ricons{display:none}
+@media (max-width:900px){
+  .roles-run{height:auto!important}
+  .roles-pin{position:static;height:auto;overflow:visible;padding:96px 0}
+  .roles-pin .wrap{padding-top:0}
+  .roles-pin h2{font-size:34px;line-height:1.15}
+  .rscene{height:auto!important;margin-top:28px}
+  .rtabs,.rdev{display:none}
+  .rcards{display:flex;flex-direction:column;gap:20px}
+  .rhold{position:relative}                                   /* the card's own runway: its height sets how long the card stays */
+  .rcard{position:sticky;top:76px;border-radius:24px;overflow:hidden;background:#fff}
+  .rtx{padding:18px 20px 20px}
+  .rtx .k{display:flex;align-items:center;gap:8px;font:500 12px/1.6 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+  .rtx .k i{width:8px;height:8px;border-radius:1.5px;background:var(--ink)}
+  .rtx .soon{margin-left:auto;font:600 12px/18px Struve,sans-serif;letter-spacing:0;text-transform:none;color:#fff;background:#737378;border-radius:999px;padding:0 8px}
+  .rtx .bar{position:relative;height:1px;margin-top:14px;background:rgba(31,31,33,.1)}
+  .rtx .bar::after{content:"";position:absolute;left:0;top:-.5px;height:2px;width:100%;background:var(--ink);transform:scaleX(var(--f,0));transform-origin:left}
+  .rtx h3{margin-top:14px;font-size:17px;line-height:1.5;font-weight:600}
+  .rtx p{margin-top:2px;font-size:17px;line-height:1.5;color:#737378}
+  .rpic{position:relative;aspect-ratio:1;overflow:hidden;background:#E4E4E7}
+  .rpic img,.rpic canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(var(--z,1));transform-origin:50% 60%}
+  .rint{position:static;transform:none!important;translate:none!important;width:auto;margin:48px 16px 0;display:block;padding-top:24px}
+  .rint::before{display:none}
+  .rint .l{font-size:24px;line-height:1.25;font-weight:600;letter-spacing:-.01em}   /* the sub-heading step of the phone scale (24), as the step cards and the lime CTA */
+  .ricons{margin-top:16px!important;justify-content:center}.rint{text-align:center}   /* the whole block centred */
+  /* integrations on a phone: one quiet row — six app icons and the count of the rest; no names, no swapping */
+  .rint .logos{display:none}
+  .ricons{display:flex;gap:8px;margin-top:14px}
+  .ricons span{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fff}
+  .ricons img{width:22px;height:22px;opacity:.75}
+  .ricons .more{width:auto;padding:0 14px;border-radius:999px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.04em;color:#737378}
+  .rhold.soon-only{display:none}   /* «At the counter» is not shown on phones until it ships */
+}
+html[dir=rtl] .rtx .bar::after{left:auto;right:0;transform-origin:right}
 </style></head><body>
 <nav class="topbar"><span class="tb-pill" aria-hidden="true"></span>
   <span class="navlinks tb-l"><i class="tb-hl" aria-hidden="true"></i><button type="button" class="tb-t" data-m="product" aria-expanded="false" >Product</button><button type="button" class="tb-t" data-m="industries" aria-expanded="false" >Industries</button><button type="button" class="tb-t" data-m="company" aria-expanded="false" >Company</button></span>
@@ -1045,7 +1082,7 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
   <a class="met-link" href="#">Your industry isn’t listed? Talk to us →</a>
 </section></div>
 <div class="roles-run" id="rolesRun"><section class="roles-pin" id="rolesPin"><div class="wrap">
-  <h2>Same data, a different helper<br><span class="smk">for every role</span></h2>
+  <h2>Same data,<br class="mb"> a different helper<br><span class="smk">for every role</span></h2>
   <div class="rscene">
     <div class="rtabs" id="rtabs">
       <div class="rtab on" data-i="0"><div class="k"><i></i>For managers</div><div class="body"><div><div class="bar"></div><h3>A partner for the manager</h3><p>A summary of locations, promos and demand: what guests ask for and what’s missing.</p></div></div></div>
@@ -1386,14 +1423,14 @@ function setInd(i,first){document.querySelectorAll('.chip').forEach((c,k)=>c.cla
   order.forEach((k,idx)=>{const c=CARDS[k]; c.style.zIndex=10-idx; c.style.transform=`translateY(${-24*idx}px) scale(${1-.1*idx})`; c.style.opacity=idx<3?1-.1*idx:0; c.style.pointerEvents=idx?'none':'auto'; c.classList.toggle('behind',idx>0);
     c.classList.remove('front'); if(idx===0&&!first){void c.offsetWidth; c.classList.add('front');}});}
 $('chips').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(c) setInd(+c.dataset.i);}); setInd(0,true);
-// 06: the floor pins and scroll walks through the four roles; the active tab's line fills as you go
+// 06: the floor pins and scroll walks through the roles; the active tab's line fills as you go
 let roleIdx=-1;
 // air between the mockup and the integrations strip, grows with screen height
 // the scroll opens the first three roles; "At the counter" is Soon and stays a closed tab, so after "For your data" the page scrolls on
 const ROLES=3;
 const GAP6=()=>Math.round(Math.min(112,Math.max(56,innerHeight*.07)));
 // devices always bleed off the bottom: about 540px of them stay on screen, between 233 and 330px under the tabs
-function rolesLayout(){$('rolesRun').style.height=(innerHeight*(1+ROLES*STEP_VH+CLOSE_VH))+'px';
+function rolesLayout(){if(matchMedia('(max-width:900px)').matches){$('rolesRun').style.height='';return;} $('rolesRun').style.height=(innerHeight*(1+ROLES*STEP_VH+CLOSE_VH))+'px';
   const sc=document.querySelector('.rscene'), scTop=sc.getBoundingClientRect().top-$('rolesPin').getBoundingClientRect().top, top=Math.min(330,Math.max(233,innerHeight-scTop-540));
   document.querySelectorAll('.rdev').forEach(d=>d.style.top=top+'px');
   // device scene: full width of the tabs row, as tall as the space between the tabs and the integrations block allows
@@ -1402,7 +1439,7 @@ function rolesLayout(){$('rolesRun').style.height=(innerHeight*(1+ROLES*STEP_VH+
     const ratio=1, h=Math.round(Math.max(360,Math.min(mks[0].offsetWidth*ratio, innerHeight-(scTop+MT)-stripH)));
     mks.forEach(mk=>{mk.parentElement.style.top=MT+'px'; mk.style.height=h+'px';});}}
 // after the last role, the integrations strip rises to sit 64px under the devices; the next floor follows it up
-function rolesScroll(){const run=$('rolesRun'), steps=ROLES*STEP_VH*innerHeight, scrolled=-run.getBoundingClientRect().top, p=clamp(scrolled/steps), x=Math.min(ROLES-.001,p*ROLES), i=Math.floor(x);
+function rolesScroll(){if(matchMedia('(max-width:900px)').matches){$('rint').style.translate='';$('casesFloor').style.marginTop='';return;} const run=$('rolesRun'), steps=ROLES*STEP_VH*innerHeight, scrolled=-run.getBoundingClientRect().top, p=clamp(scrolled/steps), x=Math.min(ROLES-.001,p*ROLES), i=Math.floor(x);
   if(i!==roleIdx){roleIdx=i; document.querySelectorAll('.rtab').forEach((t,k)=>t.classList.toggle('on',k===i)); document.querySelectorAll('.rdev').forEach((d,k)=>d.classList.toggle('on',k===i));}
   document.querySelectorAll('.rtab .bar').forEach((b,k)=>b.style.setProperty('--f',(k===i?(x-i)*100:0)+'%'));
   SEQ.show(clamp(x));
@@ -1439,6 +1476,32 @@ const SEQ=(()=>{const cv=$('seq'), ctx=cv.getContext('2d'), imgs=[]; let n=0, ex
   new ResizeObserver(size).observe(cv);
   return {show(p){want=p; draw();}};})();
 rolesLayout(); rolesScroll(); onScrollFrame(rolesScroll); addEventListener('resize',()=>{rolesLayout(); rolesScroll();});
+// ── phones: stacked role cards built from the tabs (text) and the device pictures; each has a runway, the hairline fills along it
+const PH=matchMedia('(max-width:900px)'), POS=['55% 50%','48% 50%','50% 50%','48% 50%'], RUN=.7;   // RUN: scroll per card, in screen heights
+(()=>{const tabs=[...document.querySelectorAll('.rtab')], devs=[...document.querySelectorAll('.rdev')], sc=document.querySelector('.rscene');
+  const col=document.createElement('div'); col.className='rcards';
+  tabs.forEach((t,i)=>{const h=document.createElement('div'); h.className='rhold';
+    const still=devs[i].querySelector('img.still'), pic=i===0?'<canvas class="mseq" aria-label="MacBook with the Lansy dashboard"></canvas>':`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
+    h.innerHTML=`<article class="rcard"><div class="rtx"></div><div class="rpic">${pic}</div></article>`;
+    const tx=h.querySelector('.rtx'); tx.append(t.querySelector('.k').cloneNode(true)); tx.insertAdjacentHTML('beforeend',`<div class="bar"></div><h3>${t.querySelector('h3').innerHTML}</h3><p>${t.querySelector('p').innerHTML}</p>`);
+    if(t.querySelector('.soon')){h.classList.add('soon-only'); h.querySelector('.rpic').remove(); tx.querySelectorAll('.bar,h3,p').forEach(e=>e.remove());}   // announced only
+    col.append(h);});
+  sc.append(col);
+  const holds=[...col.children].filter(h=>!h.classList.contains('soon-only'));
+  const ic=document.createElement('div'); ic.className='ricons'; ic.innerHTML=['whatsapp','telegram','slack','microsoftteams','googlemeet','messenger'].map(f=>LOGOS.find(L=>L[0]===f)).map(([f,n])=>`<span title="${n}"><img src="logos/${f}.svg" alt="${n}"></span>`).join('')+`<span class="more">+${LOGOS.length-6}</span>`; $('rint').append(ic);
+  const fit=()=>holds.forEach(h=>h.style.height=PH.matches?(h.firstChild.offsetHeight+innerHeight*RUN)+'px':'');
+  // the MacBook frames: a phone set (mckp/frames3m, AVIF, or frames2m, WebP: 50 frames at 1800px, enough for the square crop at 3x)
+  const cv=col.querySelector('.mseq'), ctx=cv.getContext('2d'), F=[]; let want=0, shown=-1, n=0;
+  const size=()=>{const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2); if(!r.width)return; cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); shown=-1; draw();};
+  const draw=()=>{if(!n)return; let k=Math.round(want*(n-1)); while(k>0&&!(F[k]&&F[k].naturalWidth))k--; const im=F[k]; if(!im||!im.naturalWidth||k===shown)return; shown=k;
+    const s=Math.max(cv.width/im.naturalWidth,cv.height/im.naturalHeight), w=im.naturalWidth*s, h=im.naturalHeight*s; ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(im,(cv.width-w)*.55,(cv.height-h)/2,w,h);};
+  new IntersectionObserver(async(es,o)=>{if(!es[0].isIntersecting)return; o.disconnect(); const m=await frameSet('mckp/frames3m/','mckp/frames2m/'); if(!m)return; n=m.count; for(let k=0;k<n;k++){const im=new Image(); im.decoding='async'; im.onload=draw; im.src=`${m.dir}f${String(k+1).padStart(3,'0')}${m.ext}`; F[k]=im;}},{rootMargin:'100% 0px'}).observe(cv);
+  new ResizeObserver(size).observe(cv);
+  // progress of each card along its runway: 0 when it docks under the top bar, 1 just before it leaves
+  const tick=()=>{if(!PH.matches)return; holds.forEach((h,i)=>{const c=h.firstChild, r=h.getBoundingClientRect(), p=clamp((76-r.top)/(h.offsetHeight-c.offsetHeight));
+    c.querySelector('.bar').style.setProperty('--f',p.toFixed(4)); c.querySelector('.rpic>*').style.setProperty('--z',(1.06-.06*p).toFixed(4));
+    if(i===0){want=p; draw();}});};
+  fit(); tick(); addEventListener('resize',()=>{fit(); tick();}); onScrollFrame(tick); document.fonts.ready.then(()=>{fit(); tick();});})();
 // 07: arrows step the carousel one card at a time
 const track=$('track'), cardStep=()=>track.querySelector('.case').offsetWidth+24;
 const sx=el=>Math.abs(el.scrollLeft), fw=RTL?-1:1;   // RTL: scrollLeft runs 0 → negative and "next" moves left
