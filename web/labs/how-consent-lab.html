@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consent step lab</title>
+<base href="../">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:Struve;src:url(fonts/Struve-Regular.woff2) format('woff2');font-weight:400}
+@font-face{font-family:Struve;src:url(fonts/Struve-Semibold.woff2) format('woff2');font-weight:600}
+*{box-sizing:border-box;margin:0}
+*,::before,::after{font-feature-settings:'ss10'}
+body{background:#fff;color:#1F1F21;font-family:Struve,system-ui,sans-serif;padding:40px 24px 120px}
+.lab-h{max-width:1240px;margin:0 auto 28px}.lab-h h1{font-size:22px;font-weight:600}.lab-h p{margin-top:8px;max-width:720px;font-size:14px;line-height:1.5;color:#737378}
+.row-l{max-width:1240px;margin:40px auto 14px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#8A8A8F}
+.grid{max-width:1240px;margin:0 auto;display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:#F2F2F5}.seg button{height:32px;padding:0 16px;border:0;border-radius:999px;background:none;font:500 14px Struve,sans-serif;color:#737378;cursor:pointer}.seg button.on{background:#fff;color:#1F1F21;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.knobs{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:14px;color:#737378}.knobs input{width:160px;vertical-align:middle}.knobs code{font:500 13px "JetBrains Mono",monospace;color:#1F1F21;background:#F2F2F5;padding:6px 10px;border-radius:8px}.knobs button{height:32px;padding:0 14px;border:0;border-radius:999px;background:#F2F2F5;font:500 14px Struve,sans-serif;cursor:pointer}
+.desk .sq{width:600px}.phone .sq{width:343px}
+
+/* ── step 1 of How it works, as in the steps lab: one 600×600 canvas scaled as a whole.
+      The photo's phone screen was a chroma key; it is cut out of the photo (how/consent-omar-studio-fg.webp), and the live
+      consent screen (labs/consent-lab.html?solo=en) sits behind it, warped onto the screen's four corners.
+      The guest's finger is part of the photo, so it stays in front of the interface. */
+.sq{position:relative;aspect-ratio:1;border-radius:24px;overflow:hidden;background:#111}
+.ill{position:absolute;left:0;top:0;width:600px;height:600px;transform-origin:0 0;transform:scale(var(--k,1))}
+.frame{position:absolute;inset:0;transform:translate(var(--cx,0px),var(--cy,0px)) scale(var(--cz,1));transform-origin:300px 300px}
+.ill iframe{position:absolute;left:0;top:0;width:393px;height:852px;border:0;transform-origin:0 0;background:#fff}
+.ill .fg{position:absolute;inset:0;width:600px;height:600px;pointer-events:none}   /* taps go through to the screen */
+</style></head><body>
+<div class="lab-h"><h1>How it works · step 1 · consent</h1>
+  <p>Два дубля: Studio — наш тёмный студийный стиль, без руки гостя; Cafe — живой кадр в кафе с рукой гостя. Экран в кадре — живой интерфейс из лабы согласия: им можно управлять (язык, ответы, Privacy policy). Палец гостя лежит поверх интерфейса. Микрофон — маленькая монохромная шайба с логотипом на фартуке. Айфон 16 Pro; экран повёрнут — интерфейс ложится в перспективу по четырём углам.</p></div>
+
+<template id="step"><div class="sq"><div class="ill"><div class="frame"><iframe src="labs/consent-lab.html?solo=en" title="Consent screen" scrolling="no"></iframe><img class="fg" alt=""></div></div></div></template>
+<div class="lab-h"><div class="seg"><button data-k="studio">Studio</button><button data-k="cafe">Cafe</button></div></div>
+<div class="lab-h knobs"><label>Zoom <input type="range" id="kz" min="1" max="2" step="0.01"></label><label>X <input type="range" id="kx" min="-200" max="200" step="1"></label><label>Y <input type="range" id="ky" min="-200" max="200" step="1"></label><code id="kv"></code><button id="kr">Reset</button></div>
+<div class="row-l">Desktop · 600 × 600</div><div class="grid desk" id="desk"></div>
+<div class="row-l">iPhone · 343 × 343</div><div class="grid phone" id="phone"></div>
+
+<script>
+// the screen's corners in the 600 × 600 canvas (from the keyed photo, 1200 px → ÷2), pushed out by half a pixel so no edge shows
+const V={studio:{img:'how/consent-omar-studio-fg.webp?v=2',q:{tl: [133.68, 166.21], tr: [238.14, 155.65], br: [283.9, 422.52], bl: [180.12, 440.74]},crop:{z:1.14,x:21,y:-9}},
+         cafe:{crop:{z:1,x:0,y:0},img:'how/consent-omar-cafe-fg.webp?v=1',q:{tl: [89.12, 230.16], tr: [234.62, 206.99], br: [316.32, 531.96], bl: [172.64, 565.58]}}}, PAD=.6;
+// homography mapping the 393 × 852 screen rectangle onto the four corners → CSS matrix3d
+function homography(w,h,p){const [x0,y0]=p.tl,[x1,y1]=p.tr,[x2,y2]=p.br,[x3,y3]=p.bl;
+  const dx1=x1-x2,dx2=x3-x2,dx3=x0-x1+x2-x3,dy1=y1-y2,dy2=y3-y2,dy3=y0-y1+y2-y3,den=dx1*dy2-dx2*dy1;
+  const g=(dx3*dy2-dx2*dy3)/den,h2=(dx1*dy3-dx3*dy1)/den;
+  const a=x1-x0+g*x1,b=x3-x0+h2*x3,c=x0,d=y1-y0+g*y1,e=y3-y0+h2*y3,f=y0;
+  // unit square → quad; then scale the source (w × h) to the unit square
+  const m=[a/w,d/w,0,g/w, b/h,e/h,0,h2/h, 0,0,1,0, c,f,0,1];
+  return `matrix3d(${m.map(v=>+v.toFixed(8)).join(',')})`;}
+const grow=(p,k)=>{const cx=(p.tl[0]+p.tr[0]+p.br[0]+p.bl[0])/4, cy=(p.tl[1]+p.tr[1]+p.br[1]+p.bl[1])/4, o={};
+  for(const n in p){const [x,y]=p[n],l=Math.hypot(x-cx,y-cy); o[n]=[x+(x-cx)/l*k, y+(y-cy)/l*k];} return o;};
+const tpl=document.getElementById('step').content;
+['desk','phone'].forEach(id=>document.getElementById(id).append(tpl.cloneNode(true)));
+// two takes: the dark studio (our style) and the cafe; the switch swaps the photo and the screen's corners
+let cur='studio'; const LS='how-consent-crop', saved=(()=>{try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return {}}})();
+function crop(){const c=saved[cur]||V[cur].crop; document.querySelectorAll('.frame').forEach(f=>{f.style.setProperty('--cz',c.z);f.style.setProperty('--cx',c.x+'px');f.style.setProperty('--cy',c.y+'px');});
+  kz.value=c.z;kx.value=c.x;ky.value=c.y;kv.textContent=`zoom ${(+c.z).toFixed(2)} · x ${c.x} · y ${c.y}`;}
+[kz,kx,ky].forEach(i=>i.oninput=()=>{saved[cur]={z:+kz.value,x:+kx.value,y:+ky.value};try{localStorage.setItem(LS,JSON.stringify(saved))}catch(e){}crop();});
+kr.onclick=()=>{delete saved[cur];try{localStorage.setItem(LS,JSON.stringify(saved))}catch(e){}crop();};
+function take(k){cur=k;crop();document.querySelectorAll('.ill').forEach(il=>{il.querySelector('.fg').src=V[k].img; il.querySelector('iframe').style.transform=homography(393,852,grow(V[k].q,PAD));});
+  document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>take(b.dataset.k)); take('studio');
+const ro=new ResizeObserver(es=>es.forEach(e=>e.target.querySelector('.ill').style.setProperty('--k',e.contentRect.width/600)));
+document.querySelectorAll('.sq').forEach(el=>ro.observe(el));
+</script>
+</body></html>

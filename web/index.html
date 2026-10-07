@@ -306,7 +306,7 @@ canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:
 .score{font-size:13px;color:#737378}.score b{font-size:16px;color:var(--ink);font-weight:600}
 .tip p{font-size:16px;line-height:1.45}.tip small{font-size:12px;color:#737378}
 .how-cap{margin-top:16px;font-size:20px;line-height:1.5;color:var(--ink);min-height:150px}
-.how-cap b{font-weight:inherit}
+.how-cap b{font-weight:inherit;color:inherit}
 .how-link{display:inline-block;margin-top:32px;font-size:16px;font-weight:500;color:#8A8A8F;text-decoration:none}
 @media (max-width:900px){.how-grid{grid-template-columns:1fr}.pane{gap:24px}.badge-svg{display:none}}
 /* 05 metric + industries — Figma 92:2 (v1 Tabs): Aceternity tabs, stacked cards, glass widgets; monochrome */
@@ -747,8 +747,13 @@ br.mb{display:none}@media (max-width:900px){br.mb{display:inline}br.dk{display:n
 .scene .k.on{color:#C9F08F}.scene .k.on::before{background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
 .scene .hr{height:1px;background:rgba(255,255,255,.08)}
 
-/* 1 · Record: Omar in a black turtleneck and apron, the pendant on its chain (how/badge-omar.webp, crop zoom 1.20 · x −24 · y −115 baked in; LED at 53% / 53.2%), one quiet recording pill tied to the LED */
-.scene .s1 .ill{background:#111 url(how/badge-omar.webp) 0 0/600px 600px no-repeat}
+/* 1 · Consent: Omar turns the phone to the guest; the phone shows the live consent screen (labs/consent-lab.html?solo=en|ar),
+   warped onto the photo's screen by its four corners; the photo (how/step1-consent.webp, screen keyed out) lies on top,
+   so his thumb stays in front. Crop from the lab: zoom 1.27 · x 54 · y −19 */
+.scene .s1 .ill{background:#111}
+.scene .s1 .frame{position:absolute;inset:0;transform:translate(54px,-19px) scale(1.27);transform-origin:300px 300px}
+.scene .s1 .cscr{position:absolute;left:0;top:0;width:393px;height:852px;border:0;background:#fff;transform-origin:0 0;transform:matrix3d(0.28397117,-0.015918387,0,7.1747532e-05,0.053471432,0.32045245,0,-6.9471172e-06,0,0,1,0,133.37945,165.6907,0,1)}
+.scene .s1 .fg{position:absolute;inset:0;width:600px;height:600px;pointer-events:none}
 .scene .rec{position:absolute;right:327px;top:293px;display:flex;align-items:center;gap:12px;height:52px;padding:0 20px 0 18px;border-radius:999px;background:rgba(19,19,22,.55);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 18px 36px -10px rgba(0,0,0,.5);color:#fff;font-size:18px;font-weight:500}
 .scene .rec .dot{width:10px;height:10px;border-radius:50%;background:#9CDE45;box-shadow:0 0 10px 2px rgba(156,222,69,.75);animation:recDot 1.6s ease-in-out infinite}
 @keyframes recDot{50%{box-shadow:0 0 2px 0 rgba(156,222,69,.4)}}
@@ -990,10 +995,9 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
     </div>
     <div>
       <div class="scene">
-  <div class="pane on s1"><div class="ill">
-    <svg class="lead" viewBox="0 0 600 600"><path d="M275 319 H311"/><circle class="c1" cx="318" cy="319" r="7"/><circle class="c2" cx="318" cy="319" r="3"/></svg>
-    <div class="rec"><span class="dot"></span>Recording<span class="bars"><i></i><i></i><i></i><i></i><i></i></span></div>
-  </div></div>
+  <div class="pane on s1"><div class="ill"><div class="frame">
+    <iframe class="cscr" src="labs/consent-lab.html?solo=en" title="Consent screen" scrolling="no" loading="lazy"></iframe><img class="fg" src="how/step1-consent.webp" alt="">
+  </div></div></div>
 
   <div class="pane"><div class="ill"><div class="dots"></div><div class="ctr">
     <div class="dg">
@@ -1126,6 +1130,7 @@ const ROWS=["0000000000000000000000000001001110011111110111111111111111111111000
 const $=id=>document.getElementById(id);
 // scroll-driven floors share one rAF per frame (several scroll events can land in one frame; each pass used to force a full layout)
 const onScrollFrame=(()=>{const fns=new Set(); let q=0; addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(()=>{q=0; fns.forEach(f=>f());});},{passive:true}); return f=>fns.add(f);})();
+if(window.LANG==='ar'){const f=document.querySelector('.scene .s1 .cscr'); if(f) f.src='labs/consent-lab.html?solo=ar';}
 // language: Arabic flips to RTL; the switch in the top bar always offers the other language
 const AR=window.I18N_AR||null, RTL=document.documentElement.dir==='rtl';
 const howMob=matchMedia('(max-width:900px)');   // How it works: phones stack the steps instead of pinning
@@ -1175,9 +1180,10 @@ function layout(){
   GR=Math.min(H*.46,W*.46); GX=W/2; GY=H/2;
   // dots ~11px apart at the opening zoom, only inside the Gulf map (land from the fine mask)
   const sp=11/(GR*S0), N=Math.round(4*Math.PI/(sp*sp)), ga=Math.PI*(3-Math.sqrt(5));
-  dots=[]; for(let i=0;i<N;i++){const lat=Math.asin(1-2*(i+.5)/N), lon=((i*ga)%(2*Math.PI))-Math.PI, ci=cell(lat,lon); if(ci>=0&&bit(LANDM,ci)) dots.push({lat,lon,d:Math.random()*.45,v:vec(lat,lon),gcc:!!bit(GCCM,ci)});}
+  dots=[]; for(let i=0;i<N;i++){const lat=Math.asin(1-2*(i+.5)/N), lon=((i*ga)%(2*Math.PI))-Math.PI, ci=cell(lat,lon); if(ci>=0&&bit(LANDM,ci)) dots.push({lat,lon,d:Math.random()*.45,v:vec(lat,lon),gcc:!!bit(GCCM,ci),off:!bit(GCCM,ci)});}   // off: outside the GCC a ripple stops at the border (Zhora's .off rule)
   gccDots=dots.filter(d=>d.gcc); GC={lat:gccDots.reduce((a,d)=>a+d.lat,0)/gccDots.length, lon:gccDots.reduce((a,d)=>a+d.lon,0)/gccDots.length};   // GCC centre: where the map opens
   // snap Dubai onto the nearest grid dot so the lit point sits exactly on the grid when we zoom in
+  if(!gccDots.length) return;   // a 0×0 canvas (hidden tab at load) gives no dots; the next resize lays it out
   const dv=vec(25.2*RAD,55.3*RAD); let best=dots[0], bk=-2;
   for(const d of dots){const k=d.v[0]*dv[0]+d.v[1]*dv[1]+d.v[2]*dv[2]; if(k>bk){bk=k; best=d;}}
   DLAT=best.lat; DLON=best.lon;
@@ -1195,7 +1201,7 @@ function drawFlash(f,u,a,Z,P,s,now,hold){
   const q=P(f.d.lat,f.d.lon); if(q.z<.05) return; const [X,Y]=Z(q.x,q.y);
   g2.fillStyle=INK; const k=R0/2.9*Math.min(s/S0,4);
   const w=u*MAXA, fade=Math.pow(1-u,1.3);
-  for(const n of f.nb){const i=Math.exp(-Math.pow((n.a-w)/BAND,2))*fade; if(i<.04)continue;
+  for(const n of f.nb){if(n.d.off)continue; const i=Math.exp(-Math.pow((n.a-w)/BAND,2))*fade; if(i<.04)continue;
     const m=P(n.d.lat,n.d.lon); if(m.z<.05)continue; const [x,y]=Z(m.x,m.y);
     g2.globalAlpha=a*i*.6; g2.beginPath(); g2.arc(x,y,2.9*k*(1+.15*i),0,7); g2.fill();}
   g2.globalAlpha=a*(hold?1:1-seg(u,.8,1)); g2.beginPath(); g2.arc(X,Y,4.2*k*(hold?1:ease(Math.min(1,u/.1))),0,7); g2.fill(); // the conversation itself: solid black core
@@ -1257,11 +1263,11 @@ let cvIdle=false, fOn=false, fRaf=0; const setS=(el,k,v)=>{if(el['_'+k]!==v){el[
 const frameLoop=()=>{frame(); fRaf=fOn?requestAnimationFrame(frameLoop):0;};
 new IntersectionObserver(es=>{fOn=es[0].isIntersecting; if(fOn&&!fRaf)fRaf=requestAnimationFrame(frameLoop); if(!fOn){setS(cv,'visibility','hidden'); cvIdle=false;}},{rootMargin:'300px 0px'}).observe(scene);
 // 04: tabs switch the scene and the caption
-const TITLES=AR?AR.TITLES:['Hear every conversation','Understand Gulf Arabic as it’s spoken','See what went well and what was missed','A tip for everyone after the shift'];
-const CAPS=AR?AR.CAPS:['A <b>counter mic</b> records conversations at the front desk, <b>light badges</b> record them on the floor. Lansy also works with <b>the hardware you already have</b> — phones, tablets, existing mics. Setup takes 2–3 days with no rewiring, and nobody has to change how they work: the team simply keeps talking to guests the way it always has.',
- 'Every conversation becomes <b>a transcript with roles</b> — even when several people talk at once. Lansy is tuned on <b>real Gulf conversations</b>: it keeps dialect words instead of “correcting” them into textbook Arabic, and follows guests who <b>switch between Arabic and English</b> mid-sentence. Phone and card numbers <b>are masked</b>.',
- 'Lansy checks each conversation against <b>your service standards</b> — greeting, questions, offers, goodbye — and against <b>the metric you chose</b> for your business. Managers see <b>what went well and what was missed</b>, conversation by conversation and across locations, and can open any moment to hear how it actually sounded.',
- 'After the shift each employee gets <b>a personal tip</b> based on their own conversations — what to keep doing, one thing to try next time and a phrase to use with guests. Any follow-up question goes to <b>the assistant</b>, right in the messenger they already use, and progress shows week by week. <b>Mentorship, not surveillance.</b>'];
+const TITLES=AR?AR.TITLES:['Recording starts with a yes','Understand Gulf Arabic as it’s spoken','See what went well and what was missed','A tip for everyone after the shift'];
+const CAPS=AR?AR.CAPS:['A small Lansy mic on the apron records only after the guest agrees: they tap “Yes” on a tablet at the counter or on the employee’s phone, in Arabic or English. Staff opt in once, before their first shift. Anyone can withdraw at any time, and their data is deleted. Mics and tablets are sourced in the UAE and set up by our team in 2–3 days.',
+ 'Every conversation becomes a transcript with roles — even when several people talk at once. Lansy is tuned on real Gulf conversations: it keeps dialect words instead of “correcting” them into textbook Arabic, and follows guests who switch between Arabic and English mid-sentence. Phone and card numbers are masked.',
+ 'Lansy checks each conversation against your service standards — greeting, questions, offers, goodbye — and against the metric you chose for your business. Managers see what went well and what was missed, conversation by conversation and across locations, and can open any moment to hear how it actually sounded.',
+ 'After the shift each employee gets a personal tip based on their own conversations — what to keep doing, one thing to try next time and a phrase to use with guests. Any follow-up question goes to the assistant, right in the messenger they already use, and progress shows week by week. Mentorship, not surveillance.'];
 function setTab(i){document.querySelectorAll('.tab').forEach((t,k)=>t.classList.toggle('on',k===i)); document.querySelectorAll('.pane').forEach((p,k)=>p.classList.toggle('on',k===i)); $('howCap').innerHTML='<h3>'+TITLES[i]+'</h3><p>'+CAPS[i]+'</p>';}
 // scroll drives the steps: the floor pins, each step gets an equal share of the run; the active tab's underline fills as you go
 const STEP_VH=.6, CLOSE_VH=.4; let howIdx=-1;
