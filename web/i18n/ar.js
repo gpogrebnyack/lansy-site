@@ -26,7 +26,7 @@ PAIRS:[
 ['Login','تسجيل الدخول'],
 ['Book a demo','احجز عرضًا توضيحيًا'],
 // hero
-['Every customer conversation&nbsp;<span class="scrib a" aria-hidden="true"></span> becomes advice&nbsp;<span class="scrib b" aria-hidden="true"></span> for your team and insight for your business.',
+['Every customer conversation&nbsp;<span class="scrib a" aria-hidden="true"></span> becomes advice&nbsp;<span class="scrib b" aria-hidden="true"></span> for your team and <span class="smk">insight</span> for your business.',
  'كل محادثة مع عميل&nbsp;<span class="scrib a" aria-hidden="true"></span> تصبح نصيحة&nbsp;<span class="scrib b" aria-hidden="true"></span> لفريقك ورؤية لأعمالك.'],
 ['Lansy hears and analyzes every in-person conversation.','يستمع Lansy إلى كل محادثة وجهًا لوجه ويحلّلها.'],
 ['Book a demo <span>→</span>','احجز عرضًا توضيحيًا <span>←</span>'],
@@ -38,7 +38,7 @@ PAIRS:[
 ['Live · conversations','مباشر · المحادثات'],
 ['heard today','سمع اليوم'],
 // how it works
-['From a hello at the counter <br>to a tip after the shift','من التحية الأولى عند الكاشير <br>إلى نصيحة بعد الوردية'],
+['From a hello at the counter <br>to a <span class="smk">tip after the shift</span>','من التحية الأولى عند الكاشير <br>إلى نصيحة بعد الوردية'],
 ['<b>1</b><span>Record</span><i>›</i>','<b>1</b><span>التسجيل</span><i>‹</i>'],
 ['<b>2</b><span>Transcribe</span><i>›</i>','<b>2</b><span>التفريغ النصي</span><i>‹</i>'],
 ['<b>3</b><span>Review</span><i>›</i>','<b>3</b><span>التقييم</span><i>‹</i>'],
@@ -79,7 +79,7 @@ PAIRS:[
 ['Contact us <span>→</span>','تواصل معنا <span>←</span>'],
 // roles
 ['Product','المنتج'],
-['Same data, a different helper<br>for every role','البيانات نفسها، ومساعد مختلف<br>لكل دور'],
+['Same data, a different helper<br><span class="smk">for every role</span>','البيانات نفسها، ومساعد مختلف<br>لكل دور'],
 ['<i></i>For managers','<i></i>للمديرين'],
 ['A partner for the manager','شريك للمدير'],
 ['A summary of locations, promos and demand: what guests ask for and what’s missing.','ملخّص للفروع والعروض والطلب: ما يطلبه الضيوف وما ينقصهم.'],
@@ -335,9 +335,17 @@ PAIRS:[
 ["<b class=\"b\">4</b><span>not convinced</span>","<b class=\"b\">4</b><span>لم يقتنعوا</span>"],
 ],
 // hero: intro line, notification cards, sidebar tooltips — read by the page script
-INTRO:'تعلّم من كل محادثة.',
+INTRO:'تعلّم من كل محادثة',
 NOTES:['محادثات جيدة اليوم. اعرض المزيد من قائمة الموسم.','بيع موفّق. في المرة القادمة جرّب إضافة خدمة أخرى.','بيع رائع. اشرح للضيف ما تضيفه له الخدمة الإضافية.','ترحيب جيد. اسأل الضيف عمّا يرغب فيه.','محادثة جيدة. اعرض إضافة مناسبة.','أحسنت. اقترح الباقة الكاملة في المرة القادمة.'],
 TIPS:['لوحة التحكم','الفريق','الأهداف','أفضل الممارسات'],
+// top bar menus (items from lansy.ai), read by the page script; *_d = the line under an item
+MENU:{more:'اعرف المزيد',platform:'المنصة',privacy:'أمان البيانات بالتفصيل',what:'ما هو Lansy',who:'لمن يناسب',how:'كيف يعمل',sec:'أمان البيانات',
+  tech:'التقنية',tech_d:'التقنيات التي يقوم عليها Lansy — من التسجيل والتعرّف على الكلام إلى التحليل والتكاملات',
+  desk:'Lansy Desk',desk_d:'مكالمات الفريق عبر الإنترنت: تُسجَّل دون بوت، وتُلخَّص، وتتحوّل إلى ملفات نمو',
+  all:'جميع القطاعات',cafe:'المقاهي والمطاعم',education:'المدارس والتعليم',retail:'التجزئة',health:'الصيدليات والعيادات',beauty:'التجميل والعناية الشخصية',
+  call:'مراكز الاتصال وخدمة العملاء',hotels:'الفنادق والضيافة',realestate:'العقارات',
+  about:'من نحن',about_d:'من نحن وكيف نعمل',blog:'المدونة',blog_d:'ما نتعلّمه من محادثات حقيقية: الخدمة والإيرادات والخصوصية',
+  research:'الأبحاث',research_d:'دراساتنا الخاصة لمحادثات حقيقية',faq:'الأسئلة الشائعة',faq_d:'أسئلة الإعداد والعمل اليومي',contacts:'تواصل معنا',contacts_d:'تحدّث مع الفريق'},
 // How it works captions, read by the page script
 TITLES:['اسمع كل محادثة','افهم اللهجة الخليجية كما تُنطق','اعرف ما نجح وما فات','نصيحة لكل موظف بعد الوردية'],
 CAPS:['يسجّل <b>ميكروفون الكاشير</b> المحادثات عند نقطة الخدمة، وتسجّلها <b>الشارات الخفيفة</b> في صالة العمل. ويعمل Lansy أيضًا مع <b>الأجهزة الموجودة لديك</b> — الهواتف والأجهزة اللوحية والميكروفونات الحالية. يستغرق الإعداد <bdi dir="ltr">2–3</bdi> أيام دون أي تمديدات، ولا يحتاج أحد إلى تغيير طريقة عمله: يواصل الفريق التحدث مع الضيوف كما اعتاد.',
