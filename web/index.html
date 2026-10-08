@@ -212,9 +212,29 @@ html.intro .notes{visibility:hidden}
 .tb-a:not(:has(img,.tb-ph)){grid-template-columns:1fr}
 .tb-stick{display:flex;flex-shrink:0;justify-content:flex-end;padding:16px 0 8px}
 .tb-stick a{color:#fcfcf7;font-size:15px;text-decoration:none;display:inline-flex;gap:6px;align-items:center}.tb-stick a:hover{text-decoration:underline;text-underline-offset:3px}
-/* the compact pill is the content column: links (429) + gap + centred icon must fit in half of it, which holds from ~1170px; below that the links go */
-@media (max-width:1179px){.navlinks{display:none}}
-@media (max-width:900px){.navright .login{display:none}}
+/* links + Login fit beside the centred logo down to 960px (measured: at 960 the tightest gap, compact Login → icon, is 44px; at 900 it's 19, at 820 they overlap).
+   Below that the tabs and Login give way to a burger that opens the mobile sheet */
+.tb-burger{display:none;position:relative;width:40px;height:40px;margin-inline-start:-8px;border:0;background:none;color:inherit;cursor:pointer;border-radius:999px}
+.tb-burger i{position:absolute;left:11px;right:11px;height:1.5px;border-radius:1px;background:currentColor;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.tb-burger i:first-child{top:16px}.tb-burger i:last-child{top:22.5px}
+.tb-burger[aria-expanded=true] i:first-child{transform:translateY(3.25px) rotate(45deg)}.tb-burger[aria-expanded=true] i:last-child{transform:translateY(-3.25px) rotate(-45deg)}
+.tb-burger:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (max-width:959px){.navlinks .tb-t,.navlinks .tb-hl{display:none}.tb-burger{display:block}.navright .login{display:none}}
+/* mobile sheet: the desktop panel's glass, full width under the bar; sections fold open one at a time */
+.topbar>.tb-m{position:fixed;left:8px;right:8px;top:var(--mt,72px);white-space:normal;max-height:calc(100dvh - var(--mt,72px) - 8px);display:flex;flex-direction:column;
+  padding:8px 16px 16px;border-radius:32px;background:rgba(87,94,85,.92);-webkit-backdrop-filter:blur(19px);backdrop-filter:blur(19px);color:#fcfcf7;font-size:16px;line-height:1.35;z-index:90}
+.tb-m[hidden]{display:none}
+.tb-mb{flex:1;overflow-y:auto;overscroll-behavior:contain}
+.tb-mh{display:flex;width:100%;align-items:center;justify-content:space-between;padding:16px 8px;border:0;background:none;color:inherit;font:inherit;font-size:20px;font-weight:500;cursor:pointer;text-align:start}
+.tb-mh svg{width:16px;height:16px;opacity:.6;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.tb-mh[aria-expanded=true] svg{transform:rotate(180deg)}
+.tb-ms+.tb-ms{border-top:1px solid rgba(252,252,247,.12)}
+.tb-mp{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.2,.8,.2,1)}.tb-mp>div{overflow:hidden;min-height:0}
+.tb-ms.open .tb-mp{grid-template-rows:1fr}.tb-mp .tb-sec{padding-bottom:8px}.tb-mp .tb-a img,.tb-mp .tb-ph{width:56px;height:56px;border-radius:12px}
+.tb-mp .tb-stick{justify-content:flex-start;padding:4px 8px 16px}.tb-mp .tb-h{padding:0 8px;margin:8px 0}
+.tb-mf{display:flex;gap:8px;padding-top:16px;border-top:1px solid rgba(252,252,247,.12)}
+.tb-mf a{flex:1;display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:999px;font-size:16px;font-weight:500;text-decoration:none;color:#fcfcf7;border:1px solid rgba(252,252,247,.3)}
+.tb-mf a.dk{background:#fcfcf7;color:var(--ink);border-color:#fcfcf7}
+html.mopen,html.mopen body{overflow:hidden}
 /* top bar: fixed; links left, logo centred, actions right, at the browser edges. Once it sits over the hero card (.c) it becomes a dark
    blurred pill exactly as wide as the content column (button + 8px tall), wordmark gone (icon keeps its size), everything white. JS sets each part's --x and the pill's box */
 .topbar{position:fixed;top:0;left:0;right:0;height:64px;z-index:100;pointer-events:none}
@@ -226,7 +246,7 @@ html.intro .notes{visibility:hidden}
 .tb-pill{top:8px;height:60px;width:var(--pw,0px);transform:translateX(var(--px,0px));border-radius:999px;background-color:rgba(87,94,85,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);pointer-events:none;will-change:transform}
 .topbar.c .tb-pill{background-color:rgba(87,94,85,.78);-webkit-backdrop-filter:blur(19px);backdrop-filter:blur(19px)}
 .topbar.c .tb-l,.topbar.c .tb-r,.topbar.c .tb-logo{color:#fcfcf7}
-.topbar.c .lg-word{opacity:0}
+.topbar.c .lg-word,.topbar.tight .lg-word{opacity:0}
 .topbar.c .btn.dark{background:#fcfcf7;color:var(--ink)}
 /* choreography. Into compact: 1) groups slide in, wordmark fades (0–.18s); 2) then the glass fades in (.12–.42s) and the content inverts (.12–.24s).
    Back out: the same in reverse — pill and colours first (0–.1s), then the groups slide apart and the wordmark returns (.08–.26s) */
@@ -983,7 +1003,7 @@ html[dir=rtl] .live .who{margin:0 -4px 0 0}
 html[dir=rtl] .rtx .bar::after{left:auto;right:0;transform-origin:right}
 </style></head><body>
 <nav class="topbar"><span class="tb-pill" aria-hidden="true"></span>
-  <span class="navlinks tb-l"><i class="tb-hl" aria-hidden="true"></i><button type="button" class="tb-t" data-m="product" aria-expanded="false" >Product</button><button type="button" class="tb-t" data-m="industries" aria-expanded="false" >Industries</button><button type="button" class="tb-t" data-m="company" aria-expanded="false" >Company</button></span>
+  <span class="navlinks tb-l"><button type="button" class="tb-burger" aria-label="Menu" aria-expanded="false" aria-controls="tbM"><i></i><i></i></button><i class="tb-hl" aria-hidden="true"></i><button type="button" class="tb-t" data-m="product" aria-expanded="false" >Product</button><button type="button" class="tb-t" data-m="industries" aria-expanded="false" >Industries</button><button type="button" class="tb-t" data-m="company" aria-expanded="false" >Company</button></span>
   <a class="tb-logo" href="#" aria-label="Lansy"><svg class="logo" viewBox="0 0 432 136" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Lansy"><g fill="currentColor"><g class="lg-icon"><path d="M60 0C81.5503 0 92.3258 -0.000387591 100.482 4.35938C106.923 7.80184 112.198 13.0772 115.641 19.5176C120 27.6742 120 38.4497 120 60C120 81.5503 120 92.3258 115.641 100.482C112.198 106.923 106.923 112.198 100.482 115.641C92.3258 120 81.5503 120 60 120C38.4497 120 27.6742 120 19.5176 115.641C13.0772 112.198 7.80184 106.923 4.35938 100.482C-0.000387591 92.3258 0 81.5503 0 60C0 38.4497 -0.000387591 27.6742 4.35938 19.5176C7.80184 13.0772 13.0772 7.80184 19.5176 4.35938C27.6742 -0.000387591 38.4497 0 60 0ZM70.1416 29.498C64.2328 43.004 60.6953 56.4474 60.6953 65.0029C60.6955 70.339 62.4272 74.277 65.4111 76.8135C68.2924 79.2622 71.8724 80.0029 74.8623 80.0029C78.0994 80.0028 80.7504 79.4385 83.291 78.1016C85.7179 76.8244 87.8584 74.9324 90.1885 72.6816C90.7857 72.1048 91.6519 72.0308 92.2891 72.4287L92.7256 72.7012C80.8275 90.5072 66.6937 100.004 53.1943 100.004C44.5181 100.004 38.0392 96.8443 33.6377 91.1855C29.1445 85.4084 26.5274 76.6457 26.5273 65.002C26.5274 57.4409 27.274 50.0003 32.9893 34.4873L29.8604 33.335L26.7324 32.1826C20.7813 48.3358 19.8604 56.5569 19.8604 65.002C19.8604 77.5249 22.6599 87.9312 28.375 95.2793C34.182 102.745 42.7043 106.67 53.1943 106.67C70.3567 106.67 86.6492 94.4342 99.2676 74.8867C100.789 72.5302 100.053 69.4198 97.7158 67.959L95.8223 66.7764C92.5223 64.714 88.2977 65.2371 85.5557 67.8857C83.2611 70.1021 81.7045 71.4033 80.1865 72.2021C78.7824 72.941 77.2401 73.3359 74.8623 73.3359C72.8526 73.3359 71.0149 72.8256 69.7295 71.7334C68.5471 70.7283 67.3615 68.8325 67.3613 65.0029C67.3613 57.7882 70.491 45.3321 76.249 32.1709L73.1943 30.835L70.1416 29.498ZM61.8467 15.2402C54.229 31.3221 49.1329 47.4404 46.5771 61.9229L53.1416 63.0811C55.586 49.2298 60.4897 33.6799 67.8721 18.0947L64.8604 16.667L61.8467 15.2402ZM46.8408 16.9248C40.8769 29.7047 36.6273 43.3169 33.9414 58.2627L40.5029 59.4424C43.0945 45.021 47.179 31.9646 52.8818 19.7441L46.8408 16.9248Z"/></g><g class="lg-word"><path d="M285.238 71.6984C285.238 63.9546 281.515 59.6783 273.771 59.6783C266.027 59.6783 262.304 63.9546 262.304 71.6984V106.798H243.514L243.514 70.5931C243.514 53.5772 254.545 41.9936 273.771 41.9936C292.998 41.9936 304.028 53.5772 304.028 70.5931V106.798H285.238V71.6984Z"/><path d="M146.736 106.801V31.6852L141.808 30.7529L139.277 30.2202V16.236H165.381V106.801H146.736Z"/><path d="M330.68 108.293C326.013 108.293 319.744 107.893 312.676 106.692V93.3556C317.477 94.0225 323.078 94.5559 328.413 94.5559C339.349 94.5559 341.75 92.2887 341.75 89.2212C341.75 86.4205 340.15 84.0199 332.814 81.7526L326.546 79.8855C315.877 76.6847 312.676 69.6162 312.676 61.7475C312.676 49.0776 321.478 42.1425 339.349 42.1425C345.484 42.1425 350.952 42.9427 355.62 43.7429V56.5462C348.285 55.6126 343.35 55.4792 340.95 55.4792C332.548 55.4792 330.28 57.213 330.28 59.4803C330.28 61.7475 331.081 63.4813 335.082 64.815L342.417 67.2156C355.22 71.35 359.354 77.2182 359.354 87.0874C359.354 101.624 349.752 108.293 330.68 108.293Z"/><path d="M373.997 119.73L381.062 119.997C388.794 119.997 390.527 117.864 394.126 107.333L394.259 106.8H382.795L362 42.8149H381.329L397.992 93.7364L412.388 42.8149H431.051L410.922 113.465C406.656 128.262 399.991 135.06 383.595 135.06C381.329 135.06 378.263 134.927 373.997 134.527V119.73Z"/><path d="M200.594 107.867C184.997 107.867 173 94.803 173 75.6075C173 53.7459 187.404 42 203 42C208.5 42 211.5 43.5 215.98 46.0321L218 43.0001H234.586V106.8H222.588L219.656 100.402C213.791 105.067 209.525 107.867 200.594 107.867ZM191.929 75.0743C191.929 86.9382 198.327 91.7371 207.925 91.7371C209.658 91.7371 212.191 91.6038 215.923 91.0706L215.918 59C214.016 58.0851 211.267 57.3896 209.134 57.3896C197.936 57.3896 191.929 63.3437 191.929 75.0743Z"/></g></g></svg></a>
   <span class="navright tb-r"><span class="lang-dd" id="langDd"><button class="lang-t" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Language"><span>EN</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><span class="lang-m" role="menu"><a role="menuitemradio" aria-checked="true" data-l="en" href="./" hreflang="en" lang="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>English<small>EN</small></a><a role="menuitemradio" aria-checked="false" data-l="ar" href="?lang=ar" hreflang="ar" lang="ar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>العربية<small>AR</small></a></span></span><span class="login">Login</span><a class="btn sm dark" href="#">Book a demo</a></span>
   <div class="tb-slot" id="tbDd" hidden></div>
@@ -1609,13 +1629,15 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
       // expanded: links and actions at the browser edges (same inset as the hero card), full logo centred;
       // if the centred logo would touch the actions (phones: no links) it moves to the left edge instead
       L.style.setProperty('--x',M(e.left,lw)+'px'); R.style.setProperty('--x',M(e.right-rw,rw)+'px'); L.style.setProperty('--y','0px'); R.style.setProperty('--y','0px');
-      G.style.setProperty('--x',M(mid+full/2+16>e.right-rw?e.left:mid-full/2,full)+'px'); G.style.setProperty('--y','0px');
+      const side=e.left+(lw?lw+8:0), tight=side+full+12>e.right-rw;   // narrow phones: not even the left slot holds the wordmark → icon only
+      bar.classList.toggle('tight',tight);
+      G.style.setProperty('--x',M(mid+full/2+16>e.right-rw?side:mid-full/2,tight?icW:full)+'px'); G.style.setProperty('--y',tight?(18-60*k)+'px':'0px');   // past the burger when there is one
     } else {
       // compact: the pill is exactly the content column; links at its left (PADL in), actions at its right (8px in), icon dead centre
       L.style.setProperty('--x',M(c.left+PADL,lw)+'px'); R.style.setProperty('--x',M(c.right-PADR-rw,rw)+'px'); L.style.setProperty('--y',DROP+'px'); R.style.setProperty('--y',DROP+'px');
       // logo keeps its size, only the wordmark fades; the icon sits in the top 120/136 of the svg, so nudge it to the bar's centre line
       // phones: if the actions would reach the centred icon, the icon takes the links' side (the links are hidden there)
-      let gx=mid-icW/2; if(c.right-PADR-rw<gx+icW+12) gx=RTL?c.right-PADL-icW:c.left+PADL;
+      let gx=mid-icW/2; if(c.right-PADR-rw<gx+icW+12) gx=RTL?c.right-PADL-lw-8-icW:c.left+PADL+lw+8;
       G.style.setProperty('--x',gx+'px'); G.style.setProperty('--y',(18-60*k+DROP)+'px');}
     pill.style.setProperty('--px',(c.left-4)+'px'); pill.style.setProperty('--pw',(c.width+8)+'px');}   // 4px past the column on each side
   let TH=null; const th=()=>{TH=card.getBoundingClientRect().top+scrollY-63;};   // page y where the card reaches the bar
@@ -1682,7 +1704,28 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
     b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault(); if(active===b.dataset.m)closeNow(true); else{open(b.dataset.m); busy.then(()=>el?.querySelector('a')?.focus());}} else if(e.key==='Escape')closeNow(true);});});
   // keep the panel and the pill glued to the tabs while the bar changes state or the window resizes
   new MutationObserver(()=>{if(!active)return; const f=()=>{place(); el&&(el.style.setProperty('--ddx',slot.style.getPropertyValue('--ddx')),el.style.setProperty('--ddt',slot.style.getPropertyValue('--ddt'))); target(btn(active)); px=tx;pw=tw;drawPill();}; f(); setTimeout(f,330);}).observe(bar,{attributes:true,attributeFilter:['class']});
-  addEventListener('resize',()=>{if(active){place(); target(btn(active)); px=tx;pw=tw;drawPill();}});})();
+  addEventListener('resize',()=>{if(active){place(); target(btn(active)); px=tx;pw=tw;drawPill();}});
+  // mobile (<960px): the burger opens one sheet with the same three menus as folding sections, then Login and Book a demo.
+  // Built on first open (tab labels are translated by then); enters/leaves with the desktop panel's spring + fade
+  const bg=L.querySelector('.tb-burger'), R=bar.querySelector('.tb-r'); let sheet=null, mOpen=false, mBusy=Promise.resolve();
+  const chev='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  const mk=()=>{const d=document.createElement('div'); d.className='tb-m'; d.id='tbM'; d.hidden=true;
+    d.innerHTML='<div class="tb-mb">'+tabs.map(b=>{const m=MENUS[b.dataset.m]; return `<div class="tb-ms"><button type="button" class="tb-mh" aria-expanded="false">${b.textContent}${chev}</button><div class="tb-mp"><div>${m.secs.join('')}${m.stick?`<div class="tb-stick"><a href="${m.stick[1]}">${m.stick[0]} <span aria-hidden="true">↗</span></a></div>`:''}</div></div></div>`;}).join('')+'</div>'
+      +`<div class="tb-mf"><a href="${R.querySelector('.login')?.getAttribute('href')||'#'}">${R.querySelector('.login')?.textContent||'Login'}</a><a class="dk" href="${R.querySelector('.btn')?.getAttribute('href')||'#'}">${R.querySelector('.btn')?.textContent||'Book a demo'}</a></div>`;
+    d.addEventListener('click',e=>{const h=e.target.closest('.tb-mh'); if(h){const s=h.parentElement, on=!s.classList.contains('open');
+        d.querySelectorAll('.tb-ms').forEach(x=>{x.classList.remove('open'); x.querySelector('.tb-mh').setAttribute('aria-expanded','false');});
+        if(on){s.classList.add('open'); h.setAttribute('aria-expanded','true');} return;}
+      if(e.target.closest('a')) mSet(false);});
+    d.addEventListener('keydown',e=>{if(e.key==='Escape'){mSet(false); bg.focus();}});
+    slot.parentNode.insertBefore(d,slot); return d;};
+  function mSet(on){if(on===mOpen)return; mOpen=on; bg.setAttribute('aria-expanded',String(on)); bg.setAttribute('aria-label',on?'Close menu':'Menu');
+    document.documentElement.classList.toggle('mopen',on); sheet=sheet||mk();
+    mBusy=mBusy.then(async()=>{if(on!==mOpen)return;
+      if(on){sheet.style.setProperty('--mt',(bar.classList.contains('c')?76:64)+'px'); sheet.hidden=false; await animIn(sheet);}
+      else{await animOut(sheet); if(!mOpen) sheet.hidden=true;}});}
+  bg.addEventListener('click',()=>mSet(!mOpen));
+  document.addEventListener('click',e=>{if(mOpen&&!sheet.contains(e.target)&&!bg.contains(e.target))mSet(false);});
+  addEventListener('resize',()=>{if(mOpen&&innerWidth>=960)mSet(false);});})();
 // hero orb: particle sphere spinning on a tilted axis (reference: pinimg 70654fd7 gif), pole caps at half the reference density.
 // Top sits at the CTAs, bottom at the problem floor; drawn only while the hero is on screen.
 (()=>{const st=document.querySelector('.hero-stage'), bg=st.querySelector('.hero-bg'), cv=bg.querySelector(".hero-orb"), cx=cv.getContext('2d'), ctas=st.querySelector('.ctas');
