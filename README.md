@@ -22,8 +22,8 @@ web/
                           at 2400px for the desktop; frames4m/: 40 frames at 1440px for phones
                           (AVIF, SVT-AV1 crf 28, 10-bit: 2.6 MB + 0.7 MB)
     frames2/, frames2m/   the MacBook in WebP (100 and 50 frames), loaded only by browsers without AVIF
-    iphone1/, iphone1m/   iPhone zoom for "For employees": 60 frames at 2400px, 40 at 1440px for phones (AVIF;
-                          -webp folders are the fallback). The screen is a placeholder for now
+    iphone2/, iphone2m/   iPhone zoom for "For employees": 60 frames at 2400px, 40 at 1440px for phones (AVIF;
+                          -webp folders are the fallback), the screen shows Noura
     ipad6/, ipad6m/       iPad Pro turning 180° from its back to the assistant, for "For your data": 60 frames at 2400px, 40 at 1440px (AVIF + -webp)
                           (a new folder name per export: the files are cached for a year, immutable)
   logos/                  messenger / calling app logos for "Connects to your stack" (Simple Icons)

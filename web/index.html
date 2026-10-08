@@ -1601,7 +1601,7 @@ const frameSeq=(cv,dirs,{ax=.5,ay=.5,after}={})=>{const ctx=cv.getContext('2d'),
   new ResizeObserver(size).observe(cv);
   return {show(p){want=p; draw();}, done};};
 // desktop sets: 60 frames at 2400px (the tops of the phone and the iPad stay in the wide scene; only the bottom is cut)
-const macD=frameSeq($('seq'),['mckp/frames4/','mckp/frames2/']), phoneD=frameSeq($('seqPhone'),['mckp/iphone1/','mckp/iphone1-webp/'],{ay:.15,after:macD.done}),
+const macD=frameSeq($('seq'),['mckp/frames4/','mckp/frames2/']), phoneD=frameSeq($('seqPhone'),['mckp/iphone2/','mckp/iphone2-webp/'],{ay:.15,after:macD.done}),
   SEQ=[macD, phoneD, frameSeq($('seqTab'),['mckp/ipad6/','mckp/ipad6-webp/'],{ay:0,after:phoneD.done})];   // MacBook first, then the iPhone, then the iPad
 rolesLayout(); rolesScroll(); onScrollFrame(rolesScroll); addEventListener('resize',()=>{rolesLayout(); rolesScroll();});
 // 06 · Lansy Live: a café conversation plays line by line, then the copilot's suggestions for the barista appear under it (EN / AR)
@@ -1645,7 +1645,7 @@ const PH=matchMedia('(max-width:900px)'), POS=['55% 50%','48% 50%','50% 50%','48
   const ic=document.createElement('div'); ic.className='ricons'; ic.innerHTML=['whatsapp','telegram','slack','microsoftteams','googlemeet','messenger'].map(f=>LOGOS.find(L=>L[0]===f)).map(([f,n])=>`<span title="${n}"><img src="logos/${f}.svg" alt="${n}"></span>`).join('')+`<span class="more">+${LOGOS.length-6}</span>`; $('rint').append(ic);
   const fit=()=>holds.forEach(h=>h.style.height=PH.matches?(h.firstChild.offsetHeight+innerHeight*RUN)+'px':'');
   // phone sets (square crop, canvas at 2x): 40 frames at 1440px
-  const [mac,iph,tab]=col.querySelectorAll('.mseq'), macM=frameSeq(mac,['mckp/frames4m/','mckp/frames2m/'],{ax:.55}), phoneM=frameSeq(iph,['mckp/iphone1m/','mckp/iphone1m-webp/'],{after:macM.done}),
+  const [mac,iph,tab]=col.querySelectorAll('.mseq'), macM=frameSeq(mac,['mckp/frames4m/','mckp/frames2m/'],{ax:.55}), phoneM=frameSeq(iph,['mckp/iphone2m/','mckp/iphone2m-webp/'],{after:macM.done}),
     MSEQ=[macM, phoneM, frameSeq(tab,['mckp/ipad6m/','mckp/ipad6m-webp/'],{after:phoneM.done})];
   // progress of each card along its runway: 0 when it docks under the top bar, 1 just before it leaves
   const tick=()=>{if(!PH.matches)return; holds.forEach((h,i)=>{const c=h.firstChild, r=h.getBoundingClientRect(), p=clamp((76-r.top)/(h.offsetHeight-c.offsetHeight));
