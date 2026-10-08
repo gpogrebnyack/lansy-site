@@ -268,7 +268,7 @@ html.mopen,html.mopen body{overflow:hidden}
 #ctr{position:sticky;margin-top:clamp(96px,16vh,180px);background:var(--bg)}
 .runway{height:200vh}
 .manifesto{position:relative;isolation:isolate;margin-top:0;font-size:clamp(26px,3.3vw,46px);line-height:1.18;letter-spacing:-.015em;color:var(--ink);max-width:960px}
-/* a green marker stroke behind «the most valuable data» (the designer's SVG: one rising stroke, round caps, #87E000), drawn in after the
+/* a green marker stroke behind «the most valuable data» (the designer's SVG: one rising stroke, round caps; Pale Green #CAFF67), drawn in after the
    phrase's last word; it covers the lower half of the letters and sits beneath them in z; one per line if the phrase wraps */
 .msw{position:absolute;z-index:-1;overflow:visible;pointer-events:none;clip-path:inset(-60% 100% -60% -6%);transition:clip-path .8s cubic-bezier(.65,0,.25,1) var(--ud,0s)}
 .manifesto.on .msw{clip-path:inset(-60% -6% -60% -6%)}   /* RTL: the svg is mirrored, so the same left-to-right reveal reads right-to-left */
@@ -1887,7 +1887,7 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
       // over the lower half of the letters (they sit on top of it), not under the line
       svg.style.cssText=`left:${L.x0-fs*.1}px;top:${L.t+(L.b-L.t)*.42}px;width:${W}px;height:${H}px;--ud:${(last+.5+i*.35).toFixed(2)}s`+(RTLm?';transform:scaleX(-1)':'');
       const path=document.createElementNS(NS,'path'); path.setAttribute('d','M6.00171 16.8684C32.0017 7.86849 63.5017 4.86853 108.502 6.36861');
-      path.setAttribute('fill','none'); path.setAttribute('stroke','#87E000'); path.setAttribute('stroke-linecap','round'); path.setAttribute('vector-effect','non-scaling-stroke');
+      path.setAttribute('fill','none'); path.setAttribute('stroke','#CAFF67'); path.setAttribute('stroke-linecap','round'); path.setAttribute('vector-effect','non-scaling-stroke');
       path.style.strokeWidth=(fs*.7).toFixed(1)+'px'; svg.append(path); m.append(svg);});}
   document.fonts.ready.then(swoosh); let rz=0; addEventListener('resize',()=>{clearTimeout(rz); rz=setTimeout(swoosh,150);});
 
