@@ -79,7 +79,7 @@ PAIRS:[
 ['Contact us <span>→</span>','تواصل معنا <span>←</span>'],
 // roles
 ['Product','المنتج'],
-['Same data,<br class="mb"> a different helper<br><span class="smk">for every role</span>','البيانات نفسها، ومساعد مختلف<br>لكل دور'],
+['Same data,<br class="mb"> a different AI assistant<br><span class="smk">for every role</span>','البيانات نفسها، ومساعد ذكاء اصطناعي مختلف<br>لكل دور'],
 ['<i></i>For managers','<i></i>للمديرين'],
 ['A partner for the manager','شريك للمدير'],
 ['A summary of locations, promos and demand: what guests ask for and what’s missing.','ملخّص للفروع والعروض والطلب: ما يطلبه الضيوف وما ينقصهم.'],
@@ -118,6 +118,9 @@ PAIRS:[
 // privacy
 ['Privacy &amp; security','الخصوصية والأمان'],
 ['Built to mentor<br class="mb"> your team,<br class="dk"> never<br class="mb"> to watch over it','صُمّم لتوجيه فريقك،<br>لا لمراقبته'],
+['Recorded only with consent','التسجيل بموافقة فقط'],
+['Both the employee and the guest agree before anything is recorded. Either can withdraw at any time, and their data is deleted.',
+ 'يوافق الموظف والضيف كلاهما قبل تسجيل أي شيء. ويمكن لأيٍّ منهما سحب موافقته في أي وقت، فتُحذف بياناته.'],
 ['Personal talk stays out','الأحاديث الشخصية تبقى خارجًا'],
 ['Off-topic conversations — a call home, a chat on a break —<br>are detected and removed before analysis.',
  'المحادثات الخارجة عن العمل — مكالمة مع الأهل أو دردشة في الاستراحة —<br>تُكتشف وتُحذف قبل التحليل.'],
