@@ -1318,14 +1318,14 @@ function layout(){
   sample(); dubaiF={d:best,nb:near(best.v)};
 }
 // canvas is fixed to the viewport; the scatter starts once the stage pins (problem top, counter bottom)
-// the dive preview: a frame from the café video (4.6s), focus between the two faces
-const DIVE=new Image(); DIVE.decoding='async'; DIVE.src='img/dive-preview-v2.webp';   // 1280² still composed so both faces sit inside the inscribed circle
-// the same moment as a full 1920×1080 video frame: the round window opens into it, and the video floor starts from this second.
-// In the still's pixels the frame's top-left corner sits at (-374, 229): the still is the frame at 1:1, extended 229px upwards
-const FRAME=new Image(); FRAME.decoding='async'; FRAME.src='img/dive-frame-v1.webp'; const DV={ox:-374,oy:229,t:4.6};
+// the dive preview: the café video's first frame (a hand clips the device onto the apron), the device in the middle of the circle
+const DIVE=new Image(); DIVE.decoding='async'; DIVE.src='img/dive-preview-v3.webp';   // 1080² square cut from that frame at 1:1
+// the same frame in full (1920×1080): the round window opens into it, and the video floor plays from the start.
+// In the square's pixels the frame's top-left corner sits at (ox, oy); n is the square's side
+const FRAME=new Image(); FRAME.decoding='async'; FRAME.src='img/dive-frame-v2.webp'; const DV={ox:-490,oy:0,n:1080,t:0};
 // both stills are decoded up front, not on their first draw mid-dive
 [DIVE,FRAME].forEach(im=>im.decode().catch(()=>{}));
-let primeDive=()=>{}, diveRelease=()=>{}, diveCovers=false;   // set by the video floor: seek to DV.t, then play once the globe canvas stops covering it
+let primeDive=()=>{}, diveRelease=()=>{}, diveCovers=false;   // set by the video floor: load and hold the first frame, then play once the globe canvas stops covering it
 let flashes=[], nextFlash=0, dubaiF; const FL=1900, INK='rgb(31,31,33)', LIT='#3FBF00';   // conversations (and Dubai) light up green — deeper than the lime so it holds against the grey dots
 function vec(lat,lon){const c=Math.cos(lat); return [c*Math.cos(lon),c*Math.sin(lon),Math.sin(lat)];}
 const MAXA=3.5*RAD, BAND=.8*RAD;   // a conversation's ripple: small enough that the GCC never floods
@@ -1398,20 +1398,19 @@ function frame(){
     g2.fillStyle=`rgb(${Math.round(lerp(31,41,k))},${Math.round(lerp(31,41,k))},${Math.round(lerp(33,43,k))})`;
     const fr=FRAME.complete&&FRAME.naturalWidth?FRAME:null, dv=DIVE.complete&&DIVE.naturalWidth?DIVE:null;
     if(rr>0){g2.beginPath(); g2.arc(gx,gy,rr,0,7); g2.fill();
-      // inside the dark dot: a still from the coming video (a guest and the barista talking) grows with the dive, then sinks
-      // back into the dark before the video floor arrives (the video itself opens on its badge poster, not on this shot)
+      // inside the dark dot: the coming video's first frame grows with the dive
       const ia=seg(rr,12,50);   // in from a ~12px dot, full by 50px
       // the still fills the dot until the dot is ~a screen tall, then stays a round window while the dark keeps growing around it.
       // Over the last stretch the window opens into the video: the frame moves and grows to where the video floor shows it
       // (centred, object-fit: contain), the circle widens past its corners, and the floor starts the video from that frame
-      if(ia>0&&dv){const rd=Math.min(rr,Math.min(W,H)*.46), u=fr?ease(seg(p,.86,.99)):0, k=2*rd/1280;
+      if(ia>0&&dv){const rd=Math.min(rr,Math.min(W,H)*.46), u=fr?ease(seg(p,.86,.99)):0, k=2*rd/DV.n;
         const vw=Math.min(W,H*16/9), vh=vw*9/16, fw=lerp(1920*k,vw,u), fs=fw/1920;
         const fx=lerp(gx-rd+DV.ox*k,(W-vw)/2,u), fy=lerp(gy-rd+DV.oy*k,(H-vh)/2,u);
         if(p>.6) primeDive();   // (also primed earlier, below: the seek must be done before the window opens)
         if(u>0){g2.globalAlpha=u; g2.fillRect(0,0,W,H);}   // the dot's dark is the video floor's background
         g2.save(); g2.beginPath(); g2.arc(lerp(gx,W/2,u),lerp(gy,H/2,u),lerp(rd,Math.hypot(vw,vh)/2+2,u),0,7); g2.clip(); g2.imageSmoothingQuality='high';
         if(u>0){g2.globalAlpha=ia; g2.drawImage(fr,fx,fy,fw,1080*fs);}
-        if(ia*(1-u)>.01){g2.globalAlpha=ia*(1-u); g2.drawImage(dv,fx-DV.ox*fs,fy-DV.oy*fs,1280*fs,1280*fs);} g2.restore(); g2.globalAlpha=1;}}   // the still is skipped once the frame has taken over
+        if(ia*(1-u)>.01){g2.globalAlpha=ia*(1-u); g2.drawImage(dv,fx-DV.ox*fs,fy-DV.oy*fs,DV.n*fs,DV.n*fs);} g2.restore(); g2.globalAlpha=1;}}   // the still is skipped once the frame has taken over
     if(p>=.99&&!fr) g2.fillRect(0,0,W,H);
   }
 }
@@ -2121,8 +2120,9 @@ document.querySelectorAll('.faq-cols>div').forEach(col=>col.addEventListener('cl
   const ui=()=>{b.innerHTML=v.muted?I.on+(AR?AR.SOUND.on:'Sound on'):I.off+(AR?AR.SOUND.off:'Sound off'); b.setAttribute('aria-label',v.muted?'Turn sound on':'Turn sound off');
     pp.innerHTML=v.paused?I.play:I.pause; pp.setAttribute('aria-label',v.paused?'Play':'Pause'); fl.classList.toggle('paused',v.paused);};
   const start=()=>v.play().catch(()=>{v.muted=true; autoMuted=true; ui(); v.play().catch(()=>{});});
-  // arriving through the globe's dive: the video waits on the frame the round window opened into, and plays on from there
-  let primed=false; primeDive=()=>{ if(primed||!v.paused||v.currentTime>0) return; primed=true; v.preload='auto'; v.removeAttribute('poster'); v.currentTime=DV.t; };
+  // arriving through the globe's dive: the video waits on its first frame, the one the round window opened into, and plays from the start
+  // (every dive rewinds it: scrolling back up to the globe and diving again starts the video over, matching the window)
+  let primed=false; primeDive=()=>{ if(!v.paused) return; if(!primed){primed=true; v.preload='auto'; v.removeAttribute('poster');} if(v.currentTime!==DV.t) v.currentTime=DV.t; };
   ['play','pause','volumechange'].forEach(e=>v.addEventListener(e,ui));
   let seen=0; diveRelease=()=>{ if(seen>.35&&!userPaused) start(); };
   new IntersectionObserver(es=>es.forEach(e=>{ seen=e.intersectionRatio; if(seen>.35){ if(!userPaused&&!diveCovers) start(); } else v.pause(); }),{threshold:[0,.35,.7]}).observe(fl);
