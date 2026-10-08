@@ -52,6 +52,10 @@ body{background:var(--bg);color:var(--ink);font-family:Struve,system-ui,sans-ser
    then the card settles, the orb shrinks into place and the hero content rises in. html.intro = locked + content hidden, .intro-full = card full-bleed */
 html.intro{overflow:hidden}
 html.intro-full .hero-bg{top:0;left:0;right:0;border-radius:0}
+/* the settle starts with the sand: the card's edges draw in and the orb drifts down and shrinks as if moving away, on a long ease-out
+   (a running transition keeps these timings after html.intro is gone) */
+html.intro .hero-bg{transition-duration:1.5s;transition-timing-function:cubic-bezier(.22,1,.36,1)}
+html.intro .hero-bg .hero-orb{transition:transform 1.6s cubic-bezier(.22,1,.36,1)}
 html.intro .tb-l,html.intro .tb-r{opacity:0;pointer-events:none}
 html.intro .hero h1,html.intro .hero>p,html.intro .hero .ctas,html.intro .hero .shot{animation:none;opacity:0}
 html.intro .notes{visibility:hidden}
@@ -76,8 +80,11 @@ html.intro .notes{visibility:hidden}
 /* drawn 1.5× bigger than the slot it takes in the line (a --w × 1em box): the extra spills under the neighbouring words, behind the letters */
 .scrib{position:relative;z-index:-1;display:inline-block;width:calc(var(--w)*1.5);height:2.25em;vertical-align:-.16em;margin-block:-.625em;margin-inline:calc(var(--w)*-.25) calc(var(--w)*-.25 + .04em);background:var(--img) var(--pos)/cover;-webkit-mask:var(--mask) center/100% 100% no-repeat;mask:var(--mask) center/100% 100% no-repeat}
 .scrib.a{--w:2.15em;--img:url(img/hero-retail-v1.webp);--pos:50% 30%;--mask:url(img/hero-scribble-v2.svg);inset-inline-start:.33em}   /* nudged off "conversation" toward the line end; the line itself doesn't move */
-.scrib.b{--w:1.83em;--img:url(img/hero-office-v1.webp);--pos:50% 38%;--mask:url(img/hero-scribble-b-v3.svg)}
-.scrib.b{margin-inline:calc(var(--w)*-.25 + .24em) calc(var(--w)*-.25 + .3em)}   /* a little more air from "advice" and "for" */
+.scrib.b{--w:1.95em;--img:url(img/hero-office-v1.webp);--pos:50% 38%;--mask:url(img/hero-scribble-b-v4.svg)}   /* 99×76 shape: --w = 99/76 × 2.25em / 1.5 */
+.scrib.b{margin-inline:calc(var(--w)*-.25 + .24em) calc(var(--w)*-.25 + .3em);top:-8px}
+/* its lower part (the dark shirt) reaches into the third line under «for business»: the shape softens from 68% down (to 30% at the bottom), so the words there read */
+.scrib.b{-webkit-mask:var(--mask) center/100% 100% no-repeat,linear-gradient(#000 68%,rgba(0,0,0,.3) 96%);-webkit-mask-composite:source-in;
+  mask:var(--mask) center/100% 100% no-repeat,linear-gradient(#000 68%,rgba(0,0,0,.3) 96%);mask-composite:intersect}   /* a little more air from "advice" and "for" */
 .hero>p{margin-top:20px;font-size:clamp(17px,1.4vw,20px);line-height:1.45;color:#5C5C61;max-width:640px}
 .ctas{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:32px}
 /* product window: wider than the text column but inside the hero card (see --s); glass frame and title bar (Aceternity hero) so the shader behind shows through */
@@ -720,6 +727,33 @@ br.mb{display:none}@media (max-width:900px){br.mb{display:inline}br.dk{display:n
 .mk3d.ready::before,.mk3d:has(.still)::before{display:none}
 .mk3d .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.mk3d .still[src*=employees]{object-position:50% 15%}   /* keep the top of the phone in a wide scene */
 .mk3d canvas{position:absolute;inset:0;width:100%;height:100%;z-index:auto;pointer-events:none}
+/* Lansy Live (at the counter): the conversation plays line by line — question, answer, question, answer — and the copilot's
+   suggestions land underneath; a pause, everything fades, and it plays again. Built in the script, cloned into the phone card */
+.live{position:absolute;inset:0;display:grid;place-items:center;container-type:size}
+.lv{width:min(620px,86cqw,150cqh);container-type:inline-size;display:flex;flex-direction:column;gap:clamp(10px,2.4cqw,16px);font-size:clamp(12px,2.5cqw,16px);line-height:1.45;color:var(--ink);transition:opacity .6s}
+.lv.out{opacity:0}
+.lv p{margin:0;max-width:none}.lv b{font-weight:600}
+.lv-m{opacity:0;transform:translateY(8px);filter:blur(6px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),filter .5s}
+.lv-m.in{opacity:1;transform:none;filter:none}
+.lv .g{padding:0 4px;color:#5C5C61}
+.lv .s{margin-inline-start:8%;padding:clamp(8px,1.8cqw,12px) clamp(12px,2.4cqw,18px);border-radius:16px;background:linear-gradient(100deg,#CAFF67,#9CDE45);box-shadow:0 18px 40px -22px rgba(51,105,79,.6)}
+.lv-k{display:inline-flex;align-items:center;gap:8px;margin-top:4px;font:500 clamp(10px,1.9cqw,12px) "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#33694F}
+.lv-k::before{content:"";width:7px;height:7px;border-radius:50%;background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8)}
+.lv-sug{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(6px,1.4cqw,10px)}
+.lv-it{display:flex;align-items:center;gap:10px;padding:clamp(8px,1.6cqw,12px);border-radius:16px;background:#fff;border:1px solid rgba(31,31,33,.06);box-shadow:0 20px 40px -24px rgba(31,31,33,.25)}
+.lv-it i{flex:none;width:clamp(26px,5.6cqw,36px);aspect-ratio:1;border-radius:10px;background:var(--c)}
+.lv-it div{min-width:0;font-size:.86em;line-height:1.3}.lv-it b{display:block;font-weight:500}.lv-it span{color:#33694F;font-weight:600}
+/* questions people ask the assistant, floating in each device window: the hero notes' glass and type (13px), fully rounded */
+.qb{position:absolute;z-index:2;max-width:min(300px,70%);padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 12px 28px -18px rgba(31,31,33,.18);font-size:13px;line-height:1.3;color:rgba(31,31,33,.75);pointer-events:none;
+  opacity:0;transform:translateY(10px) scale(.92);transition:opacity .5s,transform .7s cubic-bezier(.34,1.36,.64,1)}
+.qb.in{opacity:1;transform:none}
+/* the bubble itself floats (translate), its entrance uses transform, so the two never fight */
+.qb{animation:qbFloat 6s ease-in-out infinite alternate}
+@keyframes qbFloat{from{translate:0 -5px}to{translate:0 6px}}
+.roles-pin:not(.playing) .qb{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.qb{animation:none}}
+@media (max-width:900px){.qb{max-width:78%;padding:8px 14px}}
 
 /* scroll reveal for floors without their own motion: a clear rise and fade, staggered within a group, no blur.
    keyframes (not transitions) so elements keep their own hover/state transitions */
@@ -1139,12 +1173,12 @@ html[dir=rtl] .rtx .bar::after{left:auto;right:0;transform-origin:right}
       <div class="rtab on" data-i="0"><div class="k"><i></i>For managers</div><div class="body"><div><div class="bar"></div><h3>A partner for the manager</h3><p>A summary of locations, promos and demand: what guests ask for and what’s missing.</p></div></div></div>
       <div class="rtab" data-i="1"><div class="k"><i></i>For employees</div><div class="body"><div><div class="bar"></div><h3>A coach for every employee</h3><p>Short personal advice after each shift — on the phone and on the wrist.</p></div></div></div>
       <div class="rtab" data-i="2"><div class="k"><i></i>For your data</div><div class="body"><div><div class="bar"></div><h3>An assistant for your data</h3><p>Ask about any location or week and get answers backed by real conversations.</p></div></div></div>
-      <div class="rtab" data-i="3"><div class="k"><i></i>At the counter<span class="soon">Soon</span></div><div class="body"><div><div class="bar"></div><h3>Copilot at the counter</h3><p>A quiet prompt during the conversation: the right question or offer at the right moment.</p></div></div></div>
+      <div class="rtab" data-i="3"><div class="k"><i></i>At the counter<span class="soon">Soon</span></div><div class="body"><div><div class="bar"></div><h3>Lansy Live</h3><p>A quiet prompt during the conversation: the right question or offer at the right moment.</p></div></div></div>
     </div>
     <div class="rdev on"><div class="mk3d"><canvas class="seq" id="seq" aria-label="MacBook with the Lansy dashboard"></canvas></div></div>
     <div class="rdev"><div class="mk3d"><canvas class="seq" id="seqPhone" aria-label="iPhone with advice after the shift"></canvas></div></div>
     <div class="rdev"><div class="mk3d"><canvas class="seq" id="seqTab" aria-label="iPad with the data assistant"></canvas></div></div>
-    <div class="rdev"><div class="mk3d"></div></div>   <!-- At the counter: Soon, no picture yet -->
+    <div class="rdev"><div class="mk3d ready"></div></div>   <!-- At the counter (Lansy Live, Soon): the live scene is built in the script -->
   </div>
 </div>
 <div class="rint" id="rint"><div class="l">Connects to your stack</div><div class="logos" id="rlogos"></div></div>
@@ -1269,7 +1303,8 @@ function project(lat,lon,lat0,lon0){const dl=lon-lon0, cl=Math.cos(lat);
 const PADB=()=>Math.min(72,Math.max(32,innerHeight*.06));
 function layout(){
   ctr.style.top=(innerHeight-ctr.offsetHeight-PADB())+'px';
-  DPR=Math.min(2,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight; cv.width=W*DPR; cv.height=H*DPR;
+  // 1.5× at most: this canvas covers the whole screen, and in the dive it draws the 1080p frame across it every frame (2× was 78% more pixels)
+  DPR=Math.min(1.5,devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight; cv.width=W*DPR; cv.height=H*DPR;
   GR=Math.min(H*.46,W*.46); GX=W/2; GY=H/2;
   // dots ~11px apart at the opening zoom, only inside the Gulf map (land from the fine mask)
   const sp=11/(GR*S0), N=Math.round(4*Math.PI/(sp*sp)), ga=Math.PI*(3-Math.sqrt(5));
@@ -1288,6 +1323,8 @@ const DIVE=new Image(); DIVE.decoding='async'; DIVE.src='img/dive-preview-v2.web
 // the same moment as a full 1920×1080 video frame: the round window opens into it, and the video floor starts from this second.
 // In the still's pixels the frame's top-left corner sits at (-374, 229): the still is the frame at 1:1, extended 229px upwards
 const FRAME=new Image(); FRAME.decoding='async'; FRAME.src='img/dive-frame-v1.webp'; const DV={ox:-374,oy:229,t:4.6};
+// both stills are decoded up front, not on their first draw mid-dive
+[DIVE,FRAME].forEach(im=>im.decode().catch(()=>{}));
 let primeDive=()=>{}, diveRelease=()=>{}, diveCovers=false;   // set by the video floor: seek to DV.t, then play once the globe canvas stops covering it
 let flashes=[], nextFlash=0, dubaiF; const FL=1900, INK='rgb(31,31,33)', LIT='#3FBF00';   // conversations (and Dubai) light up green — deeper than the lime so it holds against the grey dots
 function vec(lat,lon){const c=Math.cos(lat); return [c*Math.cos(lon),c*Math.sin(lon),Math.sin(lat)];}
@@ -1321,6 +1358,7 @@ function frame(){
   const bg=seg(p,.3,.4); if(bg>0){g2.fillStyle=`rgba(255,255,255,${bg})`; g2.fillRect(0,0,W,H);}
   setS(cv,'visibility',b<=2?'hidden':'visible');
   if(diveCovers!==(b>2)){diveCovers=b>2; if(!diveCovers) diveRelease();}   // the video floor plays only once it is no longer under the canvas
+  if(p>.3) primeDive();   // start loading and seeking the video while the map assembles, not during the dive: the seek was landing mid-transition
   if(ps<1){const tr=[...document.querySelectorAll('.tile')].map(t=>t.getBoundingClientRect()); dots.forEach(d=>{const r=tr[d.ti]; d.sx=r.left+r.width*d.fx; d.sy=r.top+r.height*d.fy;});}   // only while dots are still flying off the digits
   const s=S0*Math.exp(Math.log(320/S0)*Math.pow(pz,2.0));   // starts at the regional zoom, dives into Dubai
   // the globe turns while the dots land, ending with Dubai facing the viewer
@@ -1330,6 +1368,9 @@ function frame(){
   const gq=project(GC.lat,GC.lon,lat0,lon0), pan=1-ease(seg(pz,0,.45)), ox=(W/2-(D.x+(gq.x-D.x)*s))*pan, oy=(H/2-(D.y+(gq.y-D.y)*s))*pan;
   const P=(la,lo)=>project(la,lo,lat0,lon0), Z=(x,y)=>[D.x+(x-D.x)*s+ox,D.y+(y-D.y)*s+oy];
   if(ps>0){
+    // once the dark dot covers the whole screen the map under it can't be seen: skip the 13.8k dots and the flashes
+    const rr=pz>0?Math.min(R0*1.4*Math.pow(s/S0,1.25),Math.hypot(W,H)):0, gx=D.x+ox, gy=D.y+oy, covered=rr>=Math.hypot(Math.max(gx,W-gx),Math.max(gy,H-gy));
+    if(!covered){
     g2.strokeStyle=`rgba(31,31,33,${.08*seg(ps,.3,1)})`; g2.lineWidth=1;
     g2.beginPath(); g2.arc(D.x+(GX-D.x)*s+ox,D.y+(GY-D.y)*s+oy,GR*s,0,7); g2.stroke();
     g2.fillStyle='rgb(31,31,33)';
@@ -1349,12 +1390,13 @@ function frame(){
       flashes=flashes.filter(f=>now-f.t0<FL);
       for(const f of flashes){ const u=(now-f.t0)/FL; drawFlash(f,u,fa*Math.min(1,u/.08),Z,P,s,now,false); }
     } else flashes=[];
+    } else flashes=[];
     // one of them is Dubai: it lights up and stays, and we dive into it
     const kd=ease(seg(p,.4,.44));
-    const rr=pz>0?Math.min(R0*1.4*Math.pow(s/S0,1.25),Math.hypot(W,H)):0; const k=seg(pz,.55,.9), gx=D.x+ox, gy=D.y+oy;
+    const k=seg(pz,.55,.9);
     if(kd>0&&pz<.2) drawFlash(dubaiF,(now%1900)/1900,kd*(1-seg(pz,0,.2)),Z,P,s,now,true);
     g2.fillStyle=`rgb(${Math.round(lerp(31,41,k))},${Math.round(lerp(31,41,k))},${Math.round(lerp(33,43,k))})`;
-    const fr=FRAME.complete&&FRAME.naturalWidth;
+    const fr=FRAME.complete&&FRAME.naturalWidth?FRAME:null, dv=DIVE.complete&&DIVE.naturalWidth?DIVE:null;
     if(rr>0){g2.beginPath(); g2.arc(gx,gy,rr,0,7); g2.fill();
       // inside the dark dot: a still from the coming video (a guest and the barista talking) grows with the dive, then sinks
       // back into the dark before the video floor arrives (the video itself opens on its badge poster, not on this shot)
@@ -1362,14 +1404,14 @@ function frame(){
       // the still fills the dot until the dot is ~a screen tall, then stays a round window while the dark keeps growing around it.
       // Over the last stretch the window opens into the video: the frame moves and grows to where the video floor shows it
       // (centred, object-fit: contain), the circle widens past its corners, and the floor starts the video from that frame
-      if(ia>0&&DIVE.complete&&DIVE.naturalWidth){const rd=Math.min(rr,Math.min(W,H)*.46), u=fr?ease(seg(p,.86,.99)):0, k=2*rd/1280;
+      if(ia>0&&dv){const rd=Math.min(rr,Math.min(W,H)*.46), u=fr?ease(seg(p,.86,.99)):0, k=2*rd/1280;
         const vw=Math.min(W,H*16/9), vh=vw*9/16, fw=lerp(1920*k,vw,u), fs=fw/1920;
         const fx=lerp(gx-rd+DV.ox*k,(W-vw)/2,u), fy=lerp(gy-rd+DV.oy*k,(H-vh)/2,u);
-        if(p>.6) primeDive();
+        if(p>.6) primeDive();   // (also primed earlier, below: the seek must be done before the window opens)
         if(u>0){g2.globalAlpha=u; g2.fillRect(0,0,W,H);}   // the dot's dark is the video floor's background
         g2.save(); g2.beginPath(); g2.arc(lerp(gx,W/2,u),lerp(gy,H/2,u),lerp(rd,Math.hypot(vw,vh)/2+2,u),0,7); g2.clip(); g2.imageSmoothingQuality='high';
-        if(u>0){g2.globalAlpha=ia; g2.drawImage(FRAME,fx,fy,fw,1080*fs);}
-        g2.globalAlpha=ia*(1-u); g2.drawImage(DIVE,fx-DV.ox*fs,fy-DV.oy*fs,1280*fs,1280*fs); g2.restore(); g2.globalAlpha=1;}}
+        if(u>0){g2.globalAlpha=ia; g2.drawImage(fr,fx,fy,fw,1080*fs);}
+        if(ia*(1-u)>.01){g2.globalAlpha=ia*(1-u); g2.drawImage(dv,fx-DV.ox*fs,fy-DV.oy*fs,1280*fs,1280*fs);} g2.restore(); g2.globalAlpha=1;}}   // the still is skipped once the frame has taken over
     if(p>=.99&&!fr) g2.fillRect(0,0,W,H);
   }
 }
@@ -1504,8 +1546,8 @@ $('chips').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(c)
 // 06: the floor pins and scroll walks through the roles; the active tab's line fills as you go
 let roleIdx=-1;
 // air between the mockup and the integrations strip, grows with screen height
-// the scroll opens the first three roles; "At the counter" is Soon and stays a closed tab, so after "For your data" the page scrolls on
-const ROLES=3;
+// the scroll walks all four roles; "At the counter" (Lansy Live) is still marked Soon but now has its scene
+const ROLES=4;
 const GAP6=()=>Math.round(Math.min(112,Math.max(56,innerHeight*.07)));
 // devices always bleed off the bottom: about 540px of them stay on screen, between 233 and 330px under the tabs
 function rolesLayout(){if(matchMedia('(max-width:900px)').matches){$('rolesRun').style.height='';return;} $('rolesRun').style.height=(innerHeight*(1+ROLES*STEP_VH+CLOSE_VH))+'px';
@@ -1562,15 +1604,41 @@ const frameSeq=(cv,dirs,{ax=.5,ay=.5,after}={})=>{const ctx=cv.getContext('2d'),
 const macD=frameSeq($('seq'),['mckp/frames4/','mckp/frames2/']), phoneD=frameSeq($('seqPhone'),['mckp/iphone1/','mckp/iphone1-webp/'],{ay:.15,after:macD.done}),
   SEQ=[macD, phoneD, frameSeq($('seqTab'),['mckp/ipad6/','mckp/ipad6-webp/'],{ay:0,after:phoneD.done})];   // MacBook first, then the iPhone, then the iPad
 rolesLayout(); rolesScroll(); onScrollFrame(rolesScroll); addEventListener('resize',()=>{rolesLayout(); rolesScroll();});
+// 06 · Lansy Live: a café conversation plays line by line, then the copilot's suggestions for the barista appear under it (EN / AR)
+(()=>{const host=document.querySelectorAll('.rdev')[3]?.querySelector('.mk3d'); if(!host)return;
+  const T=AR?{g:'الضيف',s:'الباريستا',k:'اقترح الآن',chat:[['g','صباح الخير! فلات وايت من فضلك. هل عندكم شيء خفيف معه؟'],['s','بالتأكيد. هل تفضّل شيئًا حلوًا أم مالحًا؟'],['g','حلو، لكن من دون مكسّرات.'],['s','إذن كوكيز التمر والسمسم: خالٍ من المكسّرات ويناسب الفلات وايت.']],
+      items:[['كوكيز التمر والسمسم','9 درهم','#E9D2B0'],['كرواسون بالزعفران','14 درهم','#F2C77A'],['كرك لاتيه','16 درهم','#D9B48F']]}
+    :{g:'Guest',s:'Barista',k:'Suggest now',chat:[['g','Morning! A flat white, please. Anything light to go with it?'],['s','Sure. Sweet or savoury?'],['g','Sweet, but no nuts.'],['s','Then the date & sesame cookie: nut-free, and great with a flat white.']],
+      items:[['Date & sesame cookie','AED 9','#E9D2B0'],['Saffron croissant','AED 14','#F2C77A'],['Karak latte','AED 16','#D9B48F']]};
+  const lv=document.createElement('div'); lv.className='live';
+  lv.innerHTML=`<div class="lv">${T.chat.map(([w,t])=>`<p class="lv-m ${w}"><b>${w==='g'?T.g:T.s}:</b> ${t}</p>`).join('')}`
+    +`<span class="lv-m lv-k">${T.k}</span><div class="lv-sug">${T.items.map(([n,p,c])=>`<div class="lv-m lv-it" style="--c:${c}"><i></i><div><b>${n}</b><span>${p}</span></div></div>`).join('')}</div></div>`;
+  host.append(lv);
+  // each copy (the desktop window, the phone card) plays its own timeline, from the start, only while it is the one being looked at:
+  // a line every 1.1s, the suggestions 0.5s apart, a 3.2s hold, a fade, again
+  const reset=l=>{const ms=l.querySelectorAll('.lv-m'); ms.forEach(m=>{m.style.transition='none'; m.classList.remove('in');}); l.offsetWidth;
+    ms.forEach(m=>m.style.transition=''); l.classList.remove('out');};   // children vanish instantly, so nothing flashes back as the scene reappears
+  const ctl=l=>{let t=0, step=0; const ms=[...l.querySelectorAll('.lv-m')];
+    const run=()=>{let wait;
+      if(step<ms.length){ms[step].classList.add('in'); step++; wait=step<4?1100:step===4?1100:step<ms.length?500:3200;}
+      else {l.classList.add('out'); step=0; t=setTimeout(()=>{reset(l); t=setTimeout(run,700);},650); return;}
+      t=setTimeout(run,wait);};
+    return {start(){clearTimeout(t); reset(l); step=0; t=setTimeout(run,500);}, stop(){clearTimeout(t); reset(l);}};};
+  // desktop: runs while the «At the counter» tab is open
+  const dev=document.querySelectorAll('.rdev')[3], dc=ctl(lv.querySelector('.lv')); let was=false;
+  new MutationObserver(()=>{const on=dev.classList.contains('on'); if(on!==was){was=on; on?dc.start():dc.stop();}}).observe(dev,{attributes:true,attributeFilter:['class']});
+  // phones: the copy in the card runs while the card is on screen (the cards are built just below; picked up once they exist)
+  requestAnimationFrame(()=>document.querySelectorAll('.rcards .lv').forEach(l=>{const c=ctl(l);
+    new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?c.start():c.stop()),{threshold:.4}).observe(l);}));})();
 // ── phones: stacked role cards built from the tabs (text) and the device pictures; each has a runway, the hairline fills along it
 const PH=matchMedia('(max-width:900px)'), POS=['55% 50%','48% 50%','50% 50%','48% 50%'], RUN=.7;   // RUN: scroll per card, in screen heights
 (()=>{const tabs=[...document.querySelectorAll('.rtab')], devs=[...document.querySelectorAll('.rdev')], sc=document.querySelector('.rscene');
   const col=document.createElement('div'); col.className='rcards';
   tabs.forEach((t,i)=>{const h=document.createElement('div'); h.className='rhold';
-    const cvs=devs[i].querySelector('canvas'), still=devs[i].querySelector('img.still'), pic=!cvs&&!still?'':cvs?`<canvas class="mseq" aria-label="${cvs.getAttribute('aria-label')}"></canvas>`:still.parentElement.tagName==='PICTURE'?still.parentElement.outerHTML.replace(' class="still"','').replace(' loading="lazy"',` style="object-position:${POS[i]}"`):`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
+    const cvs=devs[i].querySelector('canvas'), still=devs[i].querySelector('img.still'), pic=devs[i].querySelector('.live')?devs[i].querySelector('.live').outerHTML:!cvs&&!still?'':cvs?`<canvas class="mseq" aria-label="${cvs.getAttribute('aria-label')}"></canvas>`:still.parentElement.tagName==='PICTURE'?still.parentElement.outerHTML.replace(' class="still"','').replace(' loading="lazy"',` style="object-position:${POS[i]}"`):`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
     h.innerHTML=`<article class="rcard"><div class="rtx"></div><div class="rpic">${pic}</div></article>`;
     const tx=h.querySelector('.rtx'); tx.append(t.querySelector('.k').cloneNode(true)); tx.insertAdjacentHTML('beforeend',`<div class="bar"></div><h3>${t.querySelector('h3').innerHTML}</h3><p>${t.querySelector('p').innerHTML}</p>`);
-    if(t.querySelector('.soon')){h.classList.add('soon-only'); h.querySelector('.rpic').remove(); tx.querySelectorAll('.bar,h3,p').forEach(e=>e.remove());}   // announced only
+    if(t.querySelector('.soon')&&!pic){h.classList.add('soon-only'); h.querySelector('.rpic').remove(); tx.querySelectorAll('.bar,h3,p').forEach(e=>e.remove());}   // announced only
     col.append(h);});
   sc.append(col);
   const holds=[...col.children].filter(h=>!h.classList.contains('soon-only'));
@@ -1658,6 +1726,23 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
   addEventListener('scroll',check,{passive:true});   // no layout reads on scroll: compares scrollY with TH
   addEventListener('resize',()=>{bar.classList.add('still'); TH=null; apply(); requestAnimationFrame(()=>bar.classList.remove('still'));});
   bar.classList.add('still'); check(); document.fonts.ready.then(()=>{apply(); requestAnimationFrame(()=>requestAnimationFrame(()=>bar.classList.remove('still')));});})();
+// 06 · questions floating in each device window (manager · employee · data), in the device windows and in the phone cards
+(()=>{const Q=[[['What came of the promo we launched?','ما نتائج العرض الذي أطلقناه؟'],['I was off for a week. How did the numbers change?','كنت في إجازة لأسبوع. كيف تغيّرت المؤشرات؟'],['Who upsells best?','من الأفضل في البيع الإضافي؟']],
+    [['What are the best practices for upselling?','ما أفضل الممارسات للبيع الإضافي؟'],['Help me break down yesterday’s talk with a guest.','ساعدني في تحليل محادثتي مع ضيف أمس.'],['How do I best offer the seasonal menu?','كيف أقترح قائمة الموسم بأفضل شكل؟']],
+    [['How is the new location doing?','كيف أداء الفرع الجديد؟'],['Compare upsell trends for Q1 and Q3.','قارن تطوّر البيع الإضافي بين الربع الأول والثالث.']]];
+  // spots around the device (never over its middle); the third sits low on the opposite side
+  const SPOT=[['left:4%;top:12%','right:4%;top:40%','left:6%;top:70%'],['left:5%;top:16%','right:5%;top:44%','left:7%;top:72%'],['right:6%;top:18%','left:6%;top:58%']];
+  const SPOTM=[['left:12px;top:8%','right:12px;top:38%','left:12px;top:70%'],['left:12px;top:8%','right:12px;top:40%','left:12px;top:72%'],['right:12px;top:10%','left:12px;top:62%']];
+  const add=(host,i,spots)=>Q[i]&&Q[i].map((q,k)=>{const b=document.createElement('div'); b.className='qb'; b.style.cssText=spots[i][k]; b.style.transitionDelay=(.45+k*.35)+'s';
+    b.style.animationDelay=(-k*2.1)+'s'; b.textContent=AR?q[1]:q[0]; host.append(b); return b;});
+  const devs=[...document.querySelectorAll('.rdev')], sets=devs.map((d,i)=>add(d.querySelector('.mk3d'),i,SPOT)||[]);
+  // desktop: they rise in when their tab's device shows, and leave with it
+  const sync=()=>devs.forEach((d,i)=>sets[i].forEach(b=>b.classList.toggle('in',d.classList.contains('on'))));
+  devs.forEach(d=>new MutationObserver(sync).observe(d,{attributes:true,attributeFilter:['class']})); sync();
+  // phones: the stacked cards show theirs once the card is on screen
+  document.querySelectorAll('.rcards .rpic').forEach((pic,i)=>{const bs=add(pic,i,SPOTM); if(!bs)return;
+    new IntersectionObserver(es=>es.forEach(e=>bs.forEach(b=>b.classList.toggle('in',e.isIntersecting))),{threshold:.3}).observe(pic);});
+  const pin=$('rolesPin'); new IntersectionObserver(es=>pin.classList.toggle('playing',es[0].isIntersecting)).observe(pin);})();
 // menus: a port of seed.com's desktop nav (see the CSS note); items from lansy.ai (src/lib/nav.ts)
 (()=>{const bar=document.querySelector('.topbar'), L=bar.querySelector('.tb-l'), tabs=[...L.querySelectorAll('.tb-t')], pill=L.querySelector('.tb-hl'), slot=$('tbDd');
   if(!tabs.length)return;
@@ -1823,7 +1908,7 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
   document.addEventListener('visibilitychange',()=>run(vis));
   const col=st.querySelector('.hero-stage>.wrap');
   addEventListener('resize',()=>{place(); measure(); layer.replaceChildren(); live=[]; comets=[];}); document.fonts.ready.then(()=>{place(); measure(); run(vis);});})();
-// intro splash (see html.intro in the CSS). Timeline: words blur in → hold → letters blow away up-right as sand → card + orb settle → content rises
+// intro splash (see html.intro in the CSS). Timeline: words blur in → hold → letters blow away up-right as sand while the card + orb settle → content rises
 (()=>{const root=document.documentElement; if(!root.classList.contains('intro'))return;
   const st=document.querySelector('.hero-stage'), cv=st.querySelector('.hero-orb'), h1=st.querySelector('.hero h1');
   const line=document.createElement('div'); line.className='intro-line'; line.setAttribute('aria-hidden','true');
@@ -1834,7 +1919,7 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
   let ended=false, timers=[]; const at=(ms,f)=>timers.push(setTimeout(f,ms));
   // the orb starts a little bigger and centred in the viewport; it eases back to its place when the card settles
   const orbStart=()=>{const C=parseFloat(cv.style.width)||0, top=parseFloat(cv.style.top)||0; cv.style.transition='none';
-    cv.style.setProperty('--oy',(innerHeight*.56-(top+C/2))+'px'); cv.style.setProperty('--os',1.12); cv.offsetWidth; cv.style.transition='';};
+    cv.style.setProperty('--oy',(innerHeight*.56-(top+C/2))+'px'); cv.style.setProperty('--os',1.22); cv.offsetWidth; cv.style.transition='';};
   // sand: every letter sheds grains that drift up and to the right while the letter itself blurs away
   function sand(){const sc=document.createElement('canvas'), dpr=Math.min(2,devicePixelRatio||1); sc.className='intro-sand'; sc.width=innerWidth*dpr; sc.height=innerHeight*dpr; document.body.append(sc);
     const g=sc.getContext('2d'), cs=[...line.querySelectorAll('.c')], grains=[], t0=performance.now(), fs=parseFloat(getComputedStyle(line).fontSize);
@@ -1845,16 +1930,16 @@ if(!$('launchFloor')?.hidden){launchScroll(); onScrollFrame(launchScroll);}   //
     (function f(now){const t=now-t0; g.clearRect(0,0,sc.width,sc.height); g.fillStyle='#1F1F21'; let alive=0;
       for(const p of grains){const u=(t-p.d)/p.l; if(u<0){alive++; continue;} if(u>=1)continue; alive++; const e=u*u*.6+u*.4, sec=(t-p.d)/1000;
         g.globalAlpha=.75*(1-u); g.fillRect((p.x+p.vx*sec*(.6+e)+Math.sin(p.w+sec*6)*4)*dpr,(p.y+p.vy*sec*(.6+e))*dpr,p.s*dpr,p.s*dpr);}
-      if(alive&&!ended) requestAnimationFrame(f); else sc.remove();})(t0);}
+      if(alive&&sc.isConnected) requestAnimationFrame(f); else sc.remove();})(t0);}   // runs on through the settle; a skip removes the canvas
   function settle(){root.classList.remove('intro-full'); cv.style.setProperty('--oy','0px'); cv.style.setProperty('--os',1);
-    at(750,()=>{root.classList.remove('intro'); line.remove();});
+    at(1100,()=>{root.classList.remove('intro'); line.remove();});   // the content rises as the last letters blow off
     at(1200,()=>dispatchEvent(new Event('scroll')));}   // re-check the top bar once the card has finished moving
   function skip(){if(ended)return; ended=true; timers.forEach(clearTimeout); timers=[]; line.style.transition='opacity .25s'; line.style.opacity=0; document.querySelector('.intro-sand')?.remove(); settle();}
   ['wheel','keydown','pointerdown','touchstart'].forEach(e=>addEventListener(e,skip,{once:true,passive:true}));
   document.fonts.ready.then(()=>requestAnimationFrame(()=>{orbStart(); line.style.top=h1.getBoundingClientRect().top+'px';
     [...line.querySelectorAll('.w')].forEach((w,i)=>at(350+i*170,()=>w.classList.add('in')));
-    at(2300,()=>{if(!ended) sand();});
-    at(3350,()=>{if(!ended){ended=true; settle();}});}));
+    // the line blows away and, at the same moment, the card and the orb settle (they used to wait for the sand to clear)
+    at(2300,()=>{if(!ended){ended=true; sand(); settle();}});}));
 })();
 // product screen: lay the 1600px dashboard out at the window's width; the "Ask assistant" pill sits near the window's bottom edge
 (()=>{const body=document.querySelector('.shot .body'), app=body&&body.querySelector('.ui-app'); if(!app)return;

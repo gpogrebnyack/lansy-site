@@ -90,7 +90,7 @@ PAIRS:[
 ['An assistant for your data','مساعد لبياناتك'],
 ['Ask about any location or week and get answers backed by real conversations.','اسأل عن أي فرع أو أسبوع واحصل على إجابات مدعومة بمحادثات حقيقية.'],
 ['<i></i>At the counter<span class="soon">Soon</span>','<i></i>عند الكاشير<span class="soon">قريبًا</span>'],
-['Copilot at the counter','مساعد فوري عند الكاشير'],
+['Lansy Live','Lansy Live'],
 ['A quiet prompt during the conversation: the right question or offer at the right moment.','تلميح هادئ أثناء المحادثة: السؤال أو العرض المناسب في اللحظة المناسبة.'],
 ['Connects to your stack','يتكامل مع أنظمتك'],
 // cases
