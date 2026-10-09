@@ -292,7 +292,7 @@ html[lang=ar] :is(.smk,.manifesto b:first-of-type,.inds .ind h3.badge){font-styl
 .live{display:flex;align-items:center;gap:10px;color:var(--ink)}
 .live .ico{width:16px;height:16px;color:var(--ink);flex:none;margin-left:-2px}.live .who{margin-left:-4px}
 canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:5;pointer-events:none}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--ink);animation:pulse 1.6s ease-in-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#9CDE45;box-shadow:0 0 6px rgba(156,222,69,.8);animation:pulse 1.6s ease-in-out infinite}   /* lime, like the recording dots elsewhere */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 .tiles{display:flex;align-items:flex-start;margin-top:6px;--h:clamp(96px,13vw,184px)}
 .tile{position:relative;height:var(--h);width:.64em;font-size:var(--h);clip-path:inset(0 -.2em)}   /* Struve tabular digits are .676em wide: pitch = that minus the −.04em tracking; clip only top/bottom for the reels */
@@ -729,7 +729,7 @@ br.mb{display:none}@media (max-width:900px){br.mb{display:inline}br.dk{display:n
 .mk3d canvas{position:absolute;inset:0;width:100%;height:100%;z-index:auto;pointer-events:none}
 /* Lansy Live (at the counter): the conversation plays line by line — question, answer, question, answer — and the copilot's
    suggestions land underneath; a pause, everything fades, and it plays again. Built in the script, cloned into the phone card */
-.live{position:absolute;inset:0;display:grid;place-items:center;container-type:size}
+.lv-scene{position:absolute;inset:0;display:grid;place-items:center;container-type:size}   /* not .live: that is the counter's label */
 .lv{width:min(620px,86cqw,150cqh);container-type:inline-size;display:flex;flex-direction:column;gap:clamp(10px,2.4cqw,16px);font-size:clamp(12px,2.5cqw,16px);line-height:1.45;color:var(--ink);transition:opacity .6s}
 .lv.out{opacity:0}
 .lv p{margin:0;max-width:none}.lv b{font-weight:600}
@@ -1609,7 +1609,7 @@ rolesLayout(); rolesScroll(); onScrollFrame(rolesScroll); addEventListener('resi
       items:[['كوكيز التمر والسمسم','9 درهم','#E9D2B0'],['كرواسون بالزعفران','14 درهم','#F2C77A'],['كرك لاتيه','16 درهم','#D9B48F']]}
     :{g:'Guest',s:'Barista',k:'Suggest now',chat:[['g','Morning! A flat white, please. Anything light to go with it?'],['s','Sure. Sweet or savoury?'],['g','Sweet, but no nuts.'],['s','Then the date & sesame cookie: nut-free, and great with a flat white.']],
       items:[['Date & sesame cookie','AED 9','#E9D2B0'],['Saffron croissant','AED 14','#F2C77A'],['Karak latte','AED 16','#D9B48F']]};
-  const lv=document.createElement('div'); lv.className='live';
+  const lv=document.createElement('div'); lv.className='lv-scene';
   lv.innerHTML=`<div class="lv">${T.chat.map(([w,t])=>`<p class="lv-m ${w}"><b>${w==='g'?T.g:T.s}:</b> ${t}</p>`).join('')}`
     +`<span class="lv-m lv-k">${T.k}</span><div class="lv-sug">${T.items.map(([n,p,c])=>`<div class="lv-m lv-it" style="--c:${c}"><i></i><div><b>${n}</b><span>${p}</span></div></div>`).join('')}</div></div>`;
   host.append(lv);
@@ -1634,7 +1634,7 @@ const PH=matchMedia('(max-width:900px)'), POS=['55% 50%','48% 50%','50% 50%','48
 (()=>{const tabs=[...document.querySelectorAll('.rtab')], devs=[...document.querySelectorAll('.rdev')], sc=document.querySelector('.rscene');
   const col=document.createElement('div'); col.className='rcards';
   tabs.forEach((t,i)=>{const h=document.createElement('div'); h.className='rhold';
-    const cvs=devs[i].querySelector('canvas'), still=devs[i].querySelector('img.still'), pic=devs[i].querySelector('.live')?devs[i].querySelector('.live').outerHTML:!cvs&&!still?'':cvs?`<canvas class="mseq" aria-label="${cvs.getAttribute('aria-label')}"></canvas>`:still.parentElement.tagName==='PICTURE'?still.parentElement.outerHTML.replace(' class="still"','').replace(' loading="lazy"',` style="object-position:${POS[i]}"`):`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
+    const cvs=devs[i].querySelector('canvas'), still=devs[i].querySelector('img.still'), pic=devs[i].querySelector('.lv-scene')?devs[i].querySelector('.lv-scene').outerHTML:!cvs&&!still?'':cvs?`<canvas class="mseq" aria-label="${cvs.getAttribute('aria-label')}"></canvas>`:still.parentElement.tagName==='PICTURE'?still.parentElement.outerHTML.replace(' class="still"','').replace(' loading="lazy"',` style="object-position:${POS[i]}"`):`<img src="${still.getAttribute('src')}" alt="${still.alt}" style="object-position:${POS[i]}">`;
     h.innerHTML=`<article class="rcard"><div class="rtx"></div><div class="rpic">${pic}</div></article>`;
     const tx=h.querySelector('.rtx'); tx.append(t.querySelector('.k').cloneNode(true)); tx.insertAdjacentHTML('beforeend',`<div class="bar"></div><h3>${t.querySelector('h3').innerHTML}</h3><p>${t.querySelector('p').innerHTML}</p>`);
     if(t.querySelector('.soon')&&!pic){h.classList.add('soon-only'); h.querySelector('.rpic').remove(); tx.querySelectorAll('.bar,h3,p').forEach(e=>e.remove());}   // announced only
