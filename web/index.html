@@ -1103,7 +1103,7 @@ html[dir=rtl] .rtx .bar::after{left:auto;right:0;transform-origin:right}
 <canvas id="c"></canvas>
 <section class="video" id="videoFloor">
   <button class="pp" id="pp" aria-label="Pause"></button>
-  <video id="vid" poster="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/video/lansy-cafe-poster.jpg" loop playsinline preload="metadata"><source src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/video/lansy-cafe-v2-av1.mp4" type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"'><source src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/video/lansy-cafe-v2.mp4" type="video/mp4"></video>
+  <video id="vid" poster="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/video/lansy-pd-saudi-v1-poster.jpg" loop playsinline preload="metadata"><source src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/video/lansy-pd-saudi-v1-av1.mp4" type='video/mp4; codecs="av01.0.08M.10, mp4a.40.2"'><source src="https://pub-f554743e343b4157afc5fa154f4ba787.r2.dev/video/lansy-pd-saudi-v1.mp4" type="video/mp4"></video>
   <button class="snd" id="snd" aria-label="Turn sound on"></button>
 </section>
 <div class="how-run" id="howRun"><div class="wrap how-pin" id="howPin"><section class="how" id="how">
@@ -1318,11 +1318,11 @@ function layout(){
   sample(); dubaiF={d:best,nb:near(best.v)};
 }
 // canvas is fixed to the viewport; the scatter starts once the stage pins (problem top, counter bottom)
-// the dive preview: the café video's first frame (a hand clips the device onto the apron), the device in the middle of the circle
-const DIVE=new Image(); DIVE.decoding='async'; DIVE.src='img/dive-preview-v3.webp';   // 1080² square cut from that frame at 1:1
+// the dive preview: the video's first frame (hands clip the device onto the apron), the device in the middle of the circle
+const DIVE=new Image(); DIVE.decoding='async'; DIVE.src='img/dive-preview-v4.webp';   // 1080² square cut from that frame at 1:1
 // the same frame in full (1920×1080): the round window opens into it, and the video floor plays from the start.
 // In the square's pixels the frame's top-left corner sits at (ox, oy); n is the square's side
-const FRAME=new Image(); FRAME.decoding='async'; FRAME.src='img/dive-frame-v2.webp'; const DV={ox:-490,oy:0,n:1080,t:0};
+const FRAME=new Image(); FRAME.decoding='async'; FRAME.src='img/dive-frame-v3.webp'; const DV={ox:-390,oy:0,n:1080,t:0};
 // both stills are decoded up front, not on their first draw mid-dive
 [DIVE,FRAME].forEach(im=>im.decode().catch(()=>{}));
 let primeDive=()=>{}, diveRelease=()=>{}, diveCovers=false;   // set by the video floor: load and hold the first frame, then play once the globe canvas stops covering it

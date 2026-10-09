@@ -87,7 +87,7 @@ File names are versioned (`-v2`), so long caching is safe. When you replace a fi
 
 Optimisation in place:
 
-- the café video is AV1 (2.6 MB) with an H.264 fallback;
+- the product video (`video/lansy-pd-saudi-v1*`) is AV1, 10-bit, crf 36 (3.1 MB), with an H.264 crf 24 fallback (6 MB);
 - images are WebP;
 - the icon video loads only near the final CTA;
 - the MacBook frames preload two screens before their floor.
